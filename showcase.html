@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenGradient Brand Skill - Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--cyan:#00D4E8;--lime:#D4FF00;--black:#000;--card:#111;--border:rgba(255,255,255,.08)}
+    body{font-family:'Roboto',sans-serif;background:#000;color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    .hdr{padding:20px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(0,0,0,.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:99}
+    .hdr-logo{display:flex;align-items:center;gap:10px;font-size:1.05rem;text-decoration:none;color:#fff}
+    .hdr-logo svg{width:26px;height:26px}
+    .hdr-links{display:flex;gap:22px;align-items:center}
+    .hdr-link{font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s}
+    .hdr-link:hover{color:#fff}
+    .hdr-cta{font-size:.8rem;font-weight:500;background:var(--cyan);color:#000;padding:8px 18px;border-radius:999px;text-decoration:none}
+    .hero{padding:90px 40px 70px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:700px;height:300px;background:radial-gradient(ellipse,rgba(0,212,232,.18) 0%,transparent 70%);pointer-events:none}
+    .badge{display:inline-flex;align-items:center;padding:5px 14px;border-radius:999px;font-size:.7rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,212,232,.1);color:var(--cyan);border:1px solid rgba(0,212,232,.2);margin-bottom:26px}
+    .hero-title{font-size:clamp(2.2rem,5vw,4rem);font-weight:300;letter-spacing:-.02em;line-height:1.1;margin-bottom:18px}
+    .grad{background:linear-gradient(90deg,var(--cyan) 0%,var(--lime) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:1rem;color:rgba(255,255,255,.5);max-width:500px;margin:0 auto 36px;line-height:1.6}
+    .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn-p{padding:12px 30px;border-radius:999px;background:var(--cyan);color:#000;font-family:inherit;font-size:.9rem;font-weight:500;text-decoration:none;transition:transform .15s,box-shadow .15s}
+    .btn-p:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(0,212,232,.35)}
+    .btn-g{padding:12px 30px;border-radius:999px;border:1px solid rgba(255,255,255,.2);color:#fff;font-family:inherit;font-size:.9rem;text-decoration:none;transition:border-color .2s}
+    .btn-g:hover{border-color:var(--cyan);color:var(--cyan)}
+    .sec{padding:70px 40px;max-width:1200px;margin:0 auto}
+    .sec-lbl{font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
+    .sec-ttl{font-size:clamp(1.7rem,3vw,2.6rem);font-weight:300;letter-spacing:-.01em;margin-bottom:44px}
+    .browser{border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 24px 80px rgba(0,0,0,.6);margin-bottom:14px}
+    .browser-bar{background:#1a1a1a;padding:11px 16px;display:flex;align-items:center;gap:11px;border-bottom:1px solid rgba(255,255,255,.06)}
+    .dots{display:flex;gap:6px}
+    .dot{width:12px;height:12px;border-radius:50%}
+    .dot-r{background:#FF5F57}.dot-y{background:#FEBC2E}.dot-g{background:#28C840}
+    .url-bar{flex:1;background:rgba(255,255,255,.06);border-radius:5px;padding:5px 11px;font-family:'JetBrains Mono',monospace;font-size:.73rem;color:rgba(255,255,255,.4)}
+    .browser iframe{width:100%;height:600px;border:none;display:block}
+    .screens{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    @media(max-width:700px){.screens{grid-template-columns:1fr}}
+    .scard{border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+    .scard-lbl{padding:11px 15px;font-size:.78rem;color:rgba(255,255,255,.4);border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace}
+    .ecode{background:#0c0c0c;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    .etabs{display:flex;border-bottom:1px solid var(--border);padding:0 18px}
+    .etab{padding:13px 14px;font-size:.8rem;color:rgba(255,255,255,.4);cursor:pointer;border-bottom:2px solid transparent;transition:color .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
+    .etab.on{color:var(--cyan);border-bottom-color:var(--cyan)}
+    .epanel{display:none;padding:26px}
+    .epanel.on{display:block}
+    pre{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--cyan);line-height:1.7;white-space:pre-wrap;word-break:break-all}
+    .cpbtn{margin-top:18px;display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border-radius:999px;background:rgba(0,212,232,.1);color:var(--cyan);border:1px solid rgba(0,212,232,.2);font-size:.8rem;font-weight:500;cursor:pointer;font-family:inherit}
+    .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media(max-width:800px){.fgrid{grid-template-columns:1fr}}
+    .fcard{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:26px;transition:border-color .2s,transform .2s}
+    .fcard:hover{border-color:rgba(0,212,232,.3);transform:translateY(-2px)}
+    .ficon{width:38px;height:38px;border-radius:9px;background:rgba(0,212,232,.1);display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.15rem}
+    .fttl{font-size:.95rem;font-weight:500;margin-bottom:7px}
+    .fdsc{font-size:.84rem;color:rgba(255,255,255,.42);line-height:1.55}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.22;border:none;margin:0 40px}
+    .footer{padding:44px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;border-top:1px solid var(--border)}
+    .fcopy{font-size:.78rem;color:rgba(255,255,255,.28)}
+    .flinks{display:flex;gap:22px}
+    .flink{font-size:.78rem;color:rgba(255,255,255,.28);text-decoration:none}
+    .flink:hover{color:var(--cyan)}
+  </style>
+</head>
+<body>
+<header class="hdr">
+  <a class="hdr-logo" href="#">
+    <svg viewBox="0 0 120 120" fill="none"><path d="M60 10C90 30 90 60 90 60C90 90 60 110 60 110C60 110 30 90 30 60C30 30 60 10 60 10Z" stroke="#00D4E8" stroke-width="4" fill="none"/><path d="M10 60C30 30 60 30 60 30C90 30 110 60 110 60C90 90 60 90 60 90C30 90 10 60 10 60Z" stroke="#00D4E8" stroke-width="4" fill="none"/><circle cx="60" cy="60" r="12" stroke="#00D4E8" stroke-width="3" fill="none"/></svg>
+    OpenGradient Brand Skill
+  </a>
+  <nav class="hdr-links">
+    <a class="hdr-link" href="https://github.com/golldyck/opengradient-brand-skill">GitHub</a>
+    <a class="hdr-link" href="demo.html">Live Demo</a>
+    <a class="hdr-cta" href="https://github.com/golldyck/opengradient-brand-skill">Use Skill</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="badge">OpenGradient Brand System v1.0</div>
+  <h1 class="hero-title">Build branded sites<br><span class="grad">in one script tag</span></h1>
+  <p class="hero-sub">Drop one script line. Get the full OpenGradient visual identity — colors, gradients, typography, logo, components — auto-loaded from GitHub CDN.</p>
+  <div class="btns">
+    <a class="btn-p" href="demo.html" target="_blank">Open Live Demo</a>
+    <a class="btn-g" href="https://github.com/golldyck/opengradient-brand-skill" target="_blank">View on GitHub</a>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<div class="sec">
+  <div class="sec-lbl">Live Preview</div>
+  <h2 class="sec-ttl">See it <span class="grad">in action</span></h2>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+      <div class="url-bar">golldyck.github.io/opengradient-brand-skill/demo.html</div>
+    </div>
+    <iframe src="demo.html" title="OpenGradient Brand Demo" loading="lazy"></iframe>
+  </div>
+  <p style="font-size:.78rem;color:rgba(255,255,255,.28);text-align:center">Live iframe generated entirely by og-skill.js</p>
+</div>
+
+<hr class="divider"/>
+
+<div class="sec">
+  <div class="sec-lbl">Screenshots</div>
+  <h2 class="sec-ttl">Every section <span class="grad">included</span></h2>
+  <div class="screens">
+    <div class="scard">
+      <div class="scard-lbl">01 - Hero + Navbar</div>
+      <div style="background:linear-gradient(135deg,#000 0%,#001a1a 50%,#003830 100%);padding:36px 28px;position:relative;overflow:hidden">
+        <div style="position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);width:400px;height:200px;background:radial-gradient(ellipse,rgba(0,212,232,.3) 0%,transparent 70%)"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:44px">
+          <div style="display:flex;align-items:center;gap:7px;font-size:.82rem;color:#fff">OpenGradient</div>
+          <div style="background:#00D4E8;color:#000;font-size:.68rem;font-weight:500;padding:5px 13px;border-radius:99px">Enter Model Hub</div>
+        </div>
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="display:inline-block;padding:3px 11px;border-radius:99px;background:rgba(0,212,232,.1);color:#00D4E8;font-size:.62rem;border:1px solid rgba(0,212,232,.2);margin-bottom:14px">NOW LIVE</div>
+          <div style="font-size:2rem;font-weight:300;background:linear-gradient(90deg,#00D4E8,#D4FF00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:10px">OpenGradient</div>
+          <div style="font-size:.76rem;color:rgba(255,255,255,.5);margin-bottom:20px">Decentralized AI Inference Platform</div>
+          <div style="display:flex;gap:10px;justify-content:center">
+            <div style="background:#00D4E8;color:#000;padding:8px 20px;border-radius:99px;font-size:.76rem;font-weight:500">Enter Model Hub</div>
+            <div style="border:1px solid rgba(255,255,255,.22);color:#fff;padding:8px 20px;border-radius:99px;font-size:.76rem">Learn More</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scard">
+      <div class="scard-lbl">02 - Feature Cards</div>
+      <div style="background:#0a0a0a;padding:28px 22px">
+        <div style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:7px">FEATURES</div>
+        <div style="font-size:1.3rem;font-weight:300;margin-bottom:22px">Built for <span style="background:linear-gradient(90deg,#00D4E8,#D4FF00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Developers</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div style="background:#111;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px"><div style="background:rgba(0,212,232,.1);color:#00D4E8;font-size:.58rem;padding:2px 9px;border-radius:99px;display:inline-block;margin-bottom:8px">SDK</div><div style="font-size:.82rem;font-weight:500">Model Hub</div></div>
+          <div style="background:#111;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px"><div style="background:rgba(212,255,0,.1);color:#D4FF00;font-size:.58rem;padding:2px 9px;border-radius:99px;display:inline-block;margin-bottom:8px">INFRA</div><div style="font-size:.82rem;font-weight:500">Decentralized</div></div>
+          <div style="background:#111;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px"><div style="background:rgba(0,212,232,.1);color:#00D4E8;font-size:.58rem;padding:2px 9px;border-radius:99px;display:inline-block;margin-bottom:8px">ON-CHAIN</div><div style="font-size:.82rem;font-weight:500">AI Contracts</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="scard">
+      <div class="scard-lbl">03 - Code Block</div>
+      <div style="background:#0a0a0a;padding:28px 22px">
+        <div style="font-size:1.3rem;font-weight:300;margin-bottom:18px;text-align:center">One line to <span style="color:#00D4E8">integrate</span></div>
+        <div style="background:#111;border:1px solid rgba(0,212,232,.15);border-radius:9px;padding:14px 18px;font-family:monospace;font-size:.68rem;color:#00D4E8;line-height:1.8">
+          import opengradient as og<br>og.init("API_KEY")<br>result = og.infer(model="llama")<br>print(result.output)
+        </div>
+      </div>
+    </div>
+    <div class="scard">
+      <div class="scard-lbl">04 - Stats + Footer</div>
+      <div style="background:#000;padding:24px 22px">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:22px;background:#111;border-radius:9px;padding:14px">
+          <div style="text-align:center"><div style="font-size:1.3rem;font-weight:300;color:#00D4E8">1M+</div><div style="font-size:.6rem;color:rgba(255,255,255,.36)">Calls</div></div>
+          <div style="text-align:center"><div style="font-size:1.3rem;font-weight:300;color:#00D4E8">500+</div><div style="font-size:.6rem;color:rgba(255,255,255,.36)">Models</div></div>
+          <div style="text-align:center"><div style="font-size:1.3rem;font-weight:300;color:#00D4E8">99.9%</div><div style="font-size:.6rem;color:rgba(255,255,255,.36)">Uptime</div></div>
+          <div style="text-align:center"><div style="font-size:1.3rem;font-weight:300;color:#00D4E8">50ms</div><div style="font-size:.6rem;color:rgba(255,255,255,.36)">Latency</div></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:.76rem;color:rgba(255,255,255,.55)">OpenGradient</div>
+          <div style="font-size:.67rem;color:rgba(255,255,255,.22)">2026 All rights reserved.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="sec">
+  <div class="sec-lbl">Integration</div>
+  <h2 class="sec-ttl">Copy and <span class="grad">paste</span></h2>
+  <div class="ecode">
+    <div class="etabs">
+      <button class="etab on" onclick="tab(this,'ta')">Option A - Auto Build</button>
+      <button class="etab" onclick="tab(this,'tb')">Option B - CSS Classes</button>
+      <button class="etab" onclick="tab(this,'tc')">Option C - Logo Only</button>
+    </div>
+    <div class="epanel on" id="ta">
+      <pre>// 1. Add to head:
+&lt;script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js">&lt;/script>
+
+// 2. Add to body tag:
+&lt;body data-og-build
+  data-og-title="Your Title"
+  data-og-tagline="Your description."
+  data-og-cta="Get Started"
+  data-og-cta-url="https://yoursite.com"&gt;
+&lt;/body&gt;</pre>
+      <button class="cpbtn" onclick="cp('ta')">Copy Code</button>
+    </div>
+    <div class="epanel" id="tb">
+      <pre>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-brand.css"&gt;
+
+&lt;body class="og-scope"&gt;
+  &lt;h1 class="og-h1 og-text-gradient"&gt;Title&lt;/h1&gt;
+  &lt;a class="og-btn og-btn-primary" href="#"&gt;CTA&lt;/a&gt;
+  &lt;div class="og-card og-card-glow"&gt;...&lt;/div&gt;
+&lt;/body&gt;</pre>
+      <button class="cpbtn" onclick="cp('tb')">Copy Code</button>
+    </div>
+    <div class="epanel" id="tc">
+      <pre>&lt;script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js">&lt;/script>
+
+&lt;div data-og-logo="color"&gt;&lt;/div&gt;
+&lt;div data-og-logo="cyan"&gt;&lt;/div&gt;</pre>
+      <button class="cpbtn" onclick="cp('tc')">Copy Code</button>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="sec">
+  <div class="sec-lbl">What is included</div>
+  <h2 class="sec-ttl">Everything in <span class="grad">one file</span></h2>
+  <div class="fgrid">
+    <div class="fcard"><div class="ficon">🎨</div><div class="fttl">Brand Tokens</div><div class="fdsc">CSS variables for all colors, gradients, shadows and typography from the official OpenGradient brand guide.</div></div>
+    <div class="fcard"><div class="ficon">⚡</div><div class="fttl">Auto Page Builder</div><div class="fdsc">Add data-og-build to body and instantly get a full Hero, Nav, Sections and Footer.</div></div>
+    <div class="fcard"><div class="ficon">🖼</div><div class="fttl">Inline SVG Logo</div><div class="fdsc">No image files needed. The OpenGradient logomark is embedded as clean SVG.</div></div>
+    <div class="fcard"><div class="ficon">📦</div><div class="fttl">Zero Dependencies</div><div class="fdsc">No npm, no bundler. Pure HTML and CSS and JS served from jsDelivr CDN.</div></div>
+    <div class="fcard"><div class="ficon">📱</div><div class="fttl">Fully Responsive</div><div class="fdsc">All grids and layouts adapt to any screen size with fluid type and breakpoints.</div></div>
+    <div class="fcard"><div class="ficon">🔧</div><div class="fttl">Customizable</div><div class="fdsc">Use CSS variables to override any token and mix brand components into your design.</div></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="fcopy">2026 OpenGradient Brand Skill - MIT License</div>
+  <div class="flinks">
+    <a class="flink" href="https://github.com/golldyck/opengradient-brand-skill">GitHub</a>
+    <a class="flink" href="demo.html">Live Demo</a>
+    <a class="flink" href="https://opengradient.notion.site/Branding-Kit-b0ed295da43f479dbbd0e603029666b1">Brand Kit</a>
+  </div>
+</footer>
+
+<script>
+function tab(b,id){document.querySelectorAll('.etab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.epanel').forEach(p=>p.classList.remove('on'));b.classList.add('on');document.getElementById(id).classList.add('on')}
+function cp(id){var t=document.getElementById(id).querySelector('pre').textContent;navigator.clipboard.writeText(t).then(function(){var b=document.querySelector('#'+id+' .cpbtn');var o=b.textContent;b.textContent='Copied!';setTimeout(function(){b.textContent=o},1800)})}
+</script>
+</body>
+</html>
