@@ -458,3 +458,174 @@
 .og-w-full { width: 100%; }
 .og-relative { position: relative; }
 .og-overflow-hidden { overflow: hidden; }
+
+
+/* ============================================================
+   v2.0 NEW COMPONENTS
+      ============================================================ */
+
+      /* ---- SCROLL REVEAL ---- */
+      .og-reveal {
+        opacity: 0;
+          transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            }
+            .og-reveal.og-visible {
+              opacity: 1;
+                transform: translateY(0);
+                }
+
+                /* ---- MOBILE NAV BURGER ---- */
+                .og-nav__burger {
+                  display: none;
+                    background: none;
+                      border: none;
+                        color: var(--og-white);
+                          font-size: 1.4rem;
+                            cursor: pointer;
+                              padding: 6px 8px;
+                                line-height: 1;
+                                }
+                                @media (max-width: 768px) {
+                                  .og-nav__burger {
+                                      display: flex;
+                                          align-items: center;
+                                            }
+                                              .og-nav__links {
+                                                  display: none;
+                                                      position: absolute;
+                                                          top: 100%;
+                                                              left: 0;
+                                                                  right: 0;
+                                                                      background: rgba(0, 0, 0, 0.97);
+                                                                          backdrop-filter: blur(16px);
+                                                                              flex-direction: column;
+                                                                                  align-items: flex-start;
+                                                                                      gap: 0;
+                                                                                          padding: 16px 24px 24px;
+                                                                                              border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                                                                                                }
+                                                                                                  .og-nav__links--open {
+                                                                                                      display: flex;
+                                                                                                        }
+                                                                                                          .og-nav__links li {
+                                                                                                              width: 100%;
+                                                                                                                  padding: 10px 0;
+                                                                                                                      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                                                                                                                        }
+                                                                                                                          .og-nav__links li:last-child {
+                                                                                                                              border-bottom: none;
+                                                                                                                                  padding-top: 16px;
+                                                                                                                                    }
+                                                                                                                                      .og-nav__links .og-btn {
+                                                                                                                                          width: 100%;
+                                                                                                                                              justify-content: center;
+                                                                                                                                                }
+                                                                                                                                                }
+
+                                                                                                                                                /* ---- CARD FEATURED (Pricing) ---- */
+                                                                                                                                                .og-card-featured {
+                                                                                                                                                  border-color: rgba(0, 212, 232, 0.4);
+                                                                                                                                                    background: linear-gradient(135deg, rgba(0, 212, 232, 0.06) 0%, var(--og-gray-900) 100%);
+                                                                                                                                                    }
+
+                                                                                                                                                    /* ---- PRICING LIST ---- */
+                                                                                                                                                    .og-price-list {
+                                                                                                                                                      list-style: none;
+                                                                                                                                                        padding: 0;
+                                                                                                                                                          margin: 0;
+                                                                                                                                                            display: flex;
+                                                                                                                                                              flex-direction: column;
+                                                                                                                                                                gap: 10px;
+                                                                                                                                                                }
+                                                                                                                                                                .og-price-list li {
+                                                                                                                                                                  font-size: 0.875rem;
+                                                                                                                                                                    color: var(--og-gray-300);
+                                                                                                                                                                      padding-left: 20px;
+                                                                                                                                                                        position: relative;
+                                                                                                                                                                        }
+                                                                                                                                                                        .og-price-list li::before {
+                                                                                                                                                                          content: '✓';
+                                                                                                                                                                            position: absolute;
+                                                                                                                                                                              left: 0;
+                                                                                                                                                                                color: var(--og-cyan);
+                                                                                                                                                                                  font-size: 0.75rem;
+                                                                                                                                                                                    font-weight: 700;
+                                                                                                                                                                                    }
+
+                                                                                                                                                                                    /* ---- TESTIMONIAL ---- */
+                                                                                                                                                                                    .og-testimonial {
+                                                                                                                                                                                      background: var(--og-gray-900);
+                                                                                                                                                                                        border: 1px solid rgba(255, 255, 255, 0.06);
+                                                                                                                                                                                          border-radius: var(--og-radius-lg);
+                                                                                                                                                                                            padding: 28px;
+                                                                                                                                                                                              display: flex;
+                                                                                                                                                                                                flex-direction: column;
+                                                                                                                                                                                                  gap: 20px;
+                                                                                                                                                                                                    transition: border-color 0.2s, transform 0.2s;
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                    .og-testimonial:hover {
+                                                                                                                                                                                                      border-color: rgba(0, 212, 232, 0.25);
+                                                                                                                                                                                                        transform: translateY(-2px);
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                        .og-testimonial__text {
+                                                                                                                                                                                                          font-size: 0.9375rem;
+                                                                                                                                                                                                            color: var(--og-gray-200);
+                                                                                                                                                                                                              line-height: 1.65;
+                                                                                                                                                                                                                font-style: italic;
+                                                                                                                                                                                                                  flex: 1;
+                                                                                                                                                                                                                  }
+                                                                                                                                                                                                                  .og-testimonial__author {
+                                                                                                                                                                                                                    display: flex;
+                                                                                                                                                                                                                      align-items: center;
+                                                                                                                                                                                                                        gap: 12px;
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                        .og-testimonial__avatar {
+                                                                                                                                                                                                                          width: 40px;
+                                                                                                                                                                                                                            height: 40px;
+                                                                                                                                                                                                                              border-radius: 50%;
+                                                                                                                                                                                                                                background: linear-gradient(135deg, var(--og-cyan), var(--og-lime));
+                                                                                                                                                                                                                                  display: flex;
+                                                                                                                                                                                                                                    align-items: center;
+                                                                                                                                                                                                                                      justify-content: center;
+                                                                                                                                                                                                                                        font-size: 0.75rem;
+                                                                                                                                                                                                                                          font-weight: 700;
+                                                                                                                                                                                                                                            color: var(--og-black);
+                                                                                                                                                                                                                                              flex-shrink: 0;
+                                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                              .og-testimonial__name {
+                                                                                                                                                                                                                                                font-size: 0.875rem;
+                                                                                                                                                                                                                                                  font-weight: 500;
+                                                                                                                                                                                                                                                    color: var(--og-white);
+                                                                                                                                                                                                                                                      margin-bottom: 2px;
+                                                                                                                                                                                                                                                      }
+
+                                                                                                                                                                                                                                                      /* ---- CTA BANNER ---- */
+                                                                                                                                                                                                                                                      .og-cta-banner {
+                                                                                                                                                                                                                                                        background: linear-gradient(135deg, rgba(0, 212, 232, 0.08) 0%, rgba(212, 255, 0, 0.04) 100%);
+                                                                                                                                                                                                                                                          border-top: 1px solid rgba(0, 212, 232, 0.15);
+                                                                                                                                                                                                                                                            border-bottom: 1px solid rgba(0, 212, 232, 0.15);
+                                                                                                                                                                                                                                                              padding: 80px 24px;
+                                                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                                              .og-cta-banner__inner {
+                                                                                                                                                                                                                                                                max-width: 1200px;
+                                                                                                                                                                                                                                                                  margin: 0 auto;
+                                                                                                                                                                                                                                                                    display: flex;
+                                                                                                                                                                                                                                                                      align-items: center;
+                                                                                                                                                                                                                                                                        justify-content: space-between;
+                                                                                                                                                                                                                                                                          gap: 40px;
+                                                                                                                                                                                                                                                                            flex-wrap: wrap;
+                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                            @media (max-width: 768px) {
+                                                                                                                                                                                                                                                                              .og-cta-banner__inner {
+                                                                                                                                                                                                                                                                                  flex-direction: column;
+                                                                                                                                                                                                                                                                                      text-align: center;
+                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                          .og-cta-banner__inner .og-flex {
+                                                                                                                                                                                                                                                                                              justify-content: center;
+                                                                                                                                                                                                                                                                                                  flex-wrap: wrap;
+                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                                                                                                    /* ---- UPDATED HEADER COMMENT ---- */
+                                                                                                                                                                                                                                                                                                    /* og-brand.css v2.0.0 — adds: scroll reveal, mobile nav, pricing, testimonials, cta-banner */
