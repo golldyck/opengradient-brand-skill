@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f19"/>
+      <stop offset="50%" stop-color="#141e32"/>
+      <stop offset="100%" stop-color="#0e4b5b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="80%" r="60%">
+      <stop offset="0%" stop-color="#24bce3" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0a0f19" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="textgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#24bce3"/>
+      <stop offset="100%" stop-color="#50c9e9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="320" fill="url(#bg)"/>
+  <rect width="1280" height="320" fill="url(#glow)"/>
+
+  <!-- Grid lines subtle -->
+  <g stroke="#24bce3" stroke-opacity="0.04" stroke-width="1">
+    <line x1="0" y1="80" x2="1280" y2="80"/>
+    <line x1="0" y1="160" x2="1280" y2="160"/>
+    <line x1="0" y1="240" x2="1280" y2="240"/>
+    <line x1="320" y1="0" x2="320" y2="320"/>
+    <line x1="640" y1="0" x2="640" y2="320"/>
+    <line x1="960" y1="0" x2="960" y2="320"/>
+  </g>
+
+  <!-- OG Logo mark (centered left area) -->
+  <g transform="translate(160, 100) scale(1.0)" fill="#24bce3">
+    <path d="M102.823 36.71a14.4 14.4 0 0 0-10.109-4.12H88.36v-4.358c0-3.801-1.462-7.393-4.116-10.114L70.82 4.363A14.36 14.36 0 0 0 60.466 0c-3.93 0-7.606 1.55-10.352 4.363L36.69 18.12a14.4 14.4 0 0 0-4.117 10.114v4.359h-4.356c-3.8 0-7.39 1.463-10.108 4.119L4.36 50.142A14.37 14.37 0 0 0 0 60.501a14.37 14.37 0 0 0 4.36 10.358L18.11 84.29a14.39 14.39 0 0 0 10.107 4.12h4.356v4.356a14.4 14.4 0 0 0 4.117 10.114l13.424 13.757A14.35 14.35 0 0 0 60.466 121c3.93 0 7.607-1.549 10.353-4.363l13.424-13.757a14.4 14.4 0 0 0 4.116-10.114V88.41h4.355c3.8 0 7.39-1.463 10.109-4.119l13.749-13.431a14.37 14.37 0 0 0 4.36-10.358c0-3.932-1.549-7.611-4.36-10.359l-13.749-13.431Z" opacity="0.9"/>
+  </g>
+
+  <!-- Title -->
+  <text x="310" y="135" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="300" letter-spacing="-1" fill="url(#textgrad)">OpenGradient</text>
+  <text x="310" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="300" letter-spacing="-1" fill="#ffffff">Brand Skill</text>
+
+  <!-- Tagline -->
+  <text x="310" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#bdebf7" opacity="0.7">One script tag — full OpenGradient identity on any project</text>
+
+  <!-- Code snippet pill -->
+  <rect x="310" y="252" width="720" height="44" rx="8" fill="#0a0f19" opacity="0.8"/>
+  <rect x="310" y="252" width="720" height="44" rx="8" fill="none" stroke="#24bce3" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="330" y="280" font-family="monospace" font-size="16" fill="#50c9e9">&lt;script src="cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"&gt;&lt;/script&gt;</text>
+</svg>

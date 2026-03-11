@@ -3,241 +3,492 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpenGradient Brand Skill - Showcase</title>
+  <title>OpenGradient Brand Skill — Showcase</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--cyan:#00D4E8;--lime:#D4FF00;--black:#000;--card:#111;--border:rgba(255,255,255,.08)}
-    body{font-family:'Roboto',sans-serif;background:#000;color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-    .hdr{padding:20px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(0,0,0,.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:99}
-    .hdr-logo{display:flex;align-items:center;gap:10px;font-size:1.05rem;text-decoration:none;color:#fff}
-    .hdr-logo svg{width:26px;height:26px}
-    .hdr-links{display:flex;gap:22px;align-items:center}
-    .hdr-link{font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s}
-    .hdr-link:hover{color:#fff}
-    .hdr-cta{font-size:.8rem;font-weight:500;background:var(--cyan);color:#000;padding:8px 18px;border-radius:999px;text-decoration:none}
-    .hero{padding:90px 40px 70px;text-align:center;position:relative;overflow:hidden}
-    .hero::before{content:'';position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:700px;height:300px;background:radial-gradient(ellipse,rgba(0,212,232,.18) 0%,transparent 70%);pointer-events:none}
-    .badge{display:inline-flex;align-items:center;padding:5px 14px;border-radius:999px;font-size:.7rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,212,232,.1);color:var(--cyan);border:1px solid rgba(0,212,232,.2);margin-bottom:26px}
-    .hero-title{font-size:clamp(2.2rem,5vw,4rem);font-weight:300;letter-spacing:-.02em;line-height:1.1;margin-bottom:18px}
-    .grad{background:linear-gradient(90deg,var(--cyan) 0%,var(--lime) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .hero-sub{font-size:1rem;color:rgba(255,255,255,.5);max-width:500px;margin:0 auto 36px;line-height:1.6}
-    .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .btn-p{padding:12px 30px;border-radius:999px;background:var(--cyan);color:#000;font-family:inherit;font-size:.9rem;font-weight:500;text-decoration:none;transition:transform .15s,box-shadow .15s}
-    .btn-p:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(0,212,232,.35)}
-    .btn-g{padding:12px 30px;border-radius:999px;border:1px solid rgba(255,255,255,.2);color:#fff;font-family:inherit;font-size:.9rem;text-decoration:none;transition:border-color .2s}
-    .btn-g:hover{border-color:var(--cyan);color:var(--cyan)}
-    .sec{padding:70px 40px;max-width:1200px;margin:0 auto}
-    .sec-lbl{font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
-    .sec-ttl{font-size:clamp(1.7rem,3vw,2.6rem);font-weight:300;letter-spacing:-.01em;margin-bottom:44px}
-    .browser{border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 24px 80px rgba(0,0,0,.6);margin-bottom:14px}
-    .browser-bar{background:#1a1a1a;padding:11px 16px;display:flex;align-items:center;gap:11px;border-bottom:1px solid rgba(255,255,255,.06)}
-    .dots{display:flex;gap:6px}
-    .dot{width:12px;height:12px;border-radius:50%}
-    .dot-r{background:#FF5F57}.dot-y{background:#FEBC2E}.dot-g{background:#28C840}
-    .url-bar{flex:1;background:rgba(255,255,255,.06);border-radius:5px;padding:5px 11px;font-family:'JetBrains Mono',monospace;font-size:.73rem;color:rgba(255,255,255,.4)}
-    .browser iframe{width:100%;height:600px;border:none;display:block}
-    .screens{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    @media(max-width:700px){.screens{grid-template-columns:1fr}}
-    .scard{border-radius:12px;overflow:hidden;border:1px solid var(--border)}
-    .scard-lbl{padding:11px 15px;font-size:.78rem;color:rgba(255,255,255,.4);border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace}
-    .ecode{background:#0c0c0c;border:1px solid var(--border);border-radius:14px;overflow:hidden}
-    .etabs{display:flex;border-bottom:1px solid var(--border);padding:0 18px}
-    .etab{padding:13px 14px;font-size:.8rem;color:rgba(255,255,255,.4);cursor:pointer;border-bottom:2px solid transparent;transition:color .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
-    .etab.on{color:var(--cyan);border-bottom-color:var(--cyan)}
-    .epanel{display:none;padding:26px}
-    .epanel.on{display:block}
-    pre{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--cyan);line-height:1.7;white-space:pre-wrap;word-break:break-all}
-    .cpbtn{margin-top:18px;display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border-radius:999px;background:rgba(0,212,232,.1);color:var(--cyan);border:1px solid rgba(0,212,232,.2);font-size:.8rem;font-weight:500;cursor:pointer;font-family:inherit}
-    .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    @media(max-width:800px){.fgrid{grid-template-columns:1fr}}
-    .fcard{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:26px;transition:border-color .2s,transform .2s}
-    .fcard:hover{border-color:rgba(0,212,232,.3);transform:translateY(-2px)}
-    .ficon{width:38px;height:38px;border-radius:9px;background:rgba(0,212,232,.1);display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.15rem}
-    .fttl{font-size:.95rem;font-weight:500;margin-bottom:7px}
-    .fdsc{font-size:.84rem;color:rgba(255,255,255,.42);line-height:1.55}
-    .divider{height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.22;border:none;margin:0 40px}
-    .footer{padding:44px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;border-top:1px solid var(--border)}
-    .fcopy{font-size:.78rem;color:rgba(255,255,255,.28)}
-    .flinks{display:flex;gap:22px}
-    .flink{font-size:.78rem;color:rgba(255,255,255,.28);text-decoration:none}
-    .flink:hover{color:var(--cyan)}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --p5: #24bce3;
+      --p4: #50c9e9;
+      --p1: #e9f8fc;
+      --p2: #bdebf7;
+      --d8: #0e4b5b;
+      --d7: #141e32;
+      --d9: #0a0f19;
+      --neutral: #999;
+    }
+
+    body {
+      font-family: 'Geist', system-ui, sans-serif;
+      background: var(--d9);
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 18px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(10,15,25,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: #fff; font-size: 0.95rem; font-weight: 400;
+    }
+    .nav-logo svg { height: 22px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-link {
+      font-size: 0.85rem; color: rgba(255,255,255,0.45);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-btn {
+      font-size: 0.8rem; font-weight: 500;
+      background: var(--p5); color: #fff;
+      padding: 8px 20px; border-radius: 10px;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .nav-btn:hover { background: var(--p4); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      background: linear-gradient(135deg, var(--d9) 0%, var(--d7) 50%, var(--d8) 100%);
+      position: relative; overflow: hidden; padding: 100px 24px 60px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; bottom: -80px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(ellipse, rgba(36,188,227,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 760px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 999px; margin-bottom: 28px;
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      background: rgba(36,188,227,0.1); color: var(--p4);
+      border: 1px solid rgba(36,188,227,0.2);
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 300; letter-spacing: -0.025em; line-height: 1.08;
+      margin-bottom: 20px;
+    }
+    .grad {
+      background: linear-gradient(90deg, var(--p5) 0%, var(--p4) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.05rem; color: rgba(255,255,255,0.45);
+      max-width: 520px; margin: 0 auto 40px; line-height: 1.65;
+    }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 13px 32px; border-radius: 12px;
+      background: var(--p5); color: #fff;
+      font-family: inherit; font-size: 0.9rem; font-weight: 500;
+      text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--p4); transform: translateY(-1px); box-shadow: 0 0 32px rgba(36,188,227,0.3); }
+    .btn-ghost {
+      padding: 13px 32px; border-radius: 12px;
+      border: 1px solid rgba(36,188,227,0.3); color: var(--p4);
+      font-family: inherit; font-size: 0.9rem;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--p5); background: rgba(36,188,227,0.05); }
+
+    /* CODE SNIPPET */
+    .hero-code {
+      margin-top: 44px;
+      background: rgba(10,15,25,0.8); border: 1px solid rgba(36,188,227,0.2);
+      border-radius: 12px; padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      max-width: 680px; margin: 44px auto 0;
+    }
+    .hero-code code {
+      font-family: 'Geist Mono', monospace; font-size: 0.78rem; color: var(--p4);
+      text-align: left; flex: 1;
+    }
+    .copy-btn {
+      padding: 6px 14px; border-radius: 8px;
+      background: rgba(36,188,227,0.1); color: var(--p5);
+      border: 1px solid rgba(36,188,227,0.2);
+      font-family: inherit; font-size: 0.75rem; font-weight: 500;
+      cursor: pointer; white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+    }
+    .copy-btn:hover { background: rgba(36,188,227,0.2); }
+
+    /* SECTIONS */
+    .section { padding: 80px 24px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--p5); margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300; letter-spacing: -0.02em; margin-bottom: 48px;
+    }
+
+    /* BROWSER MOCKUP */
+    .browser {
+      border-radius: 14px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    }
+    .browser-bar {
+      background: var(--d7); padding: 12px 16px;
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .dots { display: flex; gap: 6px; }
+    .dot { width: 11px; height: 11px; border-radius: 50%; }
+    .dot-r { background: #FF5F57; } .dot-y { background: #FEBC2E; } .dot-g { background: #28C840; }
+    .url-bar {
+      flex: 1; background: rgba(255,255,255,0.05); border-radius: 6px;
+      padding: 5px 12px; font-family: 'Geist Mono', monospace;
+      font-size: 0.72rem; color: rgba(255,255,255,0.35);
+    }
+    .browser iframe { width: 100%; height: 620px; border: none; display: block; }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px; border: none; margin: 0;
+      background: linear-gradient(90deg, transparent, rgba(36,188,227,0.2), transparent);
+    }
+
+    /* FEATURES GRID */
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 900px) { .features { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .features { grid-template-columns: 1fr; } }
+    .feature-card {
+      background: var(--d7); border: 1px solid rgba(36,188,227,0.08);
+      border-radius: 16px; padding: 28px; transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: rgba(36,188,227,0.3); transform: translateY(-2px); }
+    .feature-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(36,188,227,0.1); display: flex; align-items: center;
+      justify-content: center; font-size: 1.2rem; margin-bottom: 16px;
+    }
+    .feature-title { font-size: 0.95rem; font-weight: 500; margin-bottom: 8px; }
+    .feature-desc { font-size: 0.84rem; color: rgba(255,255,255,0.4); line-height: 1.6; }
+
+    /* CODE TABS */
+    .code-block {
+      background: var(--d7); border: 1px solid rgba(36,188,227,0.1);
+      border-radius: 16px; overflow: hidden;
+    }
+    .tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 20px; }
+    .tab {
+      padding: 14px 16px; font-size: 0.82rem; color: rgba(255,255,255,0.35);
+      cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color 0.2s; background: none; border-top: none;
+      border-left: none; border-right: none; font-family: inherit;
+    }
+    .tab.active { color: var(--p5); border-bottom-color: var(--p5); }
+    .tab-panel { display: none; padding: 28px; }
+    .tab-panel.active { display: block; }
+    pre {
+      font-family: 'Geist Mono', monospace; font-size: 0.82rem;
+      color: var(--p4); line-height: 1.75; white-space: pre-wrap;
+    }
+    .comment { color: rgba(255,255,255,0.25); }
+    .tag { color: var(--p5); }
+    .attr { color: #bdebf7; }
+    .val { color: #a7e4f4; }
+
+    /* COMPONENT PREVIEW */
+    .components { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 700px) { .components { grid-template-columns: 1fr; } }
+    .comp-card {
+      background: var(--d7); border: 1px solid rgba(36,188,227,0.08);
+      border-radius: 16px; overflow: hidden;
+    }
+    .comp-label {
+      padding: 12px 18px; font-size: 0.75rem;
+      color: rgba(255,255,255,0.35); border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-family: 'Geist Mono', monospace;
+    }
+    .comp-preview { padding: 28px; }
+
+    /* LOGO DISPLAY */
+    .logo-grid { display: flex; flex-direction: column; gap: 20px; }
+    .logo-row {
+      padding: 20px 24px; border-radius: 12px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .logo-row.dark-bg { background: var(--d9); }
+    .logo-row.light-bg { background: #e9f8fc; }
+    .logo-row svg { height: 26px; width: auto; }
+    .logo-tag { font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-left: auto; font-family: 'Geist Mono', monospace; }
+    .logo-tag.dark { color: rgba(14,75,91,0.4); }
+
+    /* FOOTER */
+    .footer {
+      padding: 44px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-link {
+      font-size: 0.78rem; color: rgba(255,255,255,0.25);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-link:hover { color: var(--p5); }
   </style>
 </head>
 <body>
-<header class="hdr">
-  <a class="hdr-logo" href="#">
-    <svg viewBox="0 0 120 120" fill="none"><path d="M60 10C90 30 90 60 90 60C90 90 60 110 60 110C60 110 30 90 30 60C30 30 60 10 60 10Z" stroke="#00D4E8" stroke-width="4" fill="none"/><path d="M10 60C30 30 60 30 60 30C90 30 110 60 110 60C90 90 60 90 60 90C30 90 10 60 10 60Z" stroke="#00D4E8" stroke-width="4" fill="none"/><circle cx="60" cy="60" r="12" stroke="#00D4E8" stroke-width="3" fill="none"/></svg>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 121 121">
+      <path fill="#24bce3" d="M102.823 36.71a14.4 14.4 0 0 0-10.109-4.12H88.36v-4.358c0-3.801-1.462-7.393-4.116-10.114L70.82 4.363A14.36 14.36 0 0 0 60.466 0c-3.93 0-7.606 1.55-10.352 4.363L36.69 18.12a14.4 14.4 0 0 0-4.117 10.114v4.359h-4.356c-3.8 0-7.39 1.463-10.108 4.119L4.36 50.142A14.37 14.37 0 0 0 0 60.501a14.37 14.37 0 0 0 4.36 10.358L18.11 84.29a14.39 14.39 0 0 0 10.107 4.12h4.356v4.356a14.4 14.4 0 0 0 4.117 10.114l13.424 13.757A14.35 14.35 0 0 0 60.466 121c3.93 0 7.607-1.549 10.353-4.363l13.424-13.757a14.4 14.4 0 0 0 4.116-10.114V88.41h4.355c3.8 0 7.39-1.463 10.109-4.119l13.749-13.431a14.37 14.37 0 0 0 4.36-10.358c0-3.932-1.549-7.611-4.36-10.359l-13.749-13.431Z"/>
+    </svg>
     OpenGradient Brand Skill
   </a>
-  <nav class="hdr-links">
-    <a class="hdr-link" href="https://github.com/golldyck/opengradient-brand-skill">GitHub</a>
-    <a class="hdr-link" href="demo.html">Live Demo</a>
-    <a class="hdr-cta" href="https://github.com/golldyck/opengradient-brand-skill">Use Skill</a>
+  <nav class="nav-links">
+    <a class="nav-link" href="https://github.com/golldyck/opengradient-brand-skill">GitHub</a>
+    <a class="nav-link" href="demo.html">Demo</a>
+    <a class="nav-btn" href="https://github.com/golldyck/opengradient-brand-skill">Get Skill</a>
   </nav>
-</header>
+</nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="badge">OpenGradient Brand System v1.0</div>
-  <h1 class="hero-title">Build branded sites<br><span class="grad">in one script tag</span></h1>
-  <p class="hero-sub">Drop one script line. Get the full OpenGradient visual identity — colors, gradients, typography, logo, components — auto-loaded from GitHub CDN.</p>
-  <div class="btns">
-    <a class="btn-p" href="demo.html" target="_blank">Open Live Demo</a>
-    <a class="btn-g" href="https://github.com/golldyck/opengradient-brand-skill" target="_blank">View on GitHub</a>
+  <div class="hero-content">
+    <div class="hero-badge">v3.0.0 · Official Brand</div>
+    <h1 class="hero-title">
+      Brand any project<br>
+      <span class="grad">in one script tag</span>
+    </h1>
+    <p class="hero-sub">
+      Drop one line of code — get the full official OpenGradient visual identity.
+      Real logo, real colors, real font. No npm, no bundler.
+    </p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="demo.html" target="_blank">Open Live Demo</a>
+      <a class="btn-ghost" href="https://github.com/golldyck/opengradient-brand-skill" target="_blank">View on GitHub</a>
+    </div>
+    <div class="hero-code">
+      <code id="main-snippet">&lt;script src="cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"&gt;&lt;/script&gt;</code>
+      <button class="copy-btn" onclick="copyCode('main-snippet', this)">Copy</button>
+    </div>
   </div>
 </section>
 
 <hr class="divider"/>
 
-<div class="sec">
-  <div class="sec-lbl">Live Preview</div>
-  <h2 class="sec-ttl">See it <span class="grad">in action</span></h2>
-  <div class="browser">
-    <div class="browser-bar">
-      <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-      <div class="url-bar">golldyck.github.io/opengradient-brand-skill/demo.html</div>
+<!-- LIVE PREVIEW -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">Live Preview</div>
+    <h2 class="section-title">See it <span class="grad">in action</span></h2>
+    <div class="browser">
+      <div class="browser-bar">
+        <div class="dots">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <div class="url-bar">golldyck.github.io/opengradient-brand-skill/demo.html</div>
+      </div>
+      <iframe src="demo.html" title="OpenGradient Brand Demo" loading="lazy"></iframe>
     </div>
-    <iframe src="demo.html" title="OpenGradient Brand Demo" loading="lazy"></iframe>
+    <p style="font-size:0.75rem;color:rgba(255,255,255,0.2);text-align:center;margin-top:14px">
+      Generated entirely by <code style="font-family:'Geist Mono',monospace;color:rgba(36,188,227,0.6)">og-skill.js</code> — no custom HTML inside &lt;body&gt;
+    </p>
   </div>
-  <p style="font-size:.78rem;color:rgba(255,255,255,.28);text-align:center">Live iframe generated entirely by og-skill.js</p>
-</div>
+</section>
 
 <hr class="divider"/>
 
-<div class="sec">
-  <div class="sec-lbl">Screenshots</div>
-  <h2 class="sec-ttl">Every section <span class="grad">included</span></h2>
-  <div class="screens">
-    <div class="scard">
-      <div class="scard-lbl">01 - Hero + Navbar</div>
-      <div style="background:linear-gradient(135deg,#000 0%,#001a1a 50%,#003830 100%);padding:36px 28px;position:relative;overflow:hidden">
-        <div style="position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);width:400px;height:200px;background:radial-gradient(ellipse,rgba(0,212,232,.3) 0%,transparent 70%)"></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:44px">
-          <div style="display:flex;align-items:center;gap:7px;font-size:.82rem;color:#fff">OpenGradient</div>
-          <div style="background:#00D4E8;color:#000;font-size:.68rem;font-weight:500;padding:5px 13px;border-radius:99px">Enter Model Hub</div>
-        </div>
-        <div style="text-align:center;position:relative;z-index:1">
-          <div style="display:inline-block;padding:3px 11px;border-radius:99px;background:rgba(0,212,232,.1);color:#00D4E8;font-size:.62rem;border:1px solid rgba(0,212,232,.2);margin-bottom:14px">NOW LIVE</div>
-          <div style="font-size:2rem;font-weight:300;background:linear-gradient(90deg,#00D4E8,#D4FF00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:10px">OpenGradient</div>
-          <div style="font-size:.76rem;color:rgba(255,255,255,.5);margin-bottom:20px">Decentralized AI Inference Platform</div>
-          <div style="display:flex;gap:10px;justify-content:center">
-            <div style="background:#00D4E8;color:#000;padding:8px 20px;border-radius:99px;font-size:.76rem;font-weight:500">Enter Model Hub</div>
-            <div style="border:1px solid rgba(255,255,255,.22);color:#fff;padding:8px 20px;border-radius:99px;font-size:.76rem">Learn More</div>
-          </div>
-        </div>
+<!-- LOGO SHOWCASE -->
+<section class="section" style="background: var(--d7);">
+  <div class="container">
+    <div class="section-label">Official Logo</div>
+    <h2 class="section-title">Four <span class="grad">logo variants</span></h2>
+    <div class="logo-grid">
+
+      <!-- Wordmark on dark -->
+      <div class="logo-row dark-bg">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 643 121" style="height:28px;color:#24bce3"><g clip-path="url(#a)"><path fill="currentColor" d="M513.463 30.217c-4.058 0-6.238 2.105-6.238 5.865 0 3.91 2.255 6.09 6.238 6.09s6.238-2.18 6.238-6.09c0-3.76-2.255-5.865-6.238-5.865m28.766 17.37c-10.897 0-18.487 7.82-18.487 19.4 0 11.429 7.515 18.948 18.788 18.948 8.266 0 14.052-3.233 16.533-9.624l-8.267-3.008c-1.804 3.91-3.682 5.189-8.041 5.189-5.787 0-8.492-2.557-9.093-8.723h26.152c.075-1.504.075-2.332.075-3.534 0-11.354-7.139-18.648-17.66-18.648m-8.567 15.64c.676-5.94 3.306-8.421 8.642-8.421 5.411 0 7.966 2.18 8.117 8.42zm-374.669 6.652c-10.898 0-18.488 7.82-18.488 19.4 0 11.429 7.515 18.948 18.788 18.948 8.267 0 14.053-3.233 16.533-9.624l-8.266-3.008c-1.804 3.91-3.683 5.189-8.042 5.189-5.786 0-8.491-2.557-9.093-8.723h26.153c.075-1.504.075-2.332.075-3.534 0-11.354-7.14-18.648-17.66-18.648m-8.568 15.64c.677-5.94 3.307-8.421 8.643-8.421 5.411 0 7.966 2.18 8.116 8.42zM102.823 36.71a14.4 14.4 0 0 0-10.109-4.12H88.36v-4.358c0-3.801-1.462-7.393-4.116-10.114L70.82 4.363A14.36 14.36 0 0 0 60.466 0c-3.93 0-7.606 1.55-10.352 4.363L36.69 18.12a14.4 14.4 0 0 0-4.117 10.114v4.359h-4.356c-3.8 0-7.39 1.463-10.108 4.119L4.36 50.142A14.37 14.37 0 0 0 0 60.501a14.37 14.37 0 0 0 4.36 10.358L18.11 84.29a14.39 14.39 0 0 0 10.107 4.12h4.356v4.356a14.4 14.4 0 0 0 4.117 10.114l13.424 13.757A14.35 14.35 0 0 0 60.466 121c3.93 0 7.607-1.549 10.353-4.363l13.424-13.757a14.4 14.4 0 0 0 4.116-10.114V88.41h4.355c3.8 0 7.39-1.463 10.109-4.119l13.749-13.431a14.37 14.37 0 0 0 4.36-10.358c0-3.932-1.549-7.611-4.36-10.359l-13.749-13.431ZM54.407 60.5a6.07 6.07 0 0 1 6.06-6.063c3.34 0 6.059 2.72 6.059 6.063a6.07 6.07 0 0 1-6.06 6.063 6.067 6.067 0 0 1-6.059-6.063m-40.291 3.83 13.748-13.432a5.32 5.32 0 0 1 3.738-1.523h4.356v5.4c0 3.803 1.463 7.395 4.117 10.114l3.191 3.271-3.19 3.27a14.4 14.4 0 0 0-4.117 10.113v5.402h-4.356a5.32 5.32 0 0 1-3.738-1.523L10.73 64.332A5.31 5.31 0 0 1 9.118 60.5c0-1.454.573-2.815 1.613-3.831zm89.044 0-13.748 13.43a5.32 5.32 0 0 1-3.739 1.524H88.36v-5.402a14.4 14.4 0 0 0-4.116-10.114l-3.192-3.27 3.192-3.27a14.4 14.4 0 0 0 4.116-10.114v-5.401h4.355a5.32 5.32 0 0 1 3.74 1.523L110.2 56.67a5.31 5.31 0 0 1 1.613 3.831 5.31 5.31 0 0 1-1.613 3.83z"/></g><defs><clipPath id="a"><path fill="currentColor" d="M0 0h643v121H0z"/></clipPath></defs></svg>
+        <span class="logo-tag">data-og-logo="wordmark" · dark bg</span>
       </div>
-    </div>
-    <div class="scard">
-      <div class="scard-lbl">02 - Feature Cards</div>
-      <div style="background:#0a0a0a;padding:28px 22px">
-        <div style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:7px">FEATURES</div>
-        <div style="font-size:1.3rem;font-weight:300;margin-bottom:22px">Built for <span style="background:linear-gradient(90deg,#00D4E8,#D4FF00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Developers</span></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-          <div style="background:#111;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px"><div style="background:rgba(0,212,232,.1);color:#00D4E8;font-size:.58rem;padding:2px 9px;border-radius:99px;display:inline-block;margin-bottom:8px">SDK</div><div style="font-size:.82rem;font-weight:500">Model Hub</div></div>
-          <div style="background:#111;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px"><div style="background:rgba(212,255,0,.1);color:#D4FF00;font-size:.58rem;padding:2px 9px;border-radius:99px;display:inline-block;margin-bottom:8px">INFRA</div><div style="font-size:.82rem;font-weight:500">Decentralized</div></div>
-          <div style="background:#111;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px"><div style="background:rgba(0,212,232,.1);color:#00D4E8;font-size:.58rem;padding:2px 9px;border-radius:99px;display:inline-block;margin-bottom:8px">ON-CHAIN</div><div style="font-size:.82rem;font-weight:500">AI Contracts</div></div>
-        </div>
+
+      <!-- Wordmark on light -->
+      <div class="logo-row light-bg">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 643 121" style="height:28px;color:#0e4b5b"><g clip-path="url(#b)"><path fill="currentColor" d="M513.463 30.217c-4.058 0-6.238 2.105-6.238 5.865 0 3.91 2.255 6.09 6.238 6.09s6.238-2.18 6.238-6.09c0-3.76-2.255-5.865-6.238-5.865m28.766 17.37c-10.897 0-18.487 7.82-18.487 19.4 0 11.429 7.515 18.948 18.788 18.948 8.266 0 14.052-3.233 16.533-9.624l-8.267-3.008c-1.804 3.91-3.682 5.189-8.041 5.189-5.787 0-8.492-2.557-9.093-8.723h26.152c.075-1.504.075-2.332.075-3.534 0-11.354-7.139-18.648-17.66-18.648m-8.567 15.64c.676-5.94 3.306-8.421 8.642-8.421 5.411 0 7.966 2.18 8.117 8.42zm-374.669 6.652c-10.898 0-18.488 7.82-18.488 19.4 0 11.429 7.515 18.948 18.788 18.948 8.267 0 14.053-3.233 16.533-9.624l-8.266-3.008c-1.804 3.91-3.683 5.189-8.042 5.189-5.786 0-8.491-2.557-9.093-8.723h26.153c.075-1.504.075-2.332.075-3.534 0-11.354-7.14-18.648-17.66-18.648m-8.568 15.64c.677-5.94 3.307-8.421 8.643-8.421 5.411 0 7.966 2.18 8.116 8.42zM102.823 36.71a14.4 14.4 0 0 0-10.109-4.12H88.36v-4.358c0-3.801-1.462-7.393-4.116-10.114L70.82 4.363A14.36 14.36 0 0 0 60.466 0c-3.93 0-7.606 1.55-10.352 4.363L36.69 18.12a14.4 14.4 0 0 0-4.117 10.114v4.359h-4.356c-3.8 0-7.39 1.463-10.108 4.119L4.36 50.142A14.37 14.37 0 0 0 0 60.501a14.37 14.37 0 0 0 4.36 10.358L18.11 84.29a14.39 14.39 0 0 0 10.107 4.12h4.356v4.356a14.4 14.4 0 0 0 4.117 10.114l13.424 13.757A14.35 14.35 0 0 0 60.466 121c3.93 0 7.607-1.549 10.353-4.363l13.424-13.757a14.4 14.4 0 0 0 4.116-10.114V88.41h4.355c3.8 0 7.39-1.463 10.109-4.119l13.749-13.431a14.37 14.37 0 0 0 4.36-10.358c0-3.932-1.549-7.611-4.36-10.359l-13.749-13.431ZM54.407 60.5a6.07 6.07 0 0 1 6.06-6.063c3.34 0 6.059 2.72 6.059 6.063a6.07 6.07 0 0 1-6.06 6.063 6.067 6.067 0 0 1-6.059-6.063z"/></g><defs><clipPath id="b"><path fill="currentColor" d="M0 0h643v121H0z"/></clipPath></defs></svg>
+        <span class="logo-tag dark">data-og-logo="wordmark-dark" · light bg</span>
       </div>
-    </div>
-    <div class="scard">
-      <div class="scard-lbl">03 - Code Block</div>
-      <div style="background:#0a0a0a;padding:28px 22px">
-        <div style="font-size:1.3rem;font-weight:300;margin-bottom:18px;text-align:center">One line to <span style="color:#00D4E8">integrate</span></div>
-        <div style="background:#111;border:1px solid rgba(0,212,232,.15);border-radius:9px;padding:14px 18px;font-family:monospace;font-size:.68rem;color:#00D4E8;line-height:1.8">
-          import opengradient as og<br>og.init("API_KEY")<br>result = og.infer(model="llama")<br>print(result.output)
-        </div>
-      </div>
-    </div>
-    <div class="scard">
-      <div class="scard-lbl">04 - Stats + Footer</div>
-      <div style="background:#000;padding:24px 22px">
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:22px;background:#111;border-radius:9px;padding:14px">
-          <div style="text-align:center"><div style="font-size:1.3rem;font-weight:300;color:#00D4E8">1M+</div><div style="font-size:.6rem;color:rgba(255,255,255,.36)">Calls</div></div>
-          <div style="text-align:center"><div style="font-size:1.3rem;font-weight:300;color:#00D4E8">500+</div><div style="font-size:.6rem;color:rgba(255,255,255,.36)">Models</div></div>
-          <div style="text-align:center"><div style="font-size:1.3rem;font-weight:300;color:#00D4E8">99.9%</div><div style="font-size:.6rem;color:rgba(255,255,255,.36)">Uptime</div></div>
-          <div style="text-align:center"><div style="font-size:1.3rem;font-weight:300;color:#00D4E8">50ms</div><div style="font-size:.6rem;color:rgba(255,255,255,.36)">Latency</div></div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:.76rem;color:rgba(255,255,255,.55)">OpenGradient</div>
-          <div style="font-size:.67rem;color:rgba(255,255,255,.22)">2026 All rights reserved.</div>
-        </div>
+
+      <!-- Mark only -->
+      <div class="logo-row dark-bg" style="gap:24px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 121 121" style="height:40px;color:#24bce3">
+          <path fill="currentColor" d="M102.823 36.71a14.4 14.4 0 0 0-10.109-4.12H88.36v-4.358c0-3.801-1.462-7.393-4.116-10.114L70.82 4.363A14.36 14.36 0 0 0 60.466 0c-3.93 0-7.606 1.55-10.352 4.363L36.69 18.12a14.4 14.4 0 0 0-4.117 10.114v4.359h-4.356c-3.8 0-7.39 1.463-10.108 4.119L4.36 50.142A14.37 14.37 0 0 0 0 60.501a14.37 14.37 0 0 0 4.36 10.358L18.11 84.29a14.39 14.39 0 0 0 10.107 4.12h4.356v4.356a14.4 14.4 0 0 0 4.117 10.114l13.424 13.757A14.35 14.35 0 0 0 60.466 121c3.93 0 7.607-1.549 10.353-4.363l13.424-13.757a14.4 14.4 0 0 0 4.116-10.114V88.41h4.355c3.8 0 7.39-1.463 10.109-4.119l13.749-13.431a14.37 14.37 0 0 0 4.36-10.358c0-3.932-1.549-7.611-4.36-10.359l-13.749-13.431Z"/>
+        </svg>
+        <span style="font-size:0.85rem;color:rgba(255,255,255,0.5)">data-og-logo="mark"</span>
+        <span class="logo-tag">icon only · dark bg</span>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <hr class="divider"/>
 
-<div class="sec">
-  <div class="sec-lbl">Integration</div>
-  <h2 class="sec-ttl">Copy and <span class="grad">paste</span></h2>
-  <div class="ecode">
-    <div class="etabs">
-      <button class="etab on" onclick="tab(this,'ta')">Option A - Auto Build</button>
-      <button class="etab" onclick="tab(this,'tb')">Option B - CSS Classes</button>
-      <button class="etab" onclick="tab(this,'tc')">Option C - Logo Only</button>
-    </div>
-    <div class="epanel on" id="ta">
-      <pre>// 1. Add to head:
-&lt;script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js">&lt;/script>
+<!-- CODE TABS -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">Integration</div>
+    <h2 class="section-title">Copy and <span class="grad">paste</span></h2>
+    <div class="code-block">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(this, 'tab-a')">Auto-Build</button>
+        <button class="tab" onclick="switchTab(this, 'tab-b')">CSS Classes</button>
+        <button class="tab" onclick="switchTab(this, 'tab-c')">Logo Only</button>
+        <button class="tab" onclick="switchTab(this, 'tab-d')">Image Overlay</button>
+      </div>
+      <div class="tab-panel active" id="tab-a">
+        <pre id="code-a"><span class="comment">&lt;!-- 1. One script tag in &lt;head&gt; --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
 
-// 2. Add to body tag:
-&lt;body data-og-build
-  data-og-title="Your Title"
-  data-og-tagline="Your description."
-  data-og-cta="Get Started"
-  data-og-cta-url="https://yoursite.com"&gt;
-&lt;/body&gt;</pre>
-      <button class="cpbtn" onclick="cp('ta')">Copy Code</button>
-    </div>
-    <div class="epanel" id="tb">
-      <pre>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-brand.css"&gt;
+<span class="comment">&lt;!-- 2. Attributes on &lt;body&gt; --&gt;</span>
+<span class="tag">&lt;body</span>
+  <span class="attr">data-og-build</span>
+  <span class="attr">data-og-title</span>=<span class="val">"Your Project Name"</span>
+  <span class="attr">data-og-tagline</span>=<span class="val">"Your tagline here."</span>
+  <span class="attr">data-og-cta</span>=<span class="val">"Get Started"</span>
+  <span class="attr">data-og-cta-url</span>=<span class="val">"https://yoursite.com"</span><span class="tag">&gt;
+&lt;/body&gt;</span></pre>
+        <button class="copy-btn" onclick="copyCode('code-a', this)" style="margin-top:16px">Copy</button>
+      </div>
+      <div class="tab-panel" id="tab-b">
+        <pre id="code-b"><span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span>
+  <span class="attr">href</span>=<span class="val">"https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-brand.css"</span> <span class="tag">/&gt;</span>
 
-&lt;body class="og-scope"&gt;
-  &lt;h1 class="og-h1 og-text-gradient"&gt;Title&lt;/h1&gt;
-  &lt;a class="og-btn og-btn-primary" href="#"&gt;CTA&lt;/a&gt;
-  &lt;div class="og-card og-card-glow"&gt;...&lt;/div&gt;
-&lt;/body&gt;</pre>
-      <button class="cpbtn" onclick="cp('tb')">Copy Code</button>
-    </div>
-    <div class="epanel" id="tc">
-      <pre>&lt;script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js">&lt;/script>
+<span class="tag">&lt;body</span> <span class="attr">class</span>=<span class="val">"og-scope"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h1</span> <span class="attr">class</span>=<span class="val">"og-h1 og-text-gradient"</span><span class="tag">&gt;</span>Hello World<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="val">"og-body"</span><span class="tag">&gt;</span>OpenGradient brand applied.<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;a</span> <span class="attr">class</span>=<span class="val">"og-btn og-btn-primary"</span> <span class="attr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span>Launch<span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"og-card og-card-glow"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/body&gt;</span></pre>
+        <button class="copy-btn" onclick="copyCode('code-b', this)" style="margin-top:16px">Copy</button>
+      </div>
+      <div class="tab-panel" id="tab-c">
+        <pre id="code-c"><span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
 
-&lt;div data-og-logo="color"&gt;&lt;/div&gt;
-&lt;div data-og-logo="cyan"&gt;&lt;/div&gt;</pre>
-      <button class="cpbtn" onclick="cp('tc')">Copy Code</button>
+<span class="comment">&lt;!-- Full wordmark, white --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-og-logo</span>=<span class="val">"wordmark"</span><span class="tag">&gt;&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Full wordmark, dark (for light backgrounds) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-og-logo</span>=<span class="val">"wordmark-dark"</span><span class="tag">&gt;&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Icon mark only --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-og-logo</span>=<span class="val">"mark"</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+        <button class="copy-btn" onclick="copyCode('code-c', this)" style="margin-top:16px">Copy</button>
+      </div>
+      <div class="tab-panel" id="tab-d">
+        <pre id="code-d"><span class="comment">&lt;!-- Brand overlay on any photo --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"og-img-overlay"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"your-photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"..."</span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Light overlay variant --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"og-img-overlay og-img-overlay--light"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"your-photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"..."</span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+        <button class="copy-btn" onclick="copyCode('code-d', this)" style="margin-top:16px">Copy</button>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 <hr class="divider"/>
 
-<div class="sec">
-  <div class="sec-lbl">What is included</div>
-  <h2 class="sec-ttl">Everything in <span class="grad">one file</span></h2>
-  <div class="fgrid">
-    <div class="fcard"><div class="ficon">🎨</div><div class="fttl">Brand Tokens</div><div class="fdsc">CSS variables for all colors, gradients, shadows and typography from the official OpenGradient brand guide.</div></div>
-    <div class="fcard"><div class="ficon">⚡</div><div class="fttl">Auto Page Builder</div><div class="fdsc">Add data-og-build to body and instantly get a full Hero, Nav, Sections and Footer.</div></div>
-    <div class="fcard"><div class="ficon">🖼</div><div class="fttl">Inline SVG Logo</div><div class="fdsc">No image files needed. The OpenGradient logomark is embedded as clean SVG.</div></div>
-    <div class="fcard"><div class="ficon">📦</div><div class="fttl">Zero Dependencies</div><div class="fdsc">No npm, no bundler. Pure HTML and CSS and JS served from jsDelivr CDN.</div></div>
-    <div class="fcard"><div class="ficon">📱</div><div class="fttl">Fully Responsive</div><div class="fdsc">All grids and layouts adapt to any screen size with fluid type and breakpoints.</div></div>
-    <div class="fcard"><div class="ficon">🔧</div><div class="fttl">Customizable</div><div class="fdsc">Use CSS variables to override any token and mix brand components into your design.</div></div>
+<!-- FEATURES -->
+<section class="section" style="background: var(--d7);">
+  <div class="container">
+    <div class="section-label">What's included</div>
+    <h2 class="section-title">Everything in <span class="grad">one file</span></h2>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <div class="feature-title">Real Brand Tokens</div>
+        <div class="feature-desc">CSS variables extracted directly from opengradient.ai — real colors, gradients, shadows, spacing.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🪪</div>
+        <div class="feature-title">Official SVG Logo</div>
+        <div class="feature-desc">The exact OpenGradient wordmark and icon mark from the official site, embedded inline. No image files needed.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✍️</div>
+        <div class="feature-title">Geist Font</div>
+        <div class="feature-desc">Geist + Geist Mono — OpenGradient's official font, auto-loaded from Google Fonts.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Auto Page Builder</div>
+        <div class="feature-desc">Add <code style="font-family:'Geist Mono',monospace;color:var(--p5);font-size:0.8em">data-og-build</code> to &lt;body&gt; — full branded page generated instantly.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖼️</div>
+        <div class="feature-title">Photo Brand Overlay</div>
+        <div class="feature-desc">Apply OpenGradient brand colors as overlay on any image or photo with one CSS class.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <div class="feature-title">Zero Dependencies</div>
+        <div class="feature-desc">No npm, no bundler, no config. Served from jsDelivr CDN. Works in any HTML file on any platform.</div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
+<!-- FOOTER -->
 <footer class="footer">
-  <div class="fcopy">2026 OpenGradient Brand Skill - MIT License</div>
-  <div class="flinks">
-    <a class="flink" href="https://github.com/golldyck/opengradient-brand-skill">GitHub</a>
-    <a class="flink" href="demo.html">Live Demo</a>
-    <a class="flink" href="https://opengradient.notion.site/Branding-Kit-b0ed295da43f479dbbd0e603029666b1">Brand Kit</a>
+  <div class="footer-copy">© 2026 OpenGradient Brand Skill — MIT License</div>
+  <div class="footer-links">
+    <a class="footer-link" href="https://github.com/golldyck/opengradient-brand-skill">GitHub</a>
+    <a class="footer-link" href="demo.html">Live Demo</a>
+    <a class="footer-link" href="https://opengradient.ai">OpenGradient</a>
+    <a class="footer-link" href="https://opengradient.notion.site/Branding-Kit-b0ed295da43f479dbbd0e603029666b1">Brand Kit</a>
   </div>
 </footer>
 
 <script>
-function tab(b,id){document.querySelectorAll('.etab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.epanel').forEach(p=>p.classList.remove('on'));b.classList.add('on');document.getElementById(id).classList.add('on')}
-function cp(id){var t=document.getElementById(id).querySelector('pre').textContent;navigator.clipboard.writeText(t).then(function(){var b=document.querySelector('#'+id+' .cpbtn');var o=b.textContent;b.textContent='Copied!';setTimeout(function(){b.textContent=o},1800)})}
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+function copyCode(id, btn) {
+  var text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.color = '#24bce3';
+    setTimeout(function() { btn.textContent = orig; btn.style.color = ''; }, 2000);
+  });
+}
 </script>
 </body>
 </html>

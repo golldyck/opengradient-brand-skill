@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://opengradient.ai/images/home/hero-background.jpg" width="100%" style="border-radius:12px; max-height:200px; object-fit:cover;" alt="OpenGradient" />
+<img src="assets/banner.svg" width="100%" alt="OpenGradient Brand Skill" />
 
 # OpenGradient Brand Skill
 
