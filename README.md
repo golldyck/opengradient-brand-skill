@@ -47,6 +47,7 @@
 - [🧩 CSS Components](#-css-components)
 - [📐 JavaScript API](#-javascript-api)
 - [🖼️ Image Branding](#️-image-branding)
+- [🖼️ AI Image Generation (og-image-skill.js)](#️-ai-image-generation-og-image-skilljs)
 - [📁 Files](#-files)
 - [🔗 CDN Links](#-cdn-links)
 
@@ -377,14 +378,95 @@ The overlay uses `position: absolute` so the image stays fully visible with a br
 
 ---
 
+## 🖼️ AI Image Generation (og-image-skill.js)
+
+Generate brand-consistent images using **Gemini Flash Image** (`gemini-2.0-flash-preview-image-generation`) — directly from the browser or Node.js, with OpenGradient visual style baked into every prompt.
+
+### Quick Start
+
+```html
+<!-- 1. Load the skill -->
+<script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-image-skill.js"></script>
+
+<!-- 2. Drop the widget anywhere -->
+<div data-og-image-widget></div>
+```
+
+The widget renders a prompt input, aspect ratio selector, content type picker, and a live image output — all in OpenGradient brand style.
+
+### Programmatic API
+
+```js
+// Set your Gemini API key once:
+window.OGImageConfig = { apiKey: 'YOUR_GEMINI_API_KEY' };
+
+// Generate an image:
+const result = await OGImage.generate("Draw a neural network over a dark city skyline", {
+  ratio:   '16:9',   // '1:1' | '16:9' | '9:16' | '4:3' | '3:2'
+  type:    'hero',   // 'photo' | 'meme' | 'ui' | 'hero' | 'avatar' | 'slide' | 'logo' | 'diagram'
+  context: 'for a blockchain AI conference',
+  apiKey:  'YOUR_GEMINI_API_KEY', // or use OGImageConfig
+});
+
+document.getElementById('my-img').src = result.imageUrl;
+```
+
+### Aspect Ratio Presets
+
+| Ratio | Size | Best for |
+|---|---|---|
+| `1:1` | 1024×1024 | Square (avatar, meme) |
+| `16:9` | 1280×720 | Landscape (post, hero) |
+| `9:16` | 720×1280 | Portrait (story, mobile) |
+| `4:3` | 1024×768 | Standard (presentation) |
+| `3:2` | 1200×800 | Wide (banner) |
+
+### Content Type Presets
+
+| Type | Style applied |
+|---|---|
+| `photo` | Photographic, realistic brand overlay |
+| `meme` | Bold text space, humorous composition |
+| `ui` | UI mockup, device frame, software screenshot |
+| `hero` | Wide cinematic, centered, dramatic lighting |
+| `avatar` | Portrait, circular-crop friendly, character |
+| `slide` | Presentation layout, left-aligned text area |
+| `logo` | Minimal vector geometric mark |
+| `diagram` | Node graph, network visualization |
+
+### Brand Reference Images
+
+The `assets/brand_references/` folder contains curated OpenGradient style examples for use in AI workflows (style transfer, ControlNet, img2img):
+
+| File | Use case |
+|---|---|
+| `ref-hero-dark.png` | Full-page hero layout on dark navy |
+| `ref-card-square.png` | Card component in brand style |
+| `ref-cards-grid.png` | Multi-card grid layout |
+
+```
+CDN: https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/assets/brand_references/ref-hero-dark.png
+```
+
+### CDN Link
+
+```
+https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-image-skill.js
+```
+
+---
+
 ## 📁 Files
 
 | File | Description |
 |---|---|
 | `og-skill.js` | Main skill — load via CDN, auto-fetches everything |
+| `og-image-skill.js` | AI image generation via Gemini Flash Image |
 | `og-brand.css` | Brand stylesheet — auto-loaded by the skill |
 | `demo.html` | Full auto-build demo (open in browser) |
+| `image-demo.html` | Image skill demo with widget |
 | `test-local.html` | Local test page (no CDN dependency) |
+| `assets/brand_references/` | Brand style reference images for AI workflows |
 
 ---
 
