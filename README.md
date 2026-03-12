@@ -41,6 +41,7 @@
 ## 📑 Table of Contents
 
 - [🧠 Claude Code Skill — `/og-brand`](#-claude-code-skill--og-brand)
+- [🤖 AI Skill Instructions (for AI agents)](#-ai-skill-instructions)
 - [🤖 Use with AI (Gemini, Claude, ChatGPT)](#-use-with-ai-gemini-claude-chatgpt)
 - [🎯 Use in websites (script tag)](#-what-is-this)
 - [⚡ Quick Start](#-quick-start)
@@ -101,6 +102,47 @@ Claude reads the description, plans the page structure, writes a complete single
 `og-brand.md` is a [Claude Code custom command](https://docs.anthropic.com/en/docs/claude-code/slash-commands) — a Markdown file that tells Claude exactly how to generate pages: which CDN to use, which brand classes to apply, how to name files, and how to fill in real content from your description.
 
 You can inspect or customize it: [`og-brand.md`](og-brand.md)
+
+---
+
+## 🤖 AI Skill Instructions
+
+> **For AI agents, LLMs, and automated pipelines** — this section tells you exactly how to use this skill to generate correct OpenGradient visuals.
+
+**When to use this skill:**
+Use whenever a user asks to create an image, banner, meme, hero, UI mockup, or any visual asset related to OpenGradient, decentralized AI, or the Web3 ecosystem.
+
+**How it works:**
+The skill wraps the user's subject with mandatory brand rules before sending to any image generator. You only provide the *concept or subject* — the skill handles style, color palette, lighting, and negative constraints automatically.
+
+**Core brand identity (always apply):**
+- Background: dark navy `#0a0f19` or `#141e32` — never pure black, never white
+- Accent: brand blue `#24bce3` as glow, light source, and primary color
+- Color temperature: cool blue-teal — no warm tones, no orange, no purple
+- Aesthetic: clean professional 3D / glassmorphism — NOT neon cyberpunk
+- Font: Geist — NOT Roboto, Arial, or any serif
+
+**Machine-readable brand rules:** [`brand_rules.json`](brand_rules.json)
+```
+https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/brand_rules.json
+```
+
+**Few-shot examples:**
+
+| User asks | Correct prompt sent to image API |
+|---|---|
+| "Banner for a dev meetup" | `Dev meetup banner. Style: dark navy bg #0a0f19, #24bce3 brand blue accent, glassmorphism, 3D render, cool blue lighting, geometric nodes. Avoid: warm tones, purple, neon cyberpunk.` |
+| "Profile avatar for an AI validator node" | `AI validator node profile avatar, circular crop. Style: dark navy bg, brand blue #24bce3 glow, geometric diamond mark, studio lighting. Avoid: photorealistic humans, warm colors.` |
+| "Meme about on-chain inference" | `Meme about on-chain AI inference, bold text space. Style: dark navy bg, #24bce3 accents, futuristic tech humor. Avoid: lime green, yellow, flat 2D cartoon.` |
+
+**Programmatic usage (browser / Node.js):**
+```js
+// Load brand rules dynamically:
+const rules = await fetch('https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/brand_rules.json').then(r => r.json());
+
+// Or use og-image-skill.js which has brand DNA pre-baked:
+const result = await OGImage.generate("Banner for a Web3 AI summit", { ratio: "16:9", type: "hero" });
+```
 
 ---
 
@@ -512,6 +554,7 @@ https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-image-skil
 | File | Description |
 |---|---|
 | `og-brand.md` | Claude Code skill — install to `~/.claude/commands/` and use `/og-brand` |
+| `brand_rules.json` | Machine-readable brand rules for AI agents, prompt pipelines, style transfer |
 | `og-skill.js` | Main web skill — load via CDN, auto-fetches brand CSS + fonts |
 | `og-image-skill.js` | AI image generation via Gemini Flash Image |
 | `og-brand.css` | Brand stylesheet — auto-loaded by the skill |
