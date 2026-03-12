@@ -6,6 +6,7 @@
 
 **Drop one `<script>` tag into any project — get full OpenGradient visual identity instantly.**
 
+[![Claude Code Skill](https://img.shields.io/badge/Claude_Code-Skill-D97706?logo=anthropic&logoColor=white)](#-claude-code-skill--og-brand)
 [![jsDelivr CDN](https://img.shields.io/badge/CDN-jsDelivr-E84D4D?logo=jsdelivr&logoColor=white)](https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js)
 [![Version](https://img.shields.io/badge/version-3.0.0-24bce3)](https://github.com/golldyck/opengradient-brand-skill)
 [![License](https://img.shields.io/badge/license-MIT-0e4b5b)](LICENSE)
@@ -39,6 +40,7 @@
 
 ## 📑 Table of Contents
 
+- [🧠 Claude Code Skill — `/og-brand`](#-claude-code-skill--og-brand)
 - [🤖 Use with AI (Gemini, Claude, ChatGPT)](#-use-with-ai-gemini-claude-chatgpt)
 - [🎯 Use in websites (script tag)](#-what-is-this)
 - [⚡ Quick Start](#-quick-start)
@@ -50,6 +52,55 @@
 - [🖼️ AI Image Generation (og-image-skill.js)](#️-ai-image-generation-og-image-skilljs)
 - [📁 Files](#-files)
 - [🔗 CDN Links](#-cdn-links)
+
+---
+
+## 🧠 Claude Code Skill — `/og-brand`
+
+> **For [Claude Code](https://claude.ai/claude-code) users** — generate a complete, production-ready OpenGradient-branded website from a single terminal command. Claude writes the full HTML, opens it in your browser, done.
+
+### Install (one command)
+
+```bash
+curl -s https://raw.githubusercontent.com/golldyck/opengradient-brand-skill/main/og-brand.md \
+  -o ~/.claude/commands/og-brand.md
+```
+
+That's it. The `/og-brand` slash command is now available in every Claude Code session.
+
+### Usage
+
+```
+/og-brand <describe the site you want>
+```
+
+**Examples:**
+
+```
+/og-brand Landing page for my DeFi staking protocol — show APY stats and audit badges
+
+/og-brand Docs site for an on-chain ML model API — dark theme, code examples, sidebar nav
+
+/og-brand Team page for OpenGradient contributors — grid of avatars, bios, GitHub links
+
+/og-brand Product announcement page for a new AI oracle — countdown, features, waitlist form
+```
+
+Claude reads the description, plans the page structure, writes a complete single-file HTML using `og-skill.js` (brand styles auto-loaded via CDN), and opens it in your browser.
+
+**What you get in one command:**
+- Full navbar with official OG wordmark logo
+- Hero section with real copy (no Lorem ipsum)
+- Content sections (cards, stats, features, or grids) relevant to your description
+- CTA banner + footer with logo mark
+- Scroll-reveal animations via `og-reveal`
+- All brand tokens, fonts (Geist), and components — zero config
+
+### What the skill file contains
+
+`og-brand.md` is a [Claude Code custom command](https://docs.anthropic.com/en/docs/claude-code/slash-commands) — a Markdown file that tells Claude exactly how to generate pages: which CDN to use, which brand classes to apply, how to name files, and how to fill in real content from your description.
+
+You can inspect or customize it: [`og-brand.md`](og-brand.md)
 
 ---
 
@@ -460,9 +511,11 @@ https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-image-skil
 
 | File | Description |
 |---|---|
-| `og-skill.js` | Main skill — load via CDN, auto-fetches everything |
+| `og-brand.md` | Claude Code skill — install to `~/.claude/commands/` and use `/og-brand` |
+| `og-skill.js` | Main web skill — load via CDN, auto-fetches brand CSS + fonts |
 | `og-image-skill.js` | AI image generation via Gemini Flash Image |
 | `og-brand.css` | Brand stylesheet — auto-loaded by the skill |
+| `og-decentralized-ai.html` | Example output from `/og-brand` — AI inference platform landing |
 | `demo.html` | Full auto-build demo (open in browser) |
 | `image-demo.html` | Image skill demo with widget |
 | `test-local.html` | Local test page (no CDN dependency) |
