@@ -39,7 +39,8 @@
 
 ## 📑 Table of Contents
 
-- [🎯 What is this?](#-what-is-this)
+- [🤖 Use with AI (Gemini, Claude, ChatGPT)](#-use-with-ai-gemini-claude-chatgpt)
+- [🎯 Use in websites (script tag)](#-what-is-this)
 - [⚡ Quick Start](#-quick-start)
 - [🔧 Usage Options](#-usage-options)
 - [🎨 Brand Tokens](#-brand-tokens)
@@ -50,6 +51,29 @@
 - [🔗 CDN Links](#-cdn-links)
 
 ---
+
+## 🤖 Use with AI (Gemini, Claude, ChatGPT)
+
+Copy the brand prompt file and paste it into any AI tool — it will understand the full OpenGradient brand and create images, websites, UI, or presentations in the correct style.
+
+**[📋 Copy Brand Prompt →](og-brand-prompt.txt)**
+
+```
+1. Open og-brand-prompt.txt
+2. Copy the entire contents
+3. Paste into Gemini / Claude / ChatGPT / Midjourney
+4. Then say what you want to create:
+   - "Make a hero image for my website"
+   - "Design a landing page for my AI product"
+   - "Create a presentation slide"
+   - "Generate a team photo with brand overlay"
+```
+
+The prompt contains: colors, fonts, logo description, visual style, photography guidelines, and example prompts for image generation.
+
+---
+
+## 🌐 Use in Websites (one script tag)
 
 ## 🎯 What is this?
 
