@@ -54,22 +54,57 @@
 
 ## 🤖 Use with AI (Gemini, Claude, ChatGPT)
 
-Copy the brand prompt file and paste it into any AI tool — it will understand the full OpenGradient brand and create images, websites, UI, or presentations in the correct style.
+Paste the prompt below into any AI — it will understand the full OpenGradient brand and create images, websites, UI, or photos in the correct style.
 
-**[📋 Copy Brand Prompt →](og-brand-prompt.txt)**
+**Click the copy icon** (top-right of the box) → paste into Gemini / Claude / ChatGPT / Midjourney → describe what you want.
 
 ```
-1. Open og-brand-prompt.txt
-2. Copy the entire contents
-3. Paste into Gemini / Claude / ChatGPT / Midjourney
-4. Then say what you want to create:
-   - "Make a hero image for my website"
-   - "Design a landing page for my AI product"
-   - "Create a presentation slide"
-   - "Generate a team photo with brand overlay"
-```
+OPENGRADIENT BRAND CONTEXT — paste this into any AI, then describe what you want to create.
 
-The prompt contains: colors, fonts, logo description, visual style, photography guidelines, and example prompts for image generation.
+BRAND: OpenGradient — open platform for decentralized AI inference (blockchain + ML).
+
+COLORS (use exactly):
+  Primary Blue:   #24bce3  ← headlines, CTAs, icons, glows
+  Dark Teal:      #0e4b5b  ← dark text on light bg
+  Navy Black:     #0a0f19  ← main background
+  Navy Mid:       #141e32  ← cards, secondary sections
+  Light Blue:     #bdebf7  ← body text on dark bg
+  Accent Light:   #50c9e9  ← softer blue accent
+  White:          #ffffff
+
+GRADIENTS:
+  Hero bg:   #0a0f19 → #141e32 → #0e4b5b (135deg)
+  Brand:     #24bce3 → #0e4b5b
+  Glow:      radial, #24bce3 at 25% opacity, bottom-center
+
+TYPOGRAPHY:
+  Font: Geist (by Vercel) — weight 300/400/500
+  Mono: Geist Mono — for code and data
+  Headings: font-weight 300, letter-spacing -0.025em
+
+LOGO: Geometric cross/diamond mark of 8 interlocking diamonds in 3×3 grid with center circle.
+  Color: always #24bce3 on dark, #0e4b5b on light. Never add gradients to the mark.
+
+VISUAL STYLE:
+  - Dark navy backgrounds, brand blue (#24bce3) accents and glows
+  - Subtle 1px grid lines at 4% opacity for tech feel
+  - Rounded corners (12–20px), glass morphism panels
+  - Clean, professional, scientific — NOT neon/cyberpunk
+  - Abstract tech imagery: nodes, connections, data flows, geometric patterns
+
+PHOTO STYLE:
+  - Dark navy/teal backgrounds, cool blue temperature
+  - Brand blue (#24bce3) light sources and glows
+  - Color grade: boost blues/teals, desaturate reds/yellows
+  - Overlay: #0a0f19 at 60% → #24bce3 at 15% gradient
+
+DO NOT USE: lime/yellow/green colors, Roboto font, pure black #000, neon aesthetics.
+
+FOR WEBSITES — add this 1 line to any HTML:
+<script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
+
+Now describe what you want to create →
+```
 
 ---
 
