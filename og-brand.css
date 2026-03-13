@@ -708,4 +708,296 @@
 .og-gap-32 { gap: 32px; }
 .og-w-full        { width: 100%; }
 .og-relative      { position: relative; }
+
+/* ============================================================
+   ANIMATION SYSTEM v2.0
+   Inspired by: Anthropic frontend-design skill, freshtechbro/claudedesignskills,
+   HermeticOrmus/LibreUIUX-Claude-Code
+   ============================================================ */
+
+/* ---- KEYFRAMES ---- */
+@keyframes og-fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes og-hero-in {
+  from { opacity: 0; transform: translateY(32px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes og-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-10px) rotate(0.5deg); }
+  66%       { transform: translateY(-5px) rotate(-0.3deg); }
+}
+
+@keyframes og-glow-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(36,188,227,0.25), 0 0 20px rgba(36,188,227,0.1); }
+  50%       { box-shadow: 0 0 25px rgba(36,188,227,0.6), 0 0 50px rgba(36,188,227,0.25), 0 0 80px rgba(36,188,227,0.1); }
+}
+
+@keyframes og-shimmer-sweep {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+@keyframes og-gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+@keyframes og-border-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes og-blink {
+  50% { opacity: 0; }
+}
+
+@keyframes og-slide-in-left {
+  from { opacity: 0; transform: translateX(-32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes og-slide-in-right {
+  from { opacity: 0; transform: translateX(32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes og-scale-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes og-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes og-glitch-h {
+  0%, 100% { clip-path: inset(0 0 95% 0); transform: translate(-2px, 0); }
+  20%       { clip-path: inset(30% 0 50% 0); transform: translate(2px, 0); }
+  40%       { clip-path: inset(60% 0 20% 0); transform: translate(-1px, 0); }
+  60%       { clip-path: inset(10% 0 80% 0); transform: translate(1px, 0); }
+  80%       { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 0); }
+}
+
+/* ---- ANIMATION UTILITY CLASSES ---- */
+
+/* Entrance animations */
+.og-anim-fade-up   { animation: og-fade-up 0.65s cubic-bezier(0.16,1,0.3,1) both; }
+.og-anim-hero-in   { animation: og-hero-in 0.8s cubic-bezier(0.16,1,0.3,1) both; }
+.og-anim-slide-l   { animation: og-slide-in-left 0.65s cubic-bezier(0.16,1,0.3,1) both; }
+.og-anim-slide-r   { animation: og-slide-in-right 0.65s cubic-bezier(0.16,1,0.3,1) both; }
+.og-anim-scale-in  { animation: og-scale-in 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* Animation delays */
+.og-delay-0   { animation-delay: 0s; }
+.og-delay-1   { animation-delay: 0.1s; }
+.og-delay-2   { animation-delay: 0.2s; }
+.og-delay-3   { animation-delay: 0.3s; }
+.og-delay-4   { animation-delay: 0.4s; }
+.og-delay-5   { animation-delay: 0.5s; }
+.og-delay-6   { animation-delay: 0.6s; }
+.og-delay-7   { animation-delay: 0.7s; }
+.og-delay-8   { animation-delay: 0.8s; }
+
+/* Continuous animations */
+.og-float     { animation: og-float 5s ease-in-out infinite; }
+.og-spin-slow { animation: og-spin 8s linear infinite; }
+.og-spin-fast { animation: og-spin 1.5s linear infinite; }
+
+/* Glow pulse — for badges, CTAs, icons */
+.og-pulse-glow {
+  animation: og-glow-pulse 2.5s ease-in-out infinite;
+}
+
+/* Shimmer — for loading states, highlights */
+.og-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.og-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(36,188,227,0.3) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: og-shimmer-sweep 2.2s linear infinite;
+}
+
+/* Animated gradient text */
+.og-text-gradient-animate {
+  background: linear-gradient(270deg, #24bce3, #50c9e9, #bdebf7, #24bce3);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: og-gradient-shift 5s ease infinite;
+}
+
+/* Glitch text — use on h1/h2 sparingly */
+.og-text-glitch {
+  position: relative;
+}
+.og-text-glitch::before,
+.og-text-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: #24bce3;
+  opacity: 0;
+}
+.og-text-glitch:hover::before {
+  opacity: 0.7;
+  animation: og-glitch-h 0.4s steps(4) both;
+  color: #50c9e9;
+  left: 2px;
+}
+.og-text-glitch:hover::after {
+  opacity: 0.5;
+  animation: og-glitch-h 0.4s steps(4) both 0.05s;
+  color: #bdebf7;
+  left: -2px;
+}
+
+/* Typing cursor */
+.og-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: #24bce3;
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  animation: og-blink 0.9s step-end infinite;
+}
+
+/* Animated border card */
+.og-border-glow {
+  position: relative;
+  border: 1px solid rgba(36,188,227,0.12);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.og-border-glow:hover {
+  border-color: rgba(36,188,227,0.45);
+  box-shadow:
+    0 0 20px rgba(36,188,227,0.1),
+    0 8px 40px rgba(0,0,0,0.3),
+    inset 0 0 20px rgba(36,188,227,0.03);
+}
+
+/* Button glow */
+.og-btn-glow {
+  transition: box-shadow 0.25s ease, filter 0.25s ease, transform 0.15s ease !important;
+}
+.og-btn-glow:hover {
+  box-shadow: 0 0 20px rgba(36,188,227,0.5), 0 4px 16px rgba(36,188,227,0.3) !important;
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+.og-btn-glow:active {
+  transform: translateY(0);
+}
+
+/* 3D tilt card — enable with JS (see og-brand.md) */
+.og-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease;
+  will-change: transform;
+}
+
+/* Stagger grid children */
+.og-stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: og-fade-up 0.65s cubic-bezier(0.16,1,0.3,1) both;
+}
+.og-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.og-stagger > *:nth-child(2) { animation-delay: 0.15s; }
+.og-stagger > *:nth-child(3) { animation-delay: 0.25s; }
+.og-stagger > *:nth-child(4) { animation-delay: 0.35s; }
+.og-stagger > *:nth-child(5) { animation-delay: 0.45s; }
+.og-stagger > *:nth-child(6) { animation-delay: 0.55s; }
+
+/* Noise grain overlay */
+.og-noise {
+  position: relative;
+}
+.og-noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Scan line effect for code/terminal blocks */
+.og-scanlines {
+  position: relative;
+  overflow: hidden;
+}
+.og-scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(36,188,227,0.015) 2px,
+    rgba(36,188,227,0.015) 4px
+  );
+  pointer-events: none;
+}
+
+/* Gradient section divider */
+.og-section-glow {
+  position: relative;
+}
+.og-section-glow::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(36,188,227,0.3), transparent);
+}
+
+/* Scroll progress indicator */
+.og-scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #24bce3, #50c9e9);
+  z-index: 9999;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ---- ACCESSIBILITY ---- */
+@media (prefers-reduced-motion: reduce) {
+  .og-float,
+  .og-pulse-glow,
+  .og-shimmer::after,
+  .og-text-gradient-animate,
+  .og-spin-slow,
+  .og-spin-fast,
+  .og-stagger > * {
+    animation: none !important;
+  }
+  .og-stagger > * {
+    opacity: 1;
+    transform: none;
+  }
+}
 .og-overflow-hidden { overflow: hidden; }
