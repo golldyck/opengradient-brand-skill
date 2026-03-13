@@ -1,0 +1,102 @@
+{
+  "_extracted": "2026-03-13",
+  "_sources": ["opengradient.ai", "memsync.ai", "bitquant.io", "twin.fun"],
+
+  "opengradient_ai": {
+    "url": "https://www.opengradient.ai/",
+    "framework": "Next.js + Tailwind CSS",
+    "theme": "LIGHT by default, dark hero sections",
+    "fonts": {
+      "sans": "Geist",
+      "mono": "Geist Mono",
+      "weights": [400, 500, 600]
+    },
+    "colors": {
+      "primary_100": "#e9f8fc",
+      "primary_200": "#bdebf7",
+      "primary_300": "#a7e4f4",
+      "primary_400": "#50c9e9",
+      "primary_500": "#24bce3",
+      "primary_600": "#1d96b6",
+      "primary_700": "#167188",
+      "primary_800": "#0e4b5b",
+      "primary_900": "#041317",
+      "secondary_700": "#1d2c4b",
+      "secondary_800": "#141e32",
+      "secondary_950": "#0a0f19",
+      "neutral_white": "#ffffff",
+      "surface_primary": "#ffffff",
+      "surface_secondary": "#e9f8fc",
+      "text_body": "#0e4b5b",
+      "text_heading": "#0e4b5b",
+      "text_heading_on_dark": "#bdebf7",
+      "text_body_on_dark": "#bdebf7"
+    },
+    "typography": {
+      "display_lg": { "size": "56px", "line_height": "56px", "tracking": "-2px", "weight": 500 },
+      "display_md": { "size": "40px", "line_height": "40px", "tracking": "-1px", "weight": 500 },
+      "display_sm": { "size": "32px", "line_height": "36px", "tracking": "-1px", "weight": 500 },
+      "body_lg":    { "size": "20px", "weight": 400 },
+      "body_md":    { "size": "18px", "weight": 400 },
+      "body_sm":    { "size": "16px", "weight": 400 },
+      "label":      "font-mono uppercase font-medium letter-spacing wider"
+    },
+    "border_radius": {
+      "sm": "6px", "md": "8px", "lg": "12px", "xl": "16px", "full": "9999px"
+    },
+    "buttons": {
+      "style": "font-mono uppercase font-medium",
+      "padding": "px-8 py-3 / px-10 py-4",
+      "primary_bg": "#167188",
+      "primary_hover": "#0e4b5b",
+      "transition": "transition-colors 150ms ease-out"
+    },
+    "animations": {
+      "fade_in_stagger": "children fade 0.1-0.2s stagger",
+      "bounce_dots": "staggered bounce -0.3s -0.15s 0s",
+      "default_transition": "150ms cubic-bezier(0,0,0.2,1)"
+    },
+    "layout": {
+      "section_padding": "py-16 md:py-24 lg:py-36",
+      "container_max": "responsive, content max-w-md",
+      "hero": "full viewport centered"
+    }
+  },
+
+  "memsync_ai": {
+    "url": "https://memsync.ai/",
+    "framework": "Webflow",
+    "theme": "LIGHT minimal, gentle animations",
+    "visual_signature": "Ultra-clean, lots of whitespace, subtle gradients, marquee tickers",
+    "fonts": { "smoothing": "antialiased" },
+    "animations": {
+      "marquee": {
+        "keyframes": "0%{transform:translateX(0%)} 100%{transform:translateX(-100%)}",
+        "easing": "linear",
+        "mask": "linear-gradient(to right, transparent 0%, black 10%, black 80%, transparent 100%)"
+      },
+      "gentle_levitate": {
+        "keyframes": "0%,100%{transform:translateY(0px) scale(1)} 50%{transform:translateY(-15px) scale(1.02)}",
+        "easing": "ease-in-out",
+        "purpose": "hero floating elements"
+      }
+    },
+    "features": ["marquee tickers", "floating hero elements", "modal video player", "no scrollbar"]
+  },
+
+  "bitquant_io": {
+    "url": "https://www.bitquant.io/",
+    "framework": "Likely shared with opengradient.ai (same design system)",
+    "theme": "Finance/DeFi variant of OG design",
+    "visual_signature": "Data-forward, chart aesthetics, finance dashboard feel",
+    "fonts": { "note": "Likely Geist (OG product)" },
+    "colors": { "note": "Likely shares OG brand tokens, finance data colors added" }
+  },
+
+  "twin_fun": {
+    "url": "https://www.twin.fun/",
+    "theme": "Consumer app, fun/social",
+    "visual_signature": "Chat UI, avatars, vibrant social feel on top of OG base",
+    "status": "Bot-protected, needs browser DevTools inspection"
+  }
+}

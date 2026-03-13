@@ -24,6 +24,11 @@ Inspired by the Anthropic frontend-design skill (277k installs) and professional
 3. **Spatial surprise** — break the grid occasionally. Overlap elements. Use asymmetric padding. Let headings breathe with negative letter-spacing.
 4. **Dark first** — navy `#0a0f19` backgrounds with `#24bce3` as the ONLY accent. No purple, no lime, no warm tones.
 5. **Micro-interactions everywhere** — buttons glow on hover, cards lift + border brightens, badges pulse, nav blurs on scroll.
+
+**Real OG ecosystem design patterns (extracted from production sites):**
+- opengradient.ai: Actually a **LIGHT THEME** site — white bg, `#0e4b5b` text, buttons are `font-mono UPPERCASE` with pill shape
+- bitquant.io: Finance dashboard aesthetic — mono fonts everywhere, data rows, green/red stat colors
+- memsync.ai: Ultra-clean minimal — marquee tickers, levitating hero elements, lots of whitespace
 </design_philosophy>
 
 <rules>
@@ -33,6 +38,7 @@ Inspired by the Anthropic frontend-design skill (277k installs) and professional
 4. **Animation classes from og-brand.css** (use these, they are pre-built):
    - `og-reveal` — scroll-triggered fade+slide up (auto-initialized by og-skill.js)
    - `og-float` — continuous gentle floating (for hero icons, mockups)
+   - `og-levitate` — MemSync-style smooth levitate with drop shadow (slower, more premium)
    - `og-pulse-glow` — brand-blue radial glow pulse (for badges, icons)
    - `og-shimmer` — shimmer sweep across text or surface
    - `og-border-glow` — animated border gradient around cards
@@ -40,7 +46,16 @@ Inspired by the Anthropic frontend-design skill (277k installs) and professional
    - `og-count-up` — number counter animation on scroll (add `data-target="2400"`)
    - `og-stagger` — stagger children entrance (add to grid/list parent)
    - `og-tilt` — 3D tilt on hover (for cards and mockups)
-5. **Dark theme** — `<body class="og-scope">`. Light only if explicitly requested.
+   - `og-marquee` + `og-marquee__track` + `og-marquee__item` — horizontal infinite scroll ticker (MemSync-style with edge fade mask)
+5. **Choose theme based on context:**
+   - `<body class="og-scope">` — dark navy (default, AI/tech products)
+   - `<body class="og-scope og-light">` — white/teal (matches real opengradient.ai exactly; buttons become font-mono uppercase pills)
+   - `<body class="og-scope og-finance">` — DeFi/data dashboard (mono fonts, data rows, chart bars)
+   - `<body class="og-scope og-minimal">` — ultra-clean minimal (MemSync style; use with `og-marquee`, `og-levitate`)
+
+   Use `og-light` when: building something that should look like the actual OG website.
+   Use `og-finance` when: financial data, trading, analytics dashboards.
+   Use `og-minimal` when: consumer apps, SaaS marketing, ultra-clean landing pages.
 6. **Filename** — `og-[slug].html` in current directory.
 7. **Auto-open** — `open og-[slug].html` after writing.
 8. **No Lorem ipsum** — real copy relevant to the description.

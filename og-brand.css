@@ -1001,3 +1001,444 @@
   }
 }
 .og-overflow-hidden { overflow: hidden; }
+
+/* ============================================================
+   MULTI-THEME SYSTEM v1.0
+   Themes derived from real OG ecosystem sites:
+   - og-light    → opengradient.ai (white bg, teal text, mono buttons)
+   - og-finance  → bitquant.io (data-forward, dashboard feel)
+   - og-minimal  → memsync.ai (ultra-clean, whitespace, marquee)
+   ============================================================ */
+
+/* ---- REAL OG LIGHT THEME (matches opengradient.ai exactly) ---- */
+.og-scope.og-light {
+  background-color: #ffffff;
+  color: #0e4b5b;
+}
+
+.og-scope.og-light .og-nav {
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom-color: #e6e6e6;
+}
+
+.og-scope.og-light .og-nav__link {
+  color: #0e4b5b;
+}
+.og-scope.og-light .og-nav__link:hover { color: #167188; }
+
+.og-scope.og-light .og-hero {
+  background: #ffffff;
+  min-height: 100vh;
+}
+.og-scope.og-light .og-hero::before {
+  background: radial-gradient(ellipse at 50% 60%, rgba(36, 188, 227, 0.12) 0%, transparent 65%);
+}
+
+.og-scope.og-light .og-h1,
+.og-scope.og-light .og-h2,
+.og-scope.og-light .og-h3,
+.og-scope.og-light .og-h4 {
+  color: #0e4b5b;
+}
+
+.og-scope.og-light .og-body { color: #0e4b5b; }
+.og-scope.og-light .og-caption { color: #999999; }
+.og-scope.og-light .og-label { color: #167188; }
+
+/* Light theme buttons — font-mono uppercase (real OG style) */
+.og-scope.og-light .og-btn {
+  font-family: var(--og-font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: var(--og-radius-full);
+  padding: 12px 32px;
+}
+.og-scope.og-light .og-btn-lg {
+  padding: 16px 40px;
+  font-size: 0.875rem;
+}
+.og-scope.og-light .og-btn-sm {
+  padding: 8px 20px;
+  font-size: 0.75rem;
+}
+.og-scope.og-light .og-btn-primary {
+  background: #167188;
+  color: #ffffff;
+}
+.og-scope.og-light .og-btn-primary:hover {
+  background: #0e4b5b;
+  box-shadow: 0 4px 16px rgba(22, 113, 136, 0.25);
+  transform: translateY(-1px);
+}
+.og-scope.og-light .og-btn-secondary {
+  background: transparent;
+  color: #167188;
+  border: 1px solid rgba(22, 113, 136, 0.35);
+}
+.og-scope.og-light .og-btn-secondary:hover {
+  border-color: #167188;
+  color: #0e4b5b;
+}
+
+.og-scope.og-light .og-card {
+  background: #ffffff;
+  border-color: #e6e6e6;
+  box-shadow: 0 1px 4px rgba(14, 75, 91, 0.06), 0 4px 16px rgba(14, 75, 91, 0.06);
+}
+.og-scope.og-light .og-card:hover {
+  border-color: rgba(36, 188, 227, 0.4);
+  box-shadow: 0 8px 32px rgba(14, 75, 91, 0.12);
+}
+
+.og-scope.og-light .og-card-featured {
+  background: #e9f8fc;
+  border-color: rgba(36, 188, 227, 0.4);
+}
+
+.og-scope.og-light .og-badge-primary {
+  background: rgba(36, 188, 227, 0.08);
+  color: #167188;
+  border-color: rgba(36, 188, 227, 0.25);
+}
+
+.og-scope.og-light .og-bg-dark  { background-color: #0e4b5b; }
+.og-scope.og-light .og-bg-navy  { background-color: #141e32; }
+.og-scope.og-light .og-bg-light { background-color: #e9f8fc; }
+
+.og-scope.og-light .og-section:nth-child(even),
+.og-scope.og-light .og-section--alt {
+  background-color: #e9f8fc;
+}
+
+.og-scope.og-light .og-code {
+  background: #e9f8fc;
+  border-color: #bfc8dc;
+  color: #0e4b5b;
+}
+
+.og-scope.og-light .og-input {
+  background: #ffffff;
+  border-color: #e6e6e6;
+  color: #0e4b5b;
+}
+.og-scope.og-light .og-input:focus {
+  border-color: #24bce3;
+  box-shadow: 0 0 0 3px rgba(36, 188, 227, 0.1);
+}
+.og-scope.og-light .og-input::placeholder { color: #999999; }
+
+.og-scope.og-light .og-divider { opacity: 0.2; }
+
+.og-scope.og-light .og-footer {
+  background: #e9f8fc;
+  border-top-color: #cccccc;
+}
+
+/* Light theme stat colors */
+.og-scope.og-light .og-stat__value { color: #167188; }
+.og-scope.og-light .og-stat__label { color: #999999; }
+
+/* Light theme testimonials */
+.og-scope.og-light .og-testimonial {
+  background: #ffffff;
+  border-color: #e6e6e6;
+}
+.og-scope.og-light .og-testimonial:hover {
+  border-color: rgba(36, 188, 227, 0.35);
+}
+.og-scope.og-light .og-testimonial__text { color: #1d2c4b; }
+.og-scope.og-light .og-testimonial__name { color: #0e4b5b; }
+
+/* Light theme CTA banner */
+.og-scope.og-light .og-cta-banner {
+  background: #e9f8fc;
+  border-color: rgba(36, 188, 227, 0.2);
+}
+
+/* Light section with dark panel (hero area bg) */
+.og-scope.og-light .og-section--dark {
+  background-color: #0a0f19;
+  color: #bdebf7;
+}
+.og-scope.og-light .og-section--dark .og-h1,
+.og-scope.og-light .og-section--dark .og-h2,
+.og-scope.og-light .og-section--dark .og-h3 {
+  color: #bdebf7;
+}
+.og-scope.og-light .og-section--dark .og-body { color: #bdebf7; }
+
+/* ---- FINANCE THEME (BitQuant / DeFi dashboard) ---- */
+.og-scope.og-finance {
+  background-color: #0a0f19;
+  color: #e6e6e6;
+  --og-accent: #24bce3;
+  --og-accent-alt: #41c885; /* success green as secondary accent */
+}
+
+.og-scope.og-finance .og-nav {
+  background: rgba(10, 15, 25, 0.95);
+  border-bottom: 1px solid rgba(36, 188, 227, 0.08);
+}
+
+.og-scope.og-finance .og-hero {
+  background: linear-gradient(180deg, #0a0f19 0%, #0d1420 100%);
+}
+.og-scope.og-finance .og-hero::before {
+  background: radial-gradient(ellipse at 50% 100%, rgba(36,188,227,0.15) 0%, transparent 60%);
+}
+
+.og-scope.og-finance .og-h1 { letter-spacing: -0.02em; font-weight: 400; }
+.og-scope.og-finance .og-body { color: #999999; }
+
+/* Finance cards — data-table feel */
+.og-scope.og-finance .og-card {
+  background: #0d1520;
+  border-color: rgba(36,188,227,0.08);
+  border-radius: 8px;
+}
+.og-scope.og-finance .og-card:hover {
+  border-color: rgba(36,188,227,0.25);
+  background: #101826;
+}
+
+/* Finance stat — larger, mono */
+.og-scope.og-finance .og-stat__value {
+  font-family: var(--og-font-mono);
+  font-weight: 400;
+  color: #24bce3;
+}
+.og-scope.og-finance .og-stat__value.og-stat--up   { color: #41c885; }
+.og-scope.og-finance .og-stat__value.og-stat--down  { color: #f23a3a; }
+.og-scope.og-finance .og-stat__label {
+  font-family: var(--og-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+/* Finance data row */
+.og-data-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(36,188,227,0.06);
+  font-size: 0.875rem;
+  font-family: var(--og-font-mono);
+}
+.og-data-row:last-child { border-bottom: none; }
+.og-data-row__label { color: #999999; }
+.og-data-row__value { color: #e6e6e6; }
+.og-data-row__value.og-up   { color: #41c885; }
+.og-data-row__value.og-down { color: #f23a3a; }
+
+/* Finance badge */
+.og-scope.og-finance .og-badge-primary {
+  font-family: var(--og-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  background: rgba(36,188,227,0.08);
+  border-color: rgba(36,188,227,0.15);
+}
+
+/* Finance buttons */
+.og-scope.og-finance .og-btn {
+  font-family: var(--og-font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.og-scope.og-finance .og-btn-primary {
+  background: #167188;
+}
+.og-scope.og-finance .og-btn-primary:hover {
+  background: #1d96b6;
+}
+
+/* Candlestick / chart line decoration */
+.og-chart-bar {
+  display: inline-block;
+  background: linear-gradient(180deg, #24bce3 0%, #167188 100%);
+  border-radius: 2px;
+  min-width: 4px;
+  transition: height 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.og-chart-bar.og-bar-down {
+  background: linear-gradient(180deg, #f23a3a 0%, #b02828 100%);
+}
+
+/* ---- MINIMAL THEME (MemSync / ultra-clean) ---- */
+.og-scope.og-minimal {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  --og-minimal-border: #eeeeee;
+}
+
+.og-scope.og-minimal .og-nav {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #eeeeee;
+  backdrop-filter: blur(12px);
+}
+.og-scope.og-minimal .og-nav__link { color: #1a1a1a; font-size: 0.875rem; }
+.og-scope.og-minimal .og-nav__link:hover { color: #24bce3; }
+
+.og-scope.og-minimal .og-hero {
+  background: #ffffff;
+  min-height: 100vh;
+}
+.og-scope.og-minimal .og-hero::before { display: none; }
+
+.og-scope.og-minimal .og-h1 {
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: #1a1a1a;
+}
+.og-scope.og-minimal .og-h2 {
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+}
+.og-scope.og-minimal .og-h3,
+.og-scope.og-minimal .og-h4 { color: #1a1a1a; }
+
+.og-scope.og-minimal .og-body { color: #666666; }
+.og-scope.og-minimal .og-caption { color: #999999; }
+.og-scope.og-minimal .og-label { color: #24bce3; }
+
+.og-scope.og-minimal .og-card {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+}
+.og-scope.og-minimal .og-card:hover {
+  border-color: #cccccc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 16px 48px rgba(0,0,0,0.06);
+  transform: translateY(-3px);
+}
+
+.og-scope.og-minimal .og-btn {
+  border-radius: var(--og-radius-full);
+}
+.og-scope.og-minimal .og-btn-primary {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+.og-scope.og-minimal .og-btn-primary:hover {
+  background: #333333;
+  transform: translateY(-1px);
+}
+.og-scope.og-minimal .og-btn-secondary {
+  background: transparent;
+  color: #1a1a1a;
+  border: 1px solid #cccccc;
+}
+.og-scope.og-minimal .og-btn-secondary:hover {
+  border-color: #1a1a1a;
+}
+
+.og-scope.og-minimal .og-divider {
+  background: linear-gradient(90deg, transparent, #cccccc, transparent);
+  opacity: 0.5;
+}
+
+.og-scope.og-minimal .og-badge-primary {
+  background: rgba(36,188,227,0.06);
+  color: #167188;
+  border-color: rgba(36,188,227,0.2);
+}
+
+.og-scope.og-minimal .og-footer {
+  background: #fafafa;
+  border-top-color: #eeeeee;
+}
+
+.og-scope.og-minimal .og-code {
+  background: #f5f5f5;
+  border-color: #e6e6e6;
+  color: #1a1a1a;
+}
+
+/* ---- MARQUEE (MemSync pattern) ---- */
+@keyframes og-marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.og-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+.og-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: og-marquee 28s linear infinite;
+}
+
+.og-marquee--fast .og-marquee__track  { animation-duration: 16s; }
+.og-marquee--slow .og-marquee__track  { animation-duration: 48s; }
+.og-marquee--pause .og-marquee__track { animation-play-state: paused; }
+.og-marquee:hover .og-marquee__track  { animation-play-state: paused; }
+
+.og-marquee__item {
+  flex-shrink: 0;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---- LEVITATE (MemSync hero float) ---- */
+@keyframes og-levitate {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    filter: drop-shadow(0 8px 24px rgba(36,188,227,0.15));
+  }
+  50% {
+    transform: translateY(-15px) scale(1.02);
+    filter: drop-shadow(0 24px 48px rgba(36,188,227,0.25));
+  }
+}
+
+.og-levitate {
+  animation: og-levitate 6s ease-in-out infinite;
+}
+.og-levitate--slow { animation-duration: 10s; }
+.og-levitate--fast { animation-duration: 3.5s; }
+
+/* ---- MONO BUTTON (real OG.ai button style) ---- */
+.og-btn-mono {
+  font-family: var(--og-font-mono) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  border-radius: var(--og-radius-full) !important;
+}
+
+/* ---- REDUCED MOTION — theme additions ---- */
+@media (prefers-reduced-motion: reduce) {
+  .og-levitate,
+  .og-marquee__track {
+    animation: none !important;
+  }
+  .og-marquee__track {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
