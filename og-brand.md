@@ -47,6 +47,14 @@ Inspired by the Anthropic frontend-design skill (277k installs) and professional
    - `og-stagger` — stagger children entrance (add to grid/list parent)
    - `og-tilt` — 3D tilt on hover (for cards and mockups)
    - `og-marquee` + `og-marquee__track` + `og-marquee__item` — horizontal infinite scroll ticker (MemSync-style with edge fade mask)
+   - `og-table-wrap` + `og-table` — data table with hover rows (variants: `og-table--compact`, `og-table--striped`; cell helpers: `og-td-mono`, `og-td-primary`, `og-td-success`, `og-td-error`)
+   - `og-tabs` + `og-tabs__nav` + `og-tabs__tab` + `og-tabs__panel` — auto-initialized tab navigation (add `og-tabs--pills` for pill variant; JS runs on load)
+   - `og-timeline` + `og-timeline__item` (modifiers: `--active`, `--done`) + `og-timeline__dot/body/title/desc/meta` — vertical step timeline
+   - `og-steps` — horizontal step counter (responsive: stacks on mobile)
+   - `og-avatar` (modifiers: `--sm`, `--lg`, `--xl`) + `og-avatar-group` — avatar with stacking
+   - `og-team-card` — team member card with avatar, name, role, bio, links
+   - `og-progress` + `og-progress__bar` (modifiers: `--sm`, `--lg`, `--success`, `--error`) + `og-progress-label` — progress bar with optional label
+   - `og-alert` (variants: `--info`, `--success`, `--warning`, `--error`) + `og-alert__icon/body/title` — notification alert
 5. **Choose theme based on context:**
    - `<body class="og-scope">` — dark navy (default, AI/tech products)
    - `<body class="og-scope og-light">` — white/teal (matches real opengradient.ai exactly; buttons become font-mono uppercase pills)

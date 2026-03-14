@@ -8,7 +8,7 @@
 
 [![Claude Code Skill](https://img.shields.io/badge/Claude_Code-Skill-D97706?logo=anthropic&logoColor=white)](#-claude-code-skill--og-brand)
 [![jsDelivr CDN](https://img.shields.io/badge/CDN-jsDelivr-E84D4D?logo=jsdelivr&logoColor=white)](https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js)
-[![Version](https://img.shields.io/badge/version-3.0.0-24bce3)](https://github.com/golldyck/opengradient-brand-skill)
+[![Version](https://img.shields.io/badge/version-3.1.0-24bce3)](https://github.com/golldyck/opengradient-brand-skill)
 [![License](https://img.shields.io/badge/license-MIT-0e4b5b)](LICENSE)
 
 <p>
@@ -404,6 +404,18 @@ Real design tokens extracted from [opengradient.ai](https://opengradient.ai):
 | `og-cta-banner` | Full-width CTA section |
 | `og-testimonial` | Testimonial card component |
 | `og-price-list` | Checkmark feature list |
+| `og-table-wrap` + `og-table` | Data table with hover rows, mono cells, status colors |
+| `og-table--compact` / `og-table--striped` | Table variants |
+| `og-tabs` + `og-tabs__nav/tab/panel` | Auto-initialized tab navigation (JS handles activation) |
+| `og-tabs--pills` | Pill-style tab variant |
+| `og-timeline` + `og-timeline__item` | Vertical step timeline (modifiers: `--active`, `--done`) |
+| `og-steps` | Horizontal step counter with connector lines |
+| `og-avatar` | User avatar with initials or image (sm/lg/xl sizes) |
+| `og-avatar-group` | Stacked overlapping avatars |
+| `og-team-card` | Team member card with avatar, role, bio, social links |
+| `og-progress` + `og-progress__bar` | Progress bar (sm/lg variants, success/error states) |
+| `og-progress-label` | Label row above progress bar |
+| `og-alert` | Notification alert (info/success/warning/error variants) |
 
 ---
 

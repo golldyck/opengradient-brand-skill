@@ -286,6 +286,41 @@
   }
 
   /* ============================================================
+     TABS
+     Auto-initializes .og-tabs components.
+     Usage: <div class="og-tabs"> with .og-tabs__tab and .og-tabs__panel children.
+     Tabs and panels are matched by index order.
+  ============================================================ */
+  function initTabs() {
+    var containers = document.querySelectorAll('.og-tabs');
+    containers.forEach(function (container) {
+      if (container.getAttribute('data-og-tabs-init')) return;
+      var tabs   = container.querySelectorAll('.og-tabs__tab');
+      var panels = container.querySelectorAll('.og-tabs__panel');
+      if (!tabs.length) return;
+
+      function activate(idx) {
+        tabs.forEach(function (t, i) {
+          t.classList.toggle('og-tabs__tab--active', i === idx);
+          t.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+        });
+        panels.forEach(function (p, i) {
+          p.classList.toggle('og-tabs__panel--active', i === idx);
+        });
+      }
+
+      tabs.forEach(function (tab, idx) {
+        tab.addEventListener('click', function () { activate(idx); });
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('tabindex', idx === 0 ? '0' : '-1');
+      });
+
+      activate(0);
+      container.setAttribute('data-og-tabs-init', 'true');
+    });
+  }
+
+  /* ============================================================
      INIT
   ============================================================ */
   function init() {
@@ -309,13 +344,14 @@
       initScrollReveal();
       initMobileNav();
     }
+    initTabs();
   }
 
   /* ============================================================
      PUBLIC API
   ============================================================ */
   var OGBrand = {
-    VERSION:          '3.0.0',
+    VERSION:          '3.1.0',
     LOGO_SVG:         LOGO_SVG,
     LOGO_MARK:        LOGO_MARK,
     loadCSS:          loadCSS,
@@ -323,6 +359,7 @@
     injectLogos:      injectLogos,
     initScrollReveal: initScrollReveal,
     initMobileNav:    initMobileNav,
+    initTabs:         initTabs,
     buildPage:        buildPage,
     buildSections:    buildSections,
     COLORS: {
