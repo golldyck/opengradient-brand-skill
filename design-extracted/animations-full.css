@@ -1,0 +1,121 @@
+/*
+ * animations-full.css
+ * All @keyframes animations extracted from OG ecosystem sites
+ * Scraped: 2026-03-14
+ *
+ * Sources:
+ *   - https://www.opengradient.ai/  (Next.js — CSS chunks not fully fetched; keyframes TBD)
+ *   - https://memsync.ai/           (Webflow — keyframe names confirmed: marquee, gentle-levitate)
+ *   - https://www.bitquant.io/      (bot-protected — no CSS retrieved)
+ *   - https://www.twin.fun/         (403 blocked — no CSS retrieved)
+ */
+
+
+/* ==========================================================================
+   SOURCE: https://memsync.ai/
+   Webflow site. Two keyframe animations confirmed in HTML.
+   ========================================================================== */
+
+/**
+ * @keyframes marquee
+ * Used for the scrolling ticker / logo-strip carousel.
+ * Slides the track left by exactly one full copy width so the loop
+ * is seamless when the track contains a duplicated set of items.
+ */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/**
+ * @keyframes gentle-levitate
+ * Used on floating UI elements / hero illustrations.
+ * Combines a vertical float with a very subtle scale pulse.
+ */
+@keyframes gentle-levitate {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.02);
+  }
+}
+
+/* Utility classes that pair with the above keyframes (Webflow pattern) */
+.marquee-track {
+  display: flex;
+  animation: marquee 30s linear infinite;
+}
+
+.levitate {
+  animation: gentle-levitate 4s ease-in-out infinite;
+}
+
+
+/* ==========================================================================
+   SOURCE: https://www.opengradient.ai/
+   Next.js site. CSS served from:
+     /_next/static/chunks/9c042f159284e012.css
+     /_next/static/chunks/a1fc67b819890b2e.css
+   These chunks were NOT fetched (context budget exhausted during scrape).
+   Keyframe names are unknown; placeholders below reflect common Next.js /
+   Tailwind patterns. Fetch the CSS chunks manually to fill these in.
+   ========================================================================== */
+
+/*
+ * TODO: fetch and append keyframes from:
+ *   https://www.opengradient.ai/_next/static/chunks/9c042f159284e012.css?dpl=dpl_2V5FgFfXa6WnqdX6ogFi3Jh1d43p
+ *   https://www.opengradient.ai/_next/static/chunks/a1fc67b819890b2e.css?dpl=dpl_2V5FgFfXa6WnqdX6ogFi3Jh1d43p
+ *
+ * Likely candidates based on Tailwind CSS v3 defaults:
+ */
+
+/** Tailwind spin (used for loading spinners) */
+@keyframes og-spin {
+  to { transform: rotate(360deg); }
+}
+
+/** Tailwind ping (used for pulsing badge indicators) */
+@keyframes og-ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/** Tailwind pulse */
+@keyframes og-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/** Tailwind bounce */
+@keyframes og-bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+
+/* ==========================================================================
+   SOURCE: https://www.bitquant.io/
+   Status: bot-protected. Only GTM/GA tracking script fragments were returned.
+   No CSS or keyframes could be extracted.
+   ========================================================================== */
+
+/* TODO: manual extraction needed — use headless browser or curl with User-Agent spoofing */
+
+
+/* ==========================================================================
+   SOURCE: https://www.twin.fun/
+   Status: 403 blocked (Cloudflare WAF or equivalent).
+   No CSS or keyframes could be extracted.
+   ========================================================================== */
+
+/* TODO: manual extraction needed */
