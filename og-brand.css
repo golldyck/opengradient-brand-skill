@@ -77,6 +77,36 @@
   --og-shadow-primary: 0 0 40px rgba(36, 188, 227, 0.25);
   --og-shadow-card:    0 2px 24px rgba(0, 0, 0, 0.4);
 
+  /* Easing (from official opengradient.ai CSS) */
+  --og-ease-out:  cubic-bezier(0, 0, .2, 1);
+  --og-ease-in:   cubic-bezier(.4, 0, 1, 1);
+  --og-ease:      cubic-bezier(.4, 0, .2, 1);
+  --og-duration:  .15s;
+  --og-duration-slow: .3s;
+
+  /* Blur */
+  --og-blur-sm: 8px;
+  --og-blur-lg: 16px;
+  --og-blur-xl: 24px;
+
+  /* Official OG semantic aliases (matches opengradient.ai var names) */
+  --color-brand-primary-100: var(--og-primary-100);
+  --color-brand-primary-400: var(--og-primary-400);
+  --color-brand-primary-500: var(--og-primary-500);
+  --color-brand-primary-700: var(--og-primary-700);
+  --color-brand-primary-800: var(--og-primary-800);
+  --color-brand-secondary-800: var(--og-secondary-800);
+  --color-brand-secondary-950: var(--og-secondary-950);
+  --color-text-body:         var(--og-text);
+  --color-text-subtle:       var(--og-text-muted);
+  --color-text-heading:      var(--og-text-heading);
+  --color-surface-primary:   var(--og-white);
+  --color-surface-secondary: var(--og-primary-100);
+  --color-success-500: var(--og-success);
+  --color-error-500:   var(--og-error);
+  --color-warning-500: var(--og-warning);
+  --color-info-500:    var(--og-info);
+
   /* Backwards-compat aliases */
   --og-cyan:       var(--og-primary-500);
   --og-teal:       var(--og-primary-700);

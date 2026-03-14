@@ -1,0 +1,139 @@
+{
+  "_source": "https://www.opengradient.ai — Tailwind CSS v4 chunks extracted 2026-03-14",
+  "_chunks": [
+    "/_next/static/chunks/9c042f159284e012.css — Tailwind v4 utility layer (~200KB)",
+    "/_next/static/chunks/a1fc67b819890b2e.css — Font-face declarations (Geist Mono)"
+  ],
+  "_notes": "No custom @keyframes found beyond Tailwind defaults. All brand tokens are CSS custom properties.",
+
+  "keyframes": {
+    "spin":   "to { transform: rotate(360deg) }",
+    "pulse":  "50% { opacity: .5 }",
+    "bounce": "0%,100% { transform:translateY(-25%); animation-timing-function:cubic-bezier(0.8,0,1,1) } 50% { transform:none; animation-timing-function:cubic-bezier(0,0,0.2,1) }"
+  },
+
+  "typography": {
+    "--font-sans": "var(--font-geist), system-ui, sans-serif",
+    "--font-mono": "var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+  },
+
+  "brand_primary": {
+    "--color-brand-primary-100": "#e9f8fc",
+    "--color-brand-primary-200": "#bdebf7",
+    "--color-brand-primary-300": "#a7e4f4",
+    "--color-brand-primary-400": "#50c9e9",
+    "--color-brand-primary-500": "#24bce3",
+    "--color-brand-primary-600": "#1d96b6",
+    "--color-brand-primary-700": "#167188",
+    "--color-brand-primary-800": "#0e4b5b",
+    "--color-brand-primary-900": "#041317"
+  },
+
+  "brand_secondary": {
+    "--color-brand-secondary-100": "#bfc8dc",
+    "--color-brand-secondary-700": "#1d2c4b",
+    "--color-brand-secondary-800": "#141e32",
+    "--color-brand-secondary-950": "#0a0f19"
+  },
+
+  "brand_neutral": {
+    "--color-brand-neutral-50":    "#eeeeee",
+    "--color-brand-neutral-100":   "#e6e6e6",
+    "--color-brand-neutral-200":   "#cccccc",
+    "--color-brand-neutral-400":   "#999999",
+    "--color-brand-neutral-white": "#ffffff"
+  },
+
+  "semantic_surface": {
+    "--color-surface-primary":   "#ffffff",
+    "--color-surface-secondary": "#e9f8fc",
+    "--color-surface-tertiary":  "#0e4b5b"
+  },
+
+  "semantic_text": {
+    "--color-text-body":             "#0e4b5b",
+    "--color-text-subtle":           "#999999",
+    "--color-text-link":             "#0e4b5b",
+    "--color-text-link-action":      "#ffffff",
+    "--color-text-heading":          "#0e4b5b",
+    "--color-text-heading-on-dark":  "#e9f8fc",
+    "--color-text-heading-invert":   "#1d96b6",
+    "--color-text-body-invert":      "#e9f8fc"
+  },
+
+  "semantic_border": {
+    "--color-border-primary":   "#bfc8dc",
+    "--color-border-secondary": "#eeeeee",
+    "--color-border-input":     "#e6e6e6"
+  },
+
+  "semantic_icons": {
+    "--color-icons-primary": "#0e4b5b"
+  },
+
+  "status_colors": {
+    "--color-success-50":  "#ebf9f2",
+    "--color-success-500": "#41c885",
+    "--color-success-600": "#2e9e66",
+    "--color-success-700": "#22774d",
+    "--color-warning-500": "#c49508",
+    "--color-warning-600": "#c49508",
+    "--color-error-500":   "#f23a3a",
+    "--color-error-600":   "#bf0d0d",
+    "--color-error-700":   "#900909",
+    "--color-info-500":    "#2c80ed",
+    "--color-info-600":    "#105bbc"
+  },
+
+  "easing": {
+    "--ease-out": "cubic-bezier(0,0,.2,1)",
+    "--default-transition-duration": ".15s",
+    "--default-transition-timing-function": "cubic-bezier(.4,0,.2,1)"
+  },
+
+  "border_radius": {
+    "--radius-md":  ".375rem",
+    "--radius-lg":  ".5rem",
+    "--radius-xl":  ".75rem",
+    "--radius-2xl": "1rem",
+    "--radius-3xl": "1.5rem"
+  },
+
+  "blur": {
+    "--blur-sm": "8px",
+    "--blur-lg": "16px",
+    "--blur-xl": "24px"
+  },
+
+  "typography_scale": {
+    "--text-xs":            ".75rem",
+    "--text-sm":            ".875rem",
+    "--text-base":          "1rem",
+    "--text-lg":            "1.125rem",
+    "--text-2xl":           "1.5rem",
+    "--text-3xl":           "1.875rem",
+    "--font-weight-normal":   "400",
+    "--font-weight-medium":   "500",
+    "--font-weight-semibold": "600",
+    "--tracking-tight":     "-.025em",
+    "--tracking-wide":      ".025em",
+    "--tracking-wider":     ".05em",
+    "--leading-tight":      "1.25",
+    "--leading-normal":     "1.5"
+  },
+
+  "fonts": {
+    "geist_mono_subsets": [
+      "cyrillic: 4fa387ec64143e14-s.c1fdd6c2.woff2",
+      "latin_ext: bbc41e54d2fcbd21-s.799d8ef8.woff2",
+      "latin: 797e433ab948586e-s.p.dbea232f.woff2"
+    ],
+    "geist_mono_fallback": {
+      "src": "local(Arial)",
+      "ascent-override": "74.67%",
+      "descent-override": "21.92%",
+      "line-gap-override": "0.0%",
+      "size-adjust": "134.59%"
+    }
+  }
+}
