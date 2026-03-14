@@ -71,6 +71,18 @@ Inspired by the Anthropic frontend-design skill (277k installs) and professional
 10. **Entrance animations on hero** — h1 gets `fadeUp 0.7s ease both 0.2s`, subtext `0.5s delay`, CTA `0.7s delay`.
 11. **Every button** — add `og-btn-glow` class for hover glow effect.
 12. **Every section** — has a subtle `og-divider` or gradient separator.
+13. **LOGO — brand kit only, NEVER custom SVGs:**
+    - Nav/header logo: `<div data-og-logo="wordmark" style="height:30px;"></div>` — always wordmark, always this attribute
+    - Footer logo: `<div data-og-logo="mark" style="height:22px;opacity:.4;"></div>` — mark icon is ok in footer
+    - ❌ NEVER write custom inline `<svg>` as a logo
+    - ❌ NEVER use text "OpenGradient" styled as a logo
+    - ❌ NEVER use emoji (⬡ ◆ ✦) as a logo replacement
+    - og-skill.js injects the official SVG automatically when it finds `data-og-logo`
+14. **Self-review before saving:**
+    - Confirm `data-og-logo="wordmark"` exists in the nav
+    - Confirm `og-skill.js` script tag is in `<head>`
+    - Confirm theme class is on `<body>`
+    - Confirm no custom logo SVGs were written
 </rules>
 
 <animation_patterns>
@@ -236,7 +248,13 @@ document.querySelectorAll('.og-tilt').forEach(card => {
    - `og-pulse-glow` on live badges and CTAs
    - count-up JS for any stats
    - tilt JS for cards
-5. Save and open.
+5. **Self-review before saving** — scan the generated HTML and verify:
+   - ✓ `<script src=".../og-skill.js">` is in `<head>`
+   - ✓ `<body class="og-scope ...">` has theme class
+   - ✓ `<div data-og-logo="wordmark">` exists in the nav — NOT a custom SVG or text
+   - ✓ No inline logo SVG paths were written
+   - Fix any issues found, then save.
+6. Save and open.
 </approach>
 
 <html_template>
