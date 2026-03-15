@@ -1,5 +1,5 @@
 /**
- * OpenGradient Brand Skill v3.4.0
+ * OpenGradient Brand Skill v3.4.1
  * Applies real OpenGradient visual identity to any project.
  * Usage: <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
  *
@@ -46,17 +46,19 @@
   var LOGO_MARK =
     /* Reconstructed from official brand kit (notion.so PNG-Files logomark-cyan.png).
        4 stroke-based shapes: outer rounded diamond + vertical pill + horizontal pill
-       + center circle. All stroke="currentColor", fill="none".
+       + center circle. All stroke="currentColor", style="fill:none".
+       NOTE: using style="fill:none" (NOT fill attribute) so CSS cannot override it.
+       SVG presentation attributes (fill="none") lose to any CSS rule — inline style wins.
        Measured directly from the 1000×1000 brand kit PNG:
          outer diamond: 64×64 rect rx=14, rotated 45° at center (tips ≈3px from edge)
          vertical/horizontal pills: 26×90, rx=13 (fully rounded), same reach as diamond
          center circle: r=8 (small open hole)
          stroke-width: 9 (≈9% of total size, matching brand kit stroke weight)       */
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">' +
-    '<rect x="18" y="18" width="64" height="64" rx="14" transform="rotate(45 50 50)" stroke="currentColor" stroke-width="9" stroke-linejoin="round" fill="none"/>' +
-    '<rect x="37" y="5" width="26" height="90" rx="13" stroke="currentColor" stroke-width="9" fill="none"/>' +
-    '<rect x="5" y="37" width="90" height="26" rx="13" stroke="currentColor" stroke-width="9" fill="none"/>' +
-    '<circle cx="50" cy="50" r="8" stroke="currentColor" stroke-width="9" fill="none"/>' +
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="fill:none;overflow:visible;">' +
+    '<rect x="18" y="18" width="64" height="64" rx="14" transform="rotate(45 50 50)" stroke="currentColor" stroke-width="9" stroke-linejoin="round" style="fill:none"/>' +
+    '<rect x="37" y="5" width="26" height="90" rx="13" stroke="currentColor" stroke-width="9" style="fill:none"/>' +
+    '<rect x="5" y="37" width="90" height="26" rx="13" stroke="currentColor" stroke-width="9" style="fill:none"/>' +
+    '<circle cx="50" cy="50" r="8" stroke="currentColor" stroke-width="9" style="fill:none"/>' +
     '</svg>';
 
   /* ============================================================
