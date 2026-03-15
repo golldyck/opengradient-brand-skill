@@ -258,7 +258,6 @@
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  color: var(--og-white);
 }
 
 .og-logo svg,

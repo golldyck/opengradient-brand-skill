@@ -103,10 +103,13 @@
         el.style.opacity = '';
       }
       container.innerHTML = ismark ? LOGO_MARK : LOGO_SVG;
-      /* Respect host element's height */
-      if (el.style.height) {
-        var svg = container.querySelector('svg');
-        if (svg) { svg.style.height = el.style.height; svg.style.width = 'auto'; }
+      /* Apply color + height directly on the SVG so CSS class cannot override */
+      var svg = container.querySelector('svg');
+      if (svg) {
+        var c = el.style.color || (isdark ? 'var(--og-primary-800)' : '#ffffff');
+        svg.style.color = c;
+        svg.setAttribute('fill', 'currentColor');
+        if (el.style.height) { svg.style.height = el.style.height; svg.style.width = 'auto'; }
       }
 
       el.innerHTML = '';
