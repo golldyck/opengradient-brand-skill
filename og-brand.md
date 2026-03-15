@@ -82,7 +82,7 @@ Inspired by the Anthropic frontend-design skill (277k installs) and professional
 
     **Correct footer logo:**
     ```html
-    <div data-og-logo="mark" style="height:22px;opacity:.4;"></div>
+    <div data-og-logo="mark" style="height:22px;color:rgba(36,188,227,.45);"></div>
     ```
 
     ❌ NEVER add a custom icon/emoji/shape NEXT TO or BEFORE the wordmark:
@@ -390,7 +390,7 @@ document.querySelectorAll('.og-tilt').forEach(card => {
   <!-- FOOTER -->
   <footer style="padding:3rem 2rem;border-top:1px solid rgba(36,188,227,.06);">
     <div class="og-container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
-      <div data-og-logo="mark" style="height:24px;opacity:.4;"></div>
+      <div data-og-logo="mark" style="height:24px;color:rgba(36,188,227,.45);"></div>
       <p class="og-caption" style="color:rgba(36,188,227,.3);">© 2025 OpenGradient. MIT License.</p>
     </div>
   </footer>
