@@ -104,7 +104,17 @@
       container.href = el.getAttribute('data-og-href') || 'https://opengradient.ai';
       /* Respect inline color on the host element; fall back to theme defaults */
       container.style.color = el.style.color || (isdark ? '#0e4b5b' : '#ffffff');
+      /* Transfer opacity from host to container so white logos don't look gray */
+      if (el.style.opacity) {
+        container.style.opacity = el.style.opacity;
+        el.style.opacity = '';
+      }
       container.innerHTML = ismark ? LOGO_MARK : LOGO_SVG;
+      /* Respect host element's height for the injected SVG */
+      if (el.style.height) {
+        var svg = container.querySelector('svg');
+        if (svg) { svg.style.height = el.style.height; svg.style.width = 'auto'; }
+      }
 
       el.innerHTML = '';
       el.appendChild(container);
