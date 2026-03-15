@@ -71,18 +71,48 @@ Inspired by the Anthropic frontend-design skill (277k installs) and professional
 10. **Entrance animations on hero** — h1 gets `fadeUp 0.7s ease both 0.2s`, subtext `0.5s delay`, CTA `0.7s delay`.
 11. **Every button** — add `og-btn-glow` class for hover glow effect.
 12. **Every section** — has a subtle `og-divider` or gradient separator.
-13. **LOGO — brand kit only, NEVER custom SVGs:**
-    - Nav/header logo: `<div data-og-logo="wordmark" style="height:30px;"></div>` — always wordmark, always this attribute
-    - Footer logo: `<div data-og-logo="mark" style="height:22px;opacity:.4;"></div>` — mark icon is ok in footer
-    - ❌ NEVER write custom inline `<svg>` as a logo
-    - ❌ NEVER use text "OpenGradient" styled as a logo
-    - ❌ NEVER use emoji (⬡ ◆ ✦) as a logo replacement
-    - og-skill.js injects the official SVG automatically when it finds `data-og-logo`
-14. **Self-review before saving:**
-    - Confirm `data-og-logo="wordmark"` exists in the nav
-    - Confirm `og-skill.js` script tag is in `<head>`
-    - Confirm theme class is on `<body>`
-    - Confirm no custom logo SVGs were written
+13. **LOGO — brand kit only, ONE element, nothing next to it:**
+
+    The OG wordmark is a SINGLE COMPLETE UNIT — it already contains the mark icon + "OpenGradient" text as one SVG. NEVER place anything next to it.
+
+    **Correct nav logo — exactly this, nothing else:**
+    ```html
+    <div data-og-logo="wordmark" style="height:30px;"></div>
+    ```
+
+    **Correct footer logo:**
+    ```html
+    <div data-og-logo="mark" style="height:22px;opacity:.4;"></div>
+    ```
+
+    ❌ NEVER add a custom icon/emoji/shape NEXT TO or BEFORE the wordmark:
+    ```html
+    <!-- WRONG — the ♦ before the wordmark is forbidden -->
+    <span>♦</span><div data-og-logo="wordmark"></div>
+
+    <!-- WRONG — any element alongside the wordmark -->
+    <div style="display:flex;gap:.5rem;">
+      <svg>...</svg>  ← forbidden
+      <div data-og-logo="wordmark"></div>
+    </div>
+    ```
+
+    ❌ NEVER write custom inline `<svg>` as a logo
+    ❌ NEVER use text "OpenGradient" styled as a logo
+    ❌ NEVER use emoji (⬡ ◆ ✦ ◈ ⬥ 🔷) as a logo or logo prefix
+    ❌ NEVER duplicate the logo — one `data-og-logo="wordmark"` in the nav, that's it
+
+    The wordmark div MUST be the only child in the logo slot of the nav. No siblings, no wrappers with other children.
+
+14. **Self-review before saving — logo checklist (check each one):**
+    - ✓ `<div data-og-logo="wordmark">` exists in the nav
+    - ✓ Nothing is placed NEXT TO the wordmark div (no icons, no emoji, no custom SVG siblings)
+    - ✓ The wordmark div is the ONLY logo element in the nav — not duplicated
+    - ✓ `og-skill.js` script tag is in `<head>` — before any other scripts
+    - ✓ `<body class="og-scope ...">` has correct theme class
+    - ✓ Zero custom inline SVG paths written as logo
+    - ✓ Zero emoji used as logo decoration (♦ ◆ ⬡ ✦ etc.)
+    - If ANY check fails → fix before saving, then re-check all.
 </rules>
 
 <animation_patterns>
@@ -327,9 +357,10 @@ document.querySelectorAll('.og-tilt').forEach(card => {
 </head>
 <body class="og-scope">
 
-  <!-- NAV -->
+  <!-- NAV — logo slot contains ONLY data-og-logo="wordmark", nothing else -->
   <nav class="og-nav">
     <div class="og-container" style="display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;">
+      <!-- LOGO: one element only, no icons/emoji next to it -->
       <div data-og-logo="wordmark" style="height:30px;"></div>
       <div style="display:flex;align-items:center;gap:2rem;">
         <a href="#" class="og-body" style="color:var(--og-primary-200);text-decoration:none;font-size:.88rem;">[NAV 1]</a>
