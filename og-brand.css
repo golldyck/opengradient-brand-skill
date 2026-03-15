@@ -261,7 +261,8 @@
   color: var(--og-white);
 }
 
-.og-logo svg {
+.og-logo svg,
+.og-logo img {
   height: 28px;
   width: auto;
 }
