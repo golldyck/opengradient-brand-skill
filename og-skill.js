@@ -1,5 +1,5 @@
 /**
- * OpenGradient Brand Skill v3.3.0
+ * OpenGradient Brand Skill v3.4.0
  * Applies real OpenGradient visual identity to any project.
  * Usage: <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
  *
@@ -44,13 +44,19 @@
      Uses fill="currentColor" — inherits CSS color property.
   ============================================================ */
   var LOGO_MARK =
-    /* Outer boundary path only — traced from LOGO_SVG (x=0..121 of 643×121 wordmark).
-       Contains only the first subpath (Z-terminated outer silhouette) which cleanly
-       renders the full OG mark shape including the 4 arm extensions at all sizes.
-       Inner connector subpaths are intentionally excluded — they create artifacts
-       at small sizes (≤30px) due to counter-winding holes. */
-    '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 121 121">' +
-    '<path fill="currentColor" d="M102.823 36.71a14.4 14.4 0 0 0-10.109-4.12H88.36v-4.358c0-3.801-1.462-7.393-4.116-10.114L70.82 4.363A14.36 14.36 0 0 0 60.466 0c-3.93 0-7.606 1.55-10.352 4.363L36.69 18.12a14.4 14.4 0 0 0-4.117 10.114v4.359h-4.356c-3.8 0-7.39 1.463-10.108 4.119L4.36 50.142A14.37 14.37 0 0 0 0 60.501a14.37 14.37 0 0 0 4.36 10.358L18.11 84.29a14.39 14.39 0 0 0 10.107 4.12h4.356v4.356a14.4 14.4 0 0 0 4.117 10.114l13.424 13.757A14.35 14.35 0 0 0 60.466 121c3.93 0 7.607-1.549 10.353-4.363l13.424-13.757a14.4 14.4 0 0 0 4.116-10.114V88.41h4.355c3.8 0 7.39-1.463 10.109-4.119l13.749-13.431a14.37 14.37 0 0 0 4.36-10.358c0-3.932-1.549-7.611-4.36-10.359l-13.749-13.431Z"/>' +
+    /* Reconstructed from official brand kit (notion.so PNG-Files logomark-cyan.png).
+       4 stroke-based shapes: outer rounded diamond + vertical pill + horizontal pill
+       + center circle. All stroke="currentColor", fill="none".
+       Measured directly from the 1000×1000 brand kit PNG:
+         outer diamond: 64×64 rect rx=14, rotated 45° at center (tips ≈3px from edge)
+         vertical/horizontal pills: 26×90, rx=13 (fully rounded), same reach as diamond
+         center circle: r=8 (small open hole)
+         stroke-width: 9 (≈9% of total size, matching brand kit stroke weight)       */
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">' +
+    '<rect x="18" y="18" width="64" height="64" rx="14" transform="rotate(45 50 50)" stroke="currentColor" stroke-width="9" stroke-linejoin="round" fill="none"/>' +
+    '<rect x="37" y="5" width="26" height="90" rx="13" stroke="currentColor" stroke-width="9" fill="none"/>' +
+    '<rect x="5" y="37" width="90" height="26" rx="13" stroke="currentColor" stroke-width="9" fill="none"/>' +
+    '<circle cx="50" cy="50" r="8" stroke="currentColor" stroke-width="9" fill="none"/>' +
     '</svg>';
 
   /* ============================================================
