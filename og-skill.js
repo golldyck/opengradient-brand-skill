@@ -1,5 +1,5 @@
 /**
- * OpenGradient Brand Skill v3.5.0
+ * OpenGradient Brand Skill v3.5.1
  * Applies real OpenGradient visual identity to any project.
  * Usage: <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
  *
@@ -108,13 +108,17 @@
         container.style.opacity = el.style.opacity;
         el.style.opacity = '';
       }
-      /* Pick correct mark variant: dark bg → white, light bg → black */
-      var markImg = isdark ? LOGO_MARK_BLACK : LOGO_MARK_WHITE;
+      /* Pick correct mark variant based on variant + color hint */
+      var elColor = el.style.color || '';
+      var isCyan  = !isdark && (elColor.indexOf('24bce3') !== -1 || elColor.indexOf('50c9e9') !== -1);
+      var markImg = isdark ? LOGO_MARK_BLACK : (isCyan ? LOGO_MARK_CYAN : LOGO_MARK_WHITE);
       container.innerHTML = ismark ? markImg : LOGO_SVG;
-      /* Respect host element's height for the injected SVG */
+      /* Respect host element's height */
       if (el.style.height) {
         var svg = container.querySelector('svg');
         if (svg) { svg.style.height = el.style.height; svg.style.width = 'auto'; }
+        var img = container.querySelector('img');
+        if (img) { img.style.height = el.style.height; }
       }
 
       el.innerHTML = '';
