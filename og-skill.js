@@ -1,5 +1,5 @@
 /**
- * OpenGradient Brand Skill v3.0.0
+ * OpenGradient Brand Skill v3.1.0
  * Applies real OpenGradient visual identity to any project.
  * Usage: <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
  *
@@ -101,6 +101,68 @@
       el.innerHTML = '';
       el.appendChild(container);
       el.setAttribute('data-og-injected', 'true');
+    });
+
+    // Remove rogue icons/SVGs placed next to the wordmark by other AI tools.
+    // The wordmark is already a complete mark+text unit — nothing should sit beside it.
+    cleanSiblingIcons();
+  }
+
+  /* ============================================================
+     CLEAN SIBLING ICONS next to [data-og-logo="wordmark"]
+     Removes custom SVGs, small images, and single-char emoji
+     that other AI tools mistakenly place alongside the wordmark.
+     The official wordmark already contains the mark icon — any
+     sibling icon is always a duplicate and must be removed.
+  ============================================================ */
+  function cleanSiblingIcons() {
+    // Only target wordmark slots (not standalone mark icons in footer)
+    var wordmarks = document.querySelectorAll('[data-og-logo="wordmark"], [data-og-logo="wordmark-dark"]');
+    wordmarks.forEach(function (logoEl) {
+      var parent = logoEl.parentElement;
+      if (!parent) return;
+
+      var children = Array.prototype.slice.call(parent.children);
+      children.forEach(function (sibling) {
+        if (sibling === logoEl) return; // keep the wordmark itself
+
+        // Remove sibling <svg> elements (custom icon injected by other AIs)
+        if (sibling.tagName === 'SVG') {
+          sibling.setAttribute('data-og-removed', 'duplicate-icon');
+          sibling.style.display = 'none';
+          return;
+        }
+
+        // Remove sibling <img> elements that look like icons (small, no alt text)
+        if (sibling.tagName === 'IMG') {
+          var w = sibling.getAttribute('width') || sibling.offsetWidth;
+          if (!w || parseInt(w, 10) <= 64) {
+            sibling.setAttribute('data-og-removed', 'duplicate-icon');
+            sibling.style.display = 'none';
+          }
+          return;
+        }
+
+        // Remove sibling elements that contain ONLY a single emoji or icon character
+        // (common pattern: <span>♦</span> or <div>⬡</div> next to wordmark)
+        var text = (sibling.textContent || '').trim();
+        if (text.length <= 3 && /[\u{1F300}-\u{1FFFF}◆◇⬡⬢✦✧♦♦❖❋❊❉❈❇◈⬥⬦]/u.test(text)) {
+          sibling.setAttribute('data-og-removed', 'duplicate-icon');
+          sibling.style.display = 'none';
+          return;
+        }
+
+        // Remove sibling elements whose only content is a single inline SVG
+        // and they have no meaningful text (e.g. <div class="logo-icon"><svg>...</svg></div>)
+        if (
+          sibling.children.length === 1 &&
+          sibling.children[0].tagName === 'SVG' &&
+          text.replace(/\s/g, '').length === 0
+        ) {
+          sibling.setAttribute('data-og-removed', 'duplicate-icon');
+          sibling.style.display = 'none';
+        }
+      });
     });
   }
 
