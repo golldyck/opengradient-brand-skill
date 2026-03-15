@@ -1,5 +1,5 @@
 /**
- * OpenGradient Brand Skill v3.5.1
+ * OpenGradient Brand Skill v3.5.2
  * Applies real OpenGradient visual identity to any project.
  * Usage: <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
  *
@@ -39,17 +39,11 @@
 
   /* ============================================================
      LOGO SVG — MARK ONLY
-     Extracted directly from LOGO_SVG (x=0..121 of the 643×121 wordmark).
-     viewBox="0 0 121 121" crops to just the mark portion.
-     Uses fill="currentColor" — inherits CSS color property.
+     Reuses LOGO_SVG with viewBox cropped to first 121px (mark portion).
+     Uses fill="currentColor" — inherits CSS color property directly.
+     No webp files needed — works at any size, any color.
   ============================================================ */
-  var _CDN = 'https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/assets/';
-  /* LOGO_MARK: use official webp assets — correct interlocking rings design */
-  var LOGO_MARK_WHITE = '<img src="' + _CDN + 'logomark-white.webp" style="height:100%;width:auto;display:block;" alt="OpenGradient" />';
-  var LOGO_MARK_CYAN  = '<img src="' + _CDN + 'logomark-cyan.webp"  style="height:100%;width:auto;display:block;" alt="OpenGradient" />';
-  var LOGO_MARK_BLACK = '<img src="' + _CDN + 'logomark-black.webp" style="height:100%;width:auto;display:block;" alt="OpenGradient" />';
-  /* LOGO_MARK is the default (dark bg → white mark) */
-  var LOGO_MARK = LOGO_MARK_WHITE;
+  var LOGO_MARK = LOGO_SVG.replace('viewBox="0 0 643 121"', 'viewBox="0 0 121 121"');
 
   /* ============================================================
      LOAD CSS
@@ -108,17 +102,11 @@
         container.style.opacity = el.style.opacity;
         el.style.opacity = '';
       }
-      /* Pick correct mark variant based on variant + color hint */
-      var elColor = el.style.color || '';
-      var isCyan  = !isdark && (elColor.indexOf('24bce3') !== -1 || elColor.indexOf('50c9e9') !== -1);
-      var markImg = isdark ? LOGO_MARK_BLACK : (isCyan ? LOGO_MARK_CYAN : LOGO_MARK_WHITE);
-      container.innerHTML = ismark ? markImg : LOGO_SVG;
+      container.innerHTML = ismark ? LOGO_MARK : LOGO_SVG;
       /* Respect host element's height */
       if (el.style.height) {
         var svg = container.querySelector('svg');
         if (svg) { svg.style.height = el.style.height; svg.style.width = 'auto'; }
-        var img = container.querySelector('img');
-        if (img) { img.style.height = el.style.height; }
       }
 
       el.innerHTML = '';
