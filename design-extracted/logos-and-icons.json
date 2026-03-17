@@ -1,0 +1,73 @@
+{
+  "_note": "Scraped from OG ecosystem sites 2026-03-14",
+  "opengradient_ai": {
+    "favicon_url": "https://www.opengradient.ai/favicon.ico?favicon.4352fedb.ico",
+    "logo_wordmark_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 643 121\" class=\"h-full w-auto\"><g clipPath=\"url(#logo_svg__a)\"><path fill=\"currentColor\" d=\"M513.463 30.217c-4.058 0-6.238 2.105-6.238 5.865...\"/></g><defs><clipPath id=\"logo_svg__a\"><path fill=\"currentColor\" d=\"M0 0h643v121H0z\"/></clipPath></defs></svg>",
+    "logo_mark_svg": null,
+    "logo_mark_named_asset": "open-gradient-symbol-white (178x178px, referenced via brease.io CDN)",
+    "css_files": [
+      "https://www.opengradient.ai/_next/static/chunks/9c042f159284e012.css?dpl=dpl_2V5FgFfXa6WnqdX6ogFi3Jh1d43p",
+      "https://www.opengradient.ai/_next/static/chunks/a1fc67b819890b2e.css?dpl=dpl_2V5FgFfXa6WnqdX6ogFi3Jh1d43p"
+    ],
+    "image_assets": [
+      "/_next/image?url=%2Fimages%2Fhome%2Fhero-globe-mobile.png&w=3840&q=75",
+      "https://s3.eu-central-1.amazonaws.com/assets.brease.io/media/sit-a0d7c3b5-d64a-4beb-8e07-8092e12da8d7/a14492e8-5e91-4efd-808d-5439a34104db.webp"
+    ],
+    "fonts": [
+      "/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2",
+      "/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2"
+    ],
+    "notes": "Next.js site. Inline SVG wordmark found (viewBox 0 0 643 121, id=logo_svg__a). Symbol mark referenced as named brease.io media asset. CSS files not fetched due to context limits — keyframes/vars may be in those chunks."
+  },
+  "memsync_ai": {
+    "logo_url": "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/688759b2ba1bdc7e7bda13a3_logo.png",
+    "cdn_base": "cdn.prod.website-files.com",
+    "cdn_site_id": "6885e046690069d5cd04bf79",
+    "animation_keyframes": ["marquee", "gentle-levitate"],
+    "asset_urls": [
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/688759b2ba1bdc7e7bda13a3_logo.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6891fb05287e4bd5ad743edc_app-logo_4.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6891fb053a1a3815a26b3d1e_app-logo_1.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6891fb052d62fe871e179ce1_app-logo_3.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6891fb051065c3a380b7b056_app-logo_2.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/68967d185c2cadc902b66989_preview.jpg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887c790a54c503f983ae6f9_Light.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/688788ed388ec8bc7d6c6050_hero-bg.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887a36bb21af6c674bbb650_logo_01.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887a36958fc36afbd07af09_logo_02.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887a36c954ad5e9f36b0725_logo_04.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887a368f232852c51ecf5bf_logo_05.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887a36c034120ce47e9885c_logo_06.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887a36f1dec594761812f2c_logo_07.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887a36dc71f7c13c467728a_logo_08.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887a3698b7e8e9cf5904c80_logo_09.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887492d938f53b405cd1611_ic_01.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887492decacb716c49ae3f2_ic_02.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887492d9bb53df7c52ca164_ic_03.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/68879208bee1b1d451787eb7_compare-bg.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887a64a3702086ee7253c12_team-decor.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6897a51e69d42868e55fc5d4_a16z.svg",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d91e397fc09314eaa117_logo_backed_11.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d91e5b134ad593622adc_logo_backed_12.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d91e734e2462170fa113_logo_backed_03.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d91ed01fcb2800574543_logo_backed_04.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d91e71b9389424f9628e_logo_backed_05.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d91eac8f9fc0cef2acd2_logo_backed_06.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d91ec188528522389d64_logo_backed_07.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d91ecbc040107d8a188b_logo_backed_08.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d9b60173972350c1d076_logo_backed_09.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/6887d91e147daead3642af28_logo_backed_10.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/68875eb8034e6f5fa4ceccda_bg-top.png",
+      "https://cdn.prod.website-files.com/6885e046690069d5cd04bf79/68875eabc2bb1f9f03470b99_bg-bottom.png"
+    ],
+    "notes": "Webflow site. Logo PNG at top-level CDN. 4 app-logo SVGs (app-logo_1 through _4). 9 partner/integration logos (logo_01 through _09). 10 backer logos (logo_backed_03 through _12). 3 icon PNGs (ic_01 through _03). Animations: marquee (ticker scroll) and gentle-levitate (floating element) — keyframe names confirmed from HTML, implementations reconstructed."
+  },
+  "bitquant_io": {
+    "status": "bot-protected",
+    "notes": "Fetch returned only Google Tag Manager / Google Analytics tracking script fragments. No structural HTML, no assets, no SVGs. The site renders client-side behind bot protection. Direct asset paths not attempted due to context budget. Try: curl -A 'Mozilla/5.0' https://www.bitquant.io/ or use a headless browser."
+  },
+  "twin_fun": {
+    "status": "403-blocked",
+    "notes": "HTTP 403 returned immediately. No content fetched. Direct /favicon.ico and /logo.svg paths not attempted due to context budget. Likely Cloudflare or similar WAF blocking automated fetches."
+  }
+}

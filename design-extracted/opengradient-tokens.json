@@ -1,0 +1,102 @@
+{
+  "_source": "https://www.opengradient.ai/ — extracted from /_next/static/chunks/*.css",
+  "_note": "Real production design tokens from opengradient.ai CSS",
+
+  "fonts": {
+    "sans": "Geist",
+    "mono": "Geist Mono",
+    "css_var_sans": "var(--font-geist), system-ui, sans-serif",
+    "css_var_mono": "var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+    "weights": { "normal": 400, "medium": 500, "semibold": 600 },
+    "tracking": { "tight": "-0.025em", "wide": "0.025em", "wider": "0.05em" },
+    "leading": { "tight": 1.25, "normal": 1.5 }
+  },
+
+  "scale": {
+    "xs":   "0.75rem",
+    "sm":   "0.875rem",
+    "base": "1rem",
+    "lg":   "1.125rem",
+    "2xl":  "1.5rem",
+    "3xl":  "1.875rem"
+  },
+
+  "colors": {
+    "brand_primary": {
+      "100": "#e9f8fc",
+      "200": "#bdebf7",
+      "300": "#a7e4f4",
+      "400": "#50c9e9",
+      "500": "#24bce3",
+      "600": "#1d96b6",
+      "700": "#167188",
+      "800": "#0e4b5b",
+      "900": "#041317"
+    },
+    "brand_secondary": {
+      "700": "#1d2c4b",
+      "800": "#141e32",
+      "950": "#0a0f19"
+    },
+    "brand_neutral": {
+      "50":    "#eeeeee",
+      "100":   "#e6e6e6",
+      "200":   "#cccccc",
+      "400":   "#999999",
+      "white": "#ffffff"
+    },
+    "status": {
+      "success_500": "#41c885",
+      "warning_500": "#c49508",
+      "error_500":   "#f23a3a",
+      "info_500":    "#2c80ed"
+    }
+  },
+
+  "semantic_tokens": {
+    "_note": "OG uses LIGHT theme by default. Dark sections use brand_secondary_950 bg.",
+    "surface_primary":   "#ffffff",
+    "surface_secondary": "#e9f8fc",
+    "surface_tertiary":  "#0e4b5b",
+    "text_body":         "#0e4b5b",
+    "text_subtle":       "#999999",
+    "text_heading":      "#0e4b5b",
+    "text_heading_dark": "#bdebf7",
+    "text_body_dark":    "#bdebf7",
+    "border_primary":    "#bfc8dc",
+    "border_input":      "#e6e6e6"
+  },
+
+  "border_radius": {
+    "md":  "0.375rem",
+    "lg":  "0.5rem",
+    "xl":  "0.75rem",
+    "2xl": "1rem",
+    "3xl": "1.5rem",
+    "custom_12": "12px",
+    "custom_14": "14px",
+    "full": "9999px"
+  },
+
+  "transitions": {
+    "default_duration":  "0.15s",
+    "default_easing":    "cubic-bezier(0.4, 0, 0.2, 1)",
+    "ease_out":          "cubic-bezier(0, 0, 0.2, 1)"
+  },
+
+  "blur": {
+    "sm": "8px",
+    "lg": "16px",
+    "xl": "24px"
+  },
+
+  "theme": {
+    "_important": "opengradient.ai is a LIGHT THEME site. White/light backgrounds with #0e4b5b text.",
+    "default_bg":       "#ffffff",
+    "dark_section_bg":  "#0a0f19",
+    "card_bg_light":    "#e9f8fc",
+    "card_bg_dark":     "#141e32",
+    "selection_bg":     "#a7e4f4",
+    "selection_text":   "#041317"
+  }
+}

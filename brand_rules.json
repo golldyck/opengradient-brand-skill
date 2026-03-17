@@ -1,0 +1,93 @@
+{
+  "brand": "OpenGradient",
+  "version": "3.0.0",
+  "description": "Machine-readable brand rules for AI image generation, prompt engineering, and style transfer",
+
+  "colors": {
+    "primary":        "#24bce3",
+    "primary_soft":   "#50c9e9",
+    "primary_light":  "#bdebf7",
+    "primary_pale":   "#e9f8fc",
+    "dark_teal":      "#0e4b5b",
+    "navy_deep":      "#0a0f19",
+    "navy_card":      "#141e32",
+    "navy_mid":       "#1d2c4b",
+    "white":          "#ffffff"
+  },
+
+  "gradients": {
+    "hero_bg":    "135deg from #0a0f19 via #141e32 to #0e4b5b",
+    "brand":      "135deg from #24bce3 to #0e4b5b",
+    "text":       "90deg from #24bce3 to #50c9e9",
+    "glow":       "radial #24bce3 at 25% opacity, centered bottom"
+  },
+
+  "typography": {
+    "font_sans":  "Geist",
+    "font_mono":  "Geist Mono",
+    "weights":    [300, 400, 500],
+    "heading_style": "font-weight 300, letter-spacing -0.025em"
+  },
+
+  "logo": {
+    "mark_description": "8 interlocking diamonds in 3x3 grid with center circle",
+    "color_on_dark":  "#24bce3",
+    "color_on_light": "#0e4b5b",
+    "rule": "Never add gradients or shadows to the mark itself"
+  },
+
+  "image_generation": {
+    "positive_prompt": [
+      "dark navy background (#0a0f19 or #141e32)",
+      "brand blue (#24bce3) as primary accent, glow, and light source",
+      "cool blue color temperature with teal undertones",
+      "clean geometric shapes, subtle 1px grid lines at 4% opacity",
+      "professional AI / blockchain / Web3 aesthetic",
+      "glass morphism panels with dark semi-transparent backgrounds",
+      "radial brand-blue glow from below or behind subject",
+      "cinematic studio lighting with blue-teal key light",
+      "3D render quality, sharp details, high production value",
+      "Geist font for any text elements",
+      "subtle depth of field, clean composition",
+      "rounded corners 12-20px",
+      "interconnected nodes and data flow motifs"
+    ],
+    "negative_prompt": [
+      "photorealism of humans",
+      "watercolor",
+      "2D flat vector",
+      "lime green",
+      "yellow",
+      "neon cyberpunk",
+      "warm tones",
+      "orange",
+      "red accents",
+      "purple",
+      "dirty or desaturated colors",
+      "low quality",
+      "blurry",
+      "Roboto font",
+      "pure black background #000000"
+    ],
+    "prompt_template": "{user_request}. Style: {positive_prompt joined by ', '}. Avoid: {negative_prompt joined by ', '}."
+  },
+
+  "do_not_use": {
+    "colors": ["lime", "yellow", "green", "orange", "red", "purple", "#000000"],
+    "fonts":  ["Roboto", "Arial", "Comic Sans"],
+    "styles": ["neon cyberpunk", "warm photography", "flat 2D cartoon", "watercolor"]
+  },
+
+  "cdn": {
+    "og_skill_js":       "https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js",
+    "og_brand_css":      "https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-brand.css",
+    "og_image_skill_js": "https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-image-skill.js",
+    "brand_rules_json":  "https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/brand_rules.json"
+  },
+
+  "references": {
+    "website":   "https://opengradient.ai",
+    "brand_kit": "https://opengradient.notion.site/Branding-Kit-b0ed295da43f479dbbd0e603029666b1",
+    "github":    "https://github.com/golldyck/opengradient-brand-skill"
+  }
+}

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenGradient DAO — Governance</title>
+  <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
+  <style>
+    /* Design direction: On-chain governance portal — dark scope, proposal cards, voting bars, delegate profiles */
+
+    :root {
+      --gv-bg: #060b16;
+      --gv-surface: #090f1e;
+      --gv-card: #0c1324;
+      --gv-border: rgba(36,188,227,0.1);
+      --gv-blue: #24bce3;
+      --gv-green: #39d98a;
+      --gv-red: #f05168;
+      --gv-purple: #a78bfa;
+      --gv-yellow: #fbbf24;
+      --gv-text: #c8d8e8;
+      --gv-muted: rgba(200,216,232,0.4);
+      --gv-mono: 'Geist Mono','Fira Code',monospace;
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { background:var(--gv-bg); color:var(--gv-text); font-family:system-ui,-apple-system,sans-serif; overflow-x:hidden; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes heroIn { from{opacity:0;transform:translateY(28px) scale(.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+    @keyframes glowPulse { 0%,100%{box-shadow:0 0 8px rgba(36,188,227,.2)} 50%{box-shadow:0 0 24px rgba(36,188,227,.5)} }
+    @keyframes voteBar { from{width:0} to{width:var(--w)} }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes countdown { 0%{opacity:1} 50%{opacity:.6} 100%{opacity:1} }
+
+    .stagger > * { opacity:0; transform:translateY(20px); animation:fadeUp .6s cubic-bezier(.16,1,.3,1) both; }
+    .stagger > *:nth-child(1){animation-delay:.05s}
+    .stagger > *:nth-child(2){animation-delay:.12s}
+    .stagger > *:nth-child(3){animation-delay:.19s}
+    .stagger > *:nth-child(4){animation-delay:.26s}
+
+    /* NAV */
+    .gv-nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      height:60px; display:flex; align-items:center; justify-content:space-between;
+      padding:0 2.5rem;
+      background:rgba(6,11,22,0.92); backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--gv-border);
+    }
+    .gv-nav-links { display:flex; gap:1.75rem; align-items:center; }
+    .gv-nav-link { font-family:var(--gv-mono); font-size:.75rem; letter-spacing:.05em; color:var(--gv-muted); text-decoration:none; transition:color .2s; }
+    .gv-nav-link:hover,.gv-nav-link.active { color:var(--gv-blue); }
+    .gv-nav-right { display:flex; align-items:center; gap:.75rem; }
+    .gv-power-badge {
+      display:flex; align-items:center; gap:.5rem;
+      font-family:var(--gv-mono); font-size:.72rem; letter-spacing:.04em;
+      padding:.3rem .75rem; background:rgba(36,188,227,.08); border:1px solid var(--gv-border); border-radius:4px; color:var(--gv-blue);
+    }
+    .gv-power-val { font-weight:700; color:#e8f4ff; }
+    .gv-btn {
+      font-family:var(--gv-mono); font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      padding:.4rem 1rem; background:var(--gv-blue); color:var(--gv-bg); border:none; border-radius:4px; cursor:pointer;
+      transition:filter .2s,box-shadow .2s;
+    }
+    .gv-btn:hover { filter:brightness(1.1); box-shadow:0 0 18px rgba(36,188,227,.4); }
+    .gv-btn-outline {
+      font-family:var(--gv-mono); font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      padding:.4rem 1rem; background:transparent; color:var(--gv-blue); border:1px solid var(--gv-border); border-radius:4px; cursor:pointer;
+      transition:border-color .2s,color .2s;
+    }
+    .gv-btn-outline:hover { border-color:var(--gv-blue); }
+
+    /* HERO */
+    .gv-hero { padding:90px 2.5rem 3rem; background:linear-gradient(180deg,#080e1e 0%,var(--gv-bg) 100%); }
+    .gv-hero-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+    .gv-hero-label { font-family:var(--gv-mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gv-blue); margin-bottom:1rem; animation:fadeUp .5s ease both .1s; }
+    .gv-hero-h { font-size:clamp(2.2rem,3.5vw,3.2rem); font-weight:800; letter-spacing:-.03em; line-height:1.1; color:#e8f4ff; margin-bottom:1rem; animation:heroIn .8s cubic-bezier(.16,1,.3,1) both .2s; }
+    .gv-hero-sub { font-size:.95rem; color:var(--gv-muted); line-height:1.7; margin-bottom:2rem; animation:fadeUp .7s ease both .35s; }
+    .gv-hero-btns { display:flex; gap:.75rem; animation:fadeUp .7s ease both .5s; }
+    .gv-quorum-card { background:var(--gv-card); border:1px solid var(--gv-border); border-radius:12px; padding:1.75rem; animation:fadeUp .8s ease both .3s; }
+    .gv-quorum-title { font-family:var(--gv-mono); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gv-muted); margin-bottom:1.25rem; }
+    .gv-quorum-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem; font-family:var(--gv-mono); font-size:.78rem; }
+    .gv-quorum-label { color:var(--gv-muted); }
+    .gv-quorum-val { font-weight:700; }
+    .gv-quorum-bar-wrap { height:6px; background:rgba(36,188,227,.07); border-radius:3px; overflow:hidden; margin-bottom:1.25rem; }
+    .gv-quorum-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--gv-blue),rgba(36,188,227,.5)); width:var(--w); animation:voteBar 1.5s cubic-bezier(.16,1,.3,1) both; }
+    .gv-dao-stats { display:grid; grid-template-columns:repeat(2,1fr); gap:.75rem; margin-top:1.25rem; padding-top:1.25rem; border-top:1px solid var(--gv-border); }
+    .gv-dao-stat-val { font-family:var(--gv-mono); font-size:1.1rem; font-weight:700; color:var(--gv-blue); }
+    .gv-dao-stat-lbl { font-family:var(--gv-mono); font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; color:var(--gv-muted); margin-top:2px; }
+
+    /* TICKER */
+    .gv-ticker { overflow:hidden; background:#060b14; border-top:1px solid var(--gv-border); border-bottom:1px solid var(--gv-border); padding:.55rem 0; position:relative; }
+    .gv-ticker::before,.gv-ticker::after { content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none; }
+    .gv-ticker::before { left:0; background:linear-gradient(90deg,#060b14,transparent); }
+    .gv-ticker::after  { right:0; background:linear-gradient(-90deg,#060b14,transparent); }
+    .gv-ticker-track { display:flex; animation:ticker 40s linear infinite; width:max-content; }
+    .gv-ticker-item { display:flex; align-items:center; gap:.6rem; padding:0 2rem; font-family:var(--gv-mono); font-size:.72rem; border-right:1px solid rgba(36,188,227,.06); white-space:nowrap; }
+    .gv-ticker-key { color:var(--gv-muted); }
+    .gv-ticker-val { font-weight:700; color:var(--gv-blue); }
+
+    /* MAIN */
+    .gv-main { max-width:1200px; margin:0 auto; padding:2.5rem; }
+    .gv-layout { display:grid; grid-template-columns:1fr 300px; gap:2rem; }
+    .gv-section-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }
+    .gv-section-title { font-size:1.1rem; font-weight:700; color:#e8f4ff; }
+    .gv-count-badge { font-family:var(--gv-mono); font-size:.68rem; font-weight:700; padding:.2rem .6rem; background:rgba(36,188,227,.1); border:1px solid var(--gv-border); border-radius:99px; color:var(--gv-blue); }
+
+    /* FILTERS */
+    .gv-filters { display:flex; gap:.5rem; margin-bottom:1.25rem; flex-wrap:wrap; }
+    .gv-filter { font-family:var(--gv-mono); font-size:.68rem; letter-spacing:.05em; padding:.28rem .75rem; border-radius:99px; cursor:pointer; border:1px solid var(--gv-border); background:transparent; color:var(--gv-muted); transition:all .2s; }
+    .gv-filter.active,.gv-filter:hover { border-color:var(--gv-blue); color:var(--gv-blue); background:rgba(36,188,227,.07); }
+
+    /* PROPOSAL CARD */
+    .gv-proposal {
+      background:var(--gv-card); border:1px solid var(--gv-border); border-radius:12px; padding:1.75rem;
+      margin-bottom:1rem; transition:border-color .3s,box-shadow .3s;
+    }
+    .gv-proposal:hover { border-color:rgba(36,188,227,.25); box-shadow:0 0 20px rgba(36,188,227,.05); }
+    .gv-proposal-top { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; flex-wrap:wrap; }
+    .gv-proposal-id { font-family:var(--gv-mono); font-size:.68rem; color:var(--gv-muted); }
+    .gv-status { font-family:var(--gv-mono); font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:.2rem .65rem; border-radius:99px; }
+    .status-active   { background:rgba(57,217,138,.12); color:var(--gv-green); border:1px solid rgba(57,217,138,.2); }
+    .status-passed   { background:rgba(36,188,227,.1); color:var(--gv-blue); border:1px solid rgba(36,188,227,.15); }
+    .status-failed   { background:rgba(240,81,104,.1); color:var(--gv-red); border:1px solid rgba(240,81,104,.15); }
+    .status-pending  { background:rgba(251,191,36,.08); color:var(--gv-yellow); border:1px solid rgba(251,191,36,.15); }
+    .gv-category { font-family:var(--gv-mono); font-size:.65rem; padding:.2rem .65rem; border-radius:99px; background:rgba(167,139,250,.1); color:var(--gv-purple); border:1px solid rgba(167,139,250,.15); }
+    .gv-timer { font-family:var(--gv-mono); font-size:.68rem; color:var(--gv-muted); margin-left:auto; animation:countdown 2s ease-in-out infinite; }
+    .gv-proposal-title { font-size:1rem; font-weight:700; color:#e8f4ff; margin-bottom:.4rem; line-height:1.4; }
+    .gv-proposal-desc { font-size:.84rem; color:var(--gv-muted); line-height:1.65; margin-bottom:1.25rem; }
+    .gv-vote-section { }
+    .gv-vote-row { display:flex; align-items:center; gap:.75rem; margin-bottom:.5rem; }
+    .gv-vote-label { font-family:var(--gv-mono); font-size:.7rem; min-width:40px; }
+    .gv-vote-bar-wrap { flex:1; height:6px; background:rgba(200,216,232,.05); border-radius:3px; overflow:hidden; }
+    .gv-vote-bar { height:100%; border-radius:3px; width:var(--w); animation:voteBar 1.2s cubic-bezier(.16,1,.3,1) both; animation-delay:var(--d,.1s); }
+    .bar-for     { background:linear-gradient(90deg,#39d98a,rgba(57,217,138,.5)); }
+    .bar-against { background:linear-gradient(90deg,#f05168,rgba(240,81,104,.5)); }
+    .bar-abstain { background:linear-gradient(90deg,rgba(200,216,232,.3),rgba(200,216,232,.1)); }
+    .gv-vote-pct { font-family:var(--gv-mono); font-size:.72rem; font-weight:700; min-width:42px; text-align:right; }
+    .gv-vote-count { font-family:var(--gv-mono); font-size:.65rem; color:var(--gv-muted); min-width:80px; text-align:right; }
+    .gv-proposal-footer { display:flex; align-items:center; justify-content:space-between; margin-top:1.25rem; padding-top:1.25rem; border-top:1px solid var(--gv-border); flex-wrap:wrap; gap:.75rem; }
+    .gv-proposer { display:flex; align-items:center; gap:.5rem; font-family:var(--gv-mono); font-size:.7rem; color:var(--gv-muted); }
+    .gv-proposer-avatar { width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg,var(--gv-blue),#4f46e5); display:inline-block; }
+    .gv-vote-btns { display:flex; gap:.5rem; }
+    .gv-vote-btn {
+      font-family:var(--gv-mono); font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+      padding:.3rem .85rem; border-radius:4px; cursor:pointer; border:1px solid; transition:all .2s;
+    }
+    .btn-for     { background:rgba(57,217,138,.1); color:var(--gv-green); border-color:rgba(57,217,138,.2); }
+    .btn-for:hover { background:rgba(57,217,138,.2); }
+    .btn-against { background:rgba(240,81,104,.08); color:var(--gv-red); border-color:rgba(240,81,104,.15); }
+    .btn-against:hover { background:rgba(240,81,104,.18); }
+    .btn-abstain { background:rgba(200,216,232,.04); color:var(--gv-muted); border-color:var(--gv-border); }
+    .btn-abstain:hover { color:var(--gv-text); }
+
+    /* SIDEBAR */
+    .gv-sidebar { display:flex; flex-direction:column; gap:1rem; }
+    .gv-sidebar-card { background:var(--gv-card); border:1px solid var(--gv-border); border-radius:10px; padding:1.25rem; }
+    .gv-sidebar-title { font-family:var(--gv-mono); font-size:.67rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gv-muted); margin-bottom:1rem; }
+    .gv-delegate-row { display:flex; align-items:center; gap:.75rem; padding:.5rem 0; border-bottom:1px solid rgba(36,188,227,.05); }
+    .gv-delegate-row:last-child { border-bottom:none; }
+    .gv-delegate-avatar { width:32px; height:32px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; }
+    .gv-delegate-name { font-size:.82rem; font-weight:600; color:#e8f4ff; }
+    .gv-delegate-power { font-family:var(--gv-mono); font-size:.7rem; color:var(--gv-muted); }
+    .gv-delegate-votes { margin-left:auto; font-family:var(--gv-mono); font-size:.72rem; font-weight:700; color:var(--gv-blue); }
+    .gv-treasury-row { display:flex; justify-content:space-between; align-items:center; padding:.45rem 0; border-bottom:1px solid rgba(36,188,227,.05); }
+    .gv-treasury-row:last-child { border-bottom:none; }
+    .gv-treasury-label { font-size:.8rem; color:var(--gv-muted); }
+    .gv-treasury-val { font-family:var(--gv-mono); font-size:.8rem; font-weight:700; }
+    .gv-timeline { position:relative; }
+    .gv-timeline-item { display:flex; gap:.75rem; padding-bottom:1rem; position:relative; }
+    .gv-timeline-item:not(:last-child)::before { content:''; position:absolute; left:8px; top:18px; bottom:0; width:1px; background:rgba(36,188,227,.1); }
+    .gv-timeline-dot { width:16px; height:16px; border-radius:50%; flex-shrink:0; border:2px solid; margin-top:1px; }
+    .dot-done    { border-color:var(--gv-green); background:rgba(57,217,138,.2); }
+    .dot-active  { border-color:var(--gv-blue); background:rgba(36,188,227,.2); animation:glowPulse 2s ease-in-out infinite; }
+    .dot-pending { border-color:var(--gv-border); background:transparent; }
+    .gv-timeline-body { }
+    .gv-timeline-title { font-size:.82rem; font-weight:600; color:#e8f4ff; }
+    .gv-timeline-meta { font-family:var(--gv-mono); font-size:.68rem; color:var(--gv-muted); margin-top:2px; }
+
+    /* FOOTER */
+    .gv-footer { background:#040810; border-top:1px solid var(--gv-border); padding:2rem 2.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+    .gv-footer-copy { font-family:var(--gv-mono); font-size:.68rem; color:var(--gv-muted); }
+
+    @media (max-width:1000px) { .gv-layout { grid-template-columns:1fr; } .gv-hero-inner { grid-template-columns:1fr; } .gv-sidebar { display:none; } }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important} }
+  </style>
+</head>
+<body class="og-scope">
+
+  <nav class="gv-nav">
+    <div data-og-logo="wordmark" style="height:26px;"></div>
+    <div class="gv-nav-links">
+      <a href="#" class="gv-nav-link active">Proposals</a>
+      <a href="#" class="gv-nav-link">Delegate</a>
+      <a href="#" class="gv-nav-link">Treasury</a>
+      <a href="#" class="gv-nav-link">Forum</a>
+    </div>
+    <div class="gv-nav-right">
+      <div class="gv-power-badge">Voting Power: <span class="gv-power-val">24,180 OG</span></div>
+      <button class="gv-btn-outline">Connect Wallet</button>
+      <button class="gv-btn">New Proposal</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="gv-hero">
+    <div class="gv-hero-inner">
+      <div>
+        <div class="gv-hero-label">// OpenGradient DAO · Epoch 14</div>
+        <h1 class="gv-hero-h">Shape the future<br>of decentralized AI.</h1>
+        <p class="gv-hero-sub">OG token holders govern protocol upgrades, treasury allocations, and network parameters. Every vote is recorded on-chain, forever.</p>
+        <div class="gv-hero-btns">
+          <button class="gv-btn" style="animation:glowPulse 2.5s ease-in-out infinite">New Proposal</button>
+          <button class="gv-btn-outline">Delegate Votes</button>
+        </div>
+      </div>
+      <div>
+        <div class="gv-quorum-card">
+          <div class="gv-quorum-title">// Epoch 14 Participation</div>
+          <div class="gv-quorum-row">
+            <span class="gv-quorum-label">Quorum reached</span>
+            <span class="gv-quorum-val" style="color:var(--gv-green)">✓ Yes (68.4%)</span>
+          </div>
+          <div class="gv-quorum-bar-wrap">
+            <div class="gv-quorum-bar" style="--w:68.4%"></div>
+          </div>
+          <div class="gv-quorum-row">
+            <span class="gv-quorum-label">Votes cast</span>
+            <span class="gv-quorum-val">8.4M OG</span>
+          </div>
+          <div class="gv-quorum-row">
+            <span class="gv-quorum-label">Active proposals</span>
+            <span class="gv-quorum-val" style="color:var(--gv-blue)">4</span>
+          </div>
+          <div class="gv-quorum-row">
+            <span class="gv-quorum-label">Epoch ends</span>
+            <span class="gv-quorum-val" style="animation:countdown 2s ease-in-out infinite">48h 12m</span>
+          </div>
+          <div class="gv-dao-stats">
+            <div>
+              <div class="gv-dao-stat-val" data-target="12300" data-suffix="">0</div>
+              <div class="gv-dao-stat-lbl">Token Holders</div>
+            </div>
+            <div>
+              <div class="gv-dao-stat-val" data-target="87" data-suffix="">0</div>
+              <div class="gv-dao-stat-lbl">Proposals Passed</div>
+            </div>
+            <div>
+              <div class="gv-dao-stat-val">$4.2M</div>
+              <div class="gv-dao-stat-lbl">Treasury USD</div>
+            </div>
+            <div>
+              <div class="gv-dao-stat-val">68%</div>
+              <div class="gv-dao-stat-lbl">Avg Participation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="gv-ticker">
+    <div class="gv-ticker-track" id="ticker"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="gv-main">
+    <div class="gv-layout">
+      <div>
+        <div class="gv-section-head">
+          <span class="gv-section-title">Active Proposals</span>
+          <span class="gv-count-badge">4 active</span>
+        </div>
+        <div class="gv-filters">
+          <button class="gv-filter active">All</button>
+          <button class="gv-filter">Active</button>
+          <button class="gv-filter">Passed</button>
+          <button class="gv-filter">Failed</button>
+          <button class="gv-filter">Protocol</button>
+          <button class="gv-filter">Treasury</button>
+          <button class="gv-filter">Parameters</button>
+        </div>
+
+        <!-- PROPOSAL 1 -->
+        <div class="gv-proposal">
+          <div class="gv-proposal-top">
+            <span class="gv-proposal-id">OGP-112</span>
+            <span class="gv-status status-active">Active</span>
+            <span class="gv-category">Protocol Upgrade</span>
+            <span class="gv-timer">⏱ 48h 12m left</span>
+          </div>
+          <div class="gv-proposal-title">Enable ZK Proof Verification for All Inference Results</div>
+          <div class="gv-proposal-desc">This proposal activates mandatory ZK proof generation on every inference job submitted to the network. Proofs would be published to the OG contract and verifiable by any on-chain caller, eliminating trusted third-party dependencies for result validation.</div>
+          <div class="gv-vote-section">
+            <div class="gv-vote-row">
+              <span class="gv-vote-label" style="color:var(--gv-green)">For</span>
+              <div class="gv-vote-bar-wrap"><div class="gv-vote-bar bar-for" style="--w:74%;--d:.1s"></div></div>
+              <span class="gv-vote-pct" style="color:var(--gv-green)">74%</span>
+              <span class="gv-vote-count">5.52M OG</span>
+            </div>
+            <div class="gv-vote-row">
+              <span class="gv-vote-label" style="color:var(--gv-red)">Against</span>
+              <div class="gv-vote-bar-wrap"><div class="gv-vote-bar bar-against" style="--w:19%;--d:.2s"></div></div>
+              <span class="gv-vote-pct" style="color:var(--gv-red)">19%</span>
+              <span class="gv-vote-count">1.42M OG</span>
+            </div>
+            <div class="gv-vote-row">
+              <span class="gv-vote-label" style="color:var(--gv-muted)">Abstain</span>
+              <div class="gv-vote-bar-wrap"><div class="gv-vote-bar bar-abstain" style="--w:7%;--d:.3s"></div></div>
+              <span class="gv-vote-pct" style="color:var(--gv-muted)">7%</span>
+              <span class="gv-vote-count">0.52M OG</span>
+            </div>
+          </div>
+          <div class="gv-proposal-footer">
+            <div class="gv-proposer"><div class="gv-proposer-avatar"></div><span>Proposed by</span><strong style="color:#e8f4ff">0x4a3f…c821</strong></div>
+            <div class="gv-vote-btns">
+              <button class="gv-vote-btn btn-for">✓ For</button>
+              <button class="gv-vote-btn btn-against">✗ Against</button>
+              <button class="gv-vote-btn btn-abstain">Abstain</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROPOSAL 2 -->
+        <div class="gv-proposal">
+          <div class="gv-proposal-top">
+            <span class="gv-proposal-id">OGP-111</span>
+            <span class="gv-status status-active">Active</span>
+            <span class="gv-category">Treasury</span>
+            <span class="gv-timer">⏱ 2d 6h left</span>
+          </div>
+          <div class="gv-proposal-title">Allocate 500K OG to Developer Grants Program (Epoch 15)</div>
+          <div class="gv-proposal-desc">Replenish the developer grants program treasury with 500,000 OG tokens from the DAO reserve for Epoch 15. Funds to be distributed by the grants committee across Explorer, Builder, and Research tracks over Q2 2025.</div>
+          <div class="gv-vote-section">
+            <div class="gv-vote-row">
+              <span class="gv-vote-label" style="color:var(--gv-green)">For</span>
+              <div class="gv-vote-bar-wrap"><div class="gv-vote-bar bar-for" style="--w:88%;--d:.1s"></div></div>
+              <span class="gv-vote-pct" style="color:var(--gv-green)">88%</span>
+              <span class="gv-vote-count">2.1M OG</span>
+            </div>
+            <div class="gv-vote-row">
+              <span class="gv-vote-label" style="color:var(--gv-red)">Against</span>
+              <div class="gv-vote-bar-wrap"><div class="gv-vote-bar bar-against" style="--w:8%;--d:.2s"></div></div>
+              <span class="gv-vote-pct" style="color:var(--gv-red)">8%</span>
+              <span class="gv-vote-count">190K OG</span>
+            </div>
+            <div class="gv-vote-row">
+              <span class="gv-vote-label" style="color:var(--gv-muted)">Abstain</span>
+              <div class="gv-vote-bar-wrap"><div class="gv-vote-bar bar-abstain" style="--w:4%;--d:.3s"></div></div>
+              <span class="gv-vote-pct" style="color:var(--gv-muted)">4%</span>
+              <span class="gv-vote-count">95K OG</span>
+            </div>
+          </div>
+          <div class="gv-proposal-footer">
+            <div class="gv-proposer"><div class="gv-proposer-avatar" style="background:linear-gradient(135deg,#a78bfa,#4f46e5)"></div><span>Proposed by</span><strong style="color:#e8f4ff">OG Foundation</strong></div>
+            <div class="gv-vote-btns">
+              <button class="gv-vote-btn btn-for">✓ For</button>
+              <button class="gv-vote-btn btn-against">✗ Against</button>
+              <button class="gv-vote-btn btn-abstain">Abstain</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROPOSAL 3 — PASSED -->
+        <div class="gv-proposal" style="opacity:.75">
+          <div class="gv-proposal-top">
+            <span class="gv-proposal-id">OGP-110</span>
+            <span class="gv-status status-passed">Passed</span>
+            <span class="gv-category">Parameters</span>
+          </div>
+          <div class="gv-proposal-title">Reduce Node Minimum Stake from 2000 to 1000 OG</div>
+          <div class="gv-proposal-desc">Lowering the entry barrier for node operators to grow network decentralization. Approved with 91% support in Epoch 13.</div>
+          <div class="gv-vote-section">
+            <div class="gv-vote-row">
+              <span class="gv-vote-label" style="color:var(--gv-green)">For</span>
+              <div class="gv-vote-bar-wrap"><div class="gv-vote-bar bar-for" style="--w:91%;--d:.1s"></div></div>
+              <span class="gv-vote-pct" style="color:var(--gv-green)">91%</span>
+              <span class="gv-vote-count">6.8M OG</span>
+            </div>
+          </div>
+          <div class="gv-proposal-footer">
+            <div class="gv-proposer"><div class="gv-proposer-avatar" style="background:linear-gradient(135deg,#39d98a,#059669)"></div><span>Proposed by</span><strong style="color:#e8f4ff">node-collective.eth</strong></div>
+            <span style="font-family:var(--gv-mono);font-size:.72rem;color:var(--gv-green)">✓ Executed on-chain</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="gv-sidebar">
+        <div class="gv-sidebar-card">
+          <div class="gv-sidebar-title">// Top Delegates</div>
+          <div class="gv-delegate-row">
+            <div class="gv-delegate-avatar" style="background:linear-gradient(135deg,#24bce3,#4f46e5)">A</div>
+            <div><div class="gv-delegate-name">0x4a3f…c821</div><div class="gv-delegate-power">Node Operator</div></div>
+            <div class="gv-delegate-votes">2.4M</div>
+          </div>
+          <div class="gv-delegate-row">
+            <div class="gv-delegate-avatar" style="background:linear-gradient(135deg,#a78bfa,#ec4899)">B</div>
+            <div><div class="gv-delegate-name">defi-labs.eth</div><div class="gv-delegate-power">Protocol DAO</div></div>
+            <div class="gv-delegate-votes">1.8M</div>
+          </div>
+          <div class="gv-delegate-row">
+            <div class="gv-delegate-avatar" style="background:linear-gradient(135deg,#39d98a,#059669)">C</div>
+            <div><div class="gv-delegate-name">og-grants.eth</div><div class="gv-delegate-power">Grants Committee</div></div>
+            <div class="gv-delegate-votes">1.2M</div>
+          </div>
+          <div class="gv-delegate-row">
+            <div class="gv-delegate-avatar" style="background:linear-gradient(135deg,#fbbf24,#d97706)">D</div>
+            <div><div class="gv-delegate-name">0xb72c…f1a0</div><div class="gv-delegate-power">Validator</div></div>
+            <div class="gv-delegate-votes">980K</div>
+          </div>
+          <button class="gv-btn" style="width:100%;margin-top:1rem;background:transparent;color:var(--gv-blue);border:1px solid var(--gv-border)">Delegate My Votes →</button>
+        </div>
+
+        <div class="gv-sidebar-card">
+          <div class="gv-sidebar-title">// Treasury</div>
+          <div class="gv-treasury-row"><span class="gv-treasury-label">OG Tokens</span><span class="gv-treasury-val" style="color:var(--gv-blue)">12.4M OG</span></div>
+          <div class="gv-treasury-row"><span class="gv-treasury-label">USDC</span><span class="gv-treasury-val">$2.1M</span></div>
+          <div class="gv-treasury-row"><span class="gv-treasury-label">ETH</span><span class="gv-treasury-val">480 ETH</span></div>
+          <div class="gv-treasury-row"><span class="gv-treasury-label">Total USD</span><span class="gv-treasury-val" style="color:var(--gv-green)">$4.2M</span></div>
+        </div>
+
+        <div class="gv-sidebar-card">
+          <div class="gv-sidebar-title">// Epoch Timeline</div>
+          <div class="gv-timeline">
+            <div class="gv-timeline-item">
+              <div class="gv-timeline-dot dot-done"></div>
+              <div class="gv-timeline-body"><div class="gv-timeline-title">Proposal Submission</div><div class="gv-timeline-meta">Mar 10 — Mar 12</div></div>
+            </div>
+            <div class="gv-timeline-item">
+              <div class="gv-timeline-dot dot-done"></div>
+              <div class="gv-timeline-body"><div class="gv-timeline-title">Community Review</div><div class="gv-timeline-meta">Mar 12 — Mar 15</div></div>
+            </div>
+            <div class="gv-timeline-item">
+              <div class="gv-timeline-dot dot-active"></div>
+              <div class="gv-timeline-body"><div class="gv-timeline-title">Voting Period</div><div class="gv-timeline-meta" style="color:var(--gv-blue)">NOW · ends Mar 19</div></div>
+            </div>
+            <div class="gv-timeline-item">
+              <div class="gv-timeline-dot dot-pending"></div>
+              <div class="gv-timeline-body"><div class="gv-timeline-title">Execution</div><div class="gv-timeline-meta">Mar 19 — Mar 21</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="gv-footer">
+    <div data-og-logo="wordmark" style="height:20px;opacity:.35;"></div>
+    <div style="display:flex;gap:2rem">
+      <a href="#" style="font-family:var(--gv-mono);font-size:.68rem;color:var(--gv-muted);text-decoration:none">Forum</a>
+      <a href="#" style="font-family:var(--gv-mono);font-size:.68rem;color:var(--gv-muted);text-decoration:none">Docs</a>
+      <a href="#" style="font-family:var(--gv-mono);font-size:.68rem;color:var(--gv-muted);text-decoration:none">Discord</a>
+    </div>
+    <div class="gv-footer-copy">© 2025 OpenGradient DAO · Epoch 14 · Snapshot block #19,482,000</div>
+  </footer>
+
+  <script>
+    // TICKER
+    const items=[['OGP-112','Active — ZK Proofs'],['OGP-111','Active — Grants 500K'],['OGP-110','Passed — Stake Reduced'],['OGP-109','Passed — Fee Update'],['EPOCH','14 · 48h left'],['QUORUM','68.4% ✓'],['TREASURY','$4.2M'],['VOTERS','8,412']];
+    const track=document.getElementById('ticker');
+    [...items,...items,...items].forEach(([k,v])=>{
+      const el=document.createElement('div'); el.className='gv-ticker-item';
+      el.innerHTML=`<span class="gv-ticker-key">${k}</span><span class="gv-ticker-val">${v}</span>`;
+      track.appendChild(el);
+    });
+
+    // FILTERS
+    document.querySelectorAll('.gv-filter').forEach(f=>{
+      f.addEventListener('click',()=>{ document.querySelectorAll('.gv-filter').forEach(x=>x.classList.remove('active')); f.classList.add('active'); });
+    });
+
+    // VOTE BUTTONS
+    document.querySelectorAll('.gv-vote-btns').forEach(g=>{
+      g.querySelectorAll('.gv-vote-btn').forEach(b=>{
+        b.addEventListener('click',()=>{
+          g.querySelectorAll('.gv-vote-btn').forEach(x=>{ x.style.outline=''; x.style.fontWeight=''; });
+          b.style.outline='2px solid currentColor'; b.style.fontWeight='900';
+        });
+      });
+    });
+
+    // COUNT UP
+    document.querySelectorAll('[data-target]').forEach(el=>{
+      const io=new IntersectionObserver(([e])=>{ if(!e.isIntersecting)return; const t=+el.dataset.target,s=el.dataset.suffix||''; let v=0; const st=t/60; const ti=setInterval(()=>{ v=Math.min(v+st,t); el.textContent=Math.floor(v).toLocaleString()+s; if(v>=t)clearInterval(ti); },16); io.disconnect(); }); io.observe(el);
+    });
+  </script>
+
+</body>
+</html>

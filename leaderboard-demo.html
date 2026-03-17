@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenGradient — Model Leaderboard</title>
+  <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
+  <style>
+    /* Design direction: Finance terminal leaderboard — og-finance, dense data rows, live rank changes, heat columns */
+
+    :root {
+      --lb-bg: #05080f;
+      --lb-surface: #090e1a;
+      --lb-card: #0c1220;
+      --lb-border: rgba(36,188,227,0.1);
+      --lb-blue: #24bce3;
+      --lb-green: #39d98a;
+      --lb-red: #f05168;
+      --lb-gold: #f4c430;
+      --lb-silver: #a8b3c0;
+      --lb-bronze: #cd7f32;
+      --lb-text: #c8d8e8;
+      --lb-muted: rgba(200,216,232,0.4);
+      --lb-mono: 'Geist Mono','Fira Code',monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--lb-bg); color: var(--lb-text); font-family: system-ui,-apple-system,sans-serif; overflow-x: hidden; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+    @keyframes glowPulse { 0%,100%{box-shadow:0 0 8px rgba(36,188,227,.2)} 50%{box-shadow:0 0 24px rgba(36,188,227,.5)} }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes rowSlide { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes scoreBar { from{width:0} to{width:var(--w)} }
+    @keyframes rankUp { 0%{color:#39d98a;text-shadow:0 0 12px rgba(57,217,138,.6)} 100%{color:var(--lb-green);text-shadow:none} }
+    @keyframes shimmer { from{background-position:-200% 0} to{background-position:200% 0} }
+
+    .stagger > * { opacity:0; transform:translateY(20px); animation:fadeUp .6s cubic-bezier(.16,1,.3,1) both; }
+    .stagger > *:nth-child(1){animation-delay:.03s}
+    .stagger > *:nth-child(2){animation-delay:.08s}
+    .stagger > *:nth-child(3){animation-delay:.13s}
+    .stagger > *:nth-child(4){animation-delay:.18s}
+    .stagger > *:nth-child(5){animation-delay:.23s}
+
+    /* NAV */
+    .lb-nav {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      height: 60px; display:flex; align-items:center; justify-content:space-between;
+      padding: 0 2rem;
+      background: rgba(5,8,15,0.92); backdrop-filter:blur(20px);
+      border-bottom: 1px solid var(--lb-border);
+    }
+    .lb-nav-center { display:flex; gap:1.75rem; }
+    .lb-nav-link { font-family:var(--lb-mono); font-size:.75rem; letter-spacing:.06em; color:var(--lb-muted); text-decoration:none; transition:color .2s; }
+    .lb-nav-link:hover, .lb-nav-link.active { color:var(--lb-blue); }
+    .lb-nav-right { display:flex; align-items:center; gap:1rem; }
+    .lb-live { display:flex; align-items:center; gap:.4rem; font-family:var(--lb-mono); font-size:.68rem; letter-spacing:.1em; color:var(--lb-green); }
+    .lb-live::before { content:''; display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--lb-green); animation:pulse 1.5s ease-in-out infinite; }
+    .lb-btn { font-family:var(--lb-mono); font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:.4rem 1rem; background:var(--lb-blue); color:var(--lb-bg); border:none; border-radius:4px; cursor:pointer; transition:filter .2s; }
+    .lb-btn:hover { filter:brightness(1.15); }
+
+    /* HERO STRIP */
+    .lb-hero { padding:88px 2rem 0; background: linear-gradient(180deg, #060c1a 0%, var(--lb-bg) 100%); }
+    .lb-hero-inner { max-width:1280px; margin:0 auto; }
+    .lb-hero-top { display:flex; align-items:flex-end; justify-content:space-between; padding:2rem 0 1.5rem; gap:2rem; flex-wrap:wrap; }
+    .lb-hero-label { font-family:var(--lb-mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--lb-blue); margin-bottom:.75rem; animation:fadeUp .5s ease both .1s; }
+    .lb-hero-title { font-size:clamp(2rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-.03em; color:#e8f4ff; line-height:1.1; animation:fadeUp .7s cubic-bezier(.16,1,.3,1) both .2s; }
+    .lb-hero-sub { font-size:.88rem; color:var(--lb-muted); margin-top:.5rem; animation:fadeUp .7s ease both .35s; }
+    .lb-hero-stats { display:flex; gap:2rem; animation:fadeUp .7s ease both .3s; }
+    .lb-hero-stat .val { font-family:var(--lb-mono); font-size:1.4rem; font-weight:800; color:var(--lb-blue); }
+    .lb-hero-stat .lbl { font-family:var(--lb-mono); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--lb-muted); margin-top:.15rem; }
+
+    /* TABS */
+    .lb-tabs { max-width:1280px; margin:0 auto; display:flex; gap:0; border-bottom:1px solid var(--lb-border); }
+    .lb-tab {
+      font-family:var(--lb-mono); font-size:.75rem; letter-spacing:.06em; text-transform:uppercase;
+      padding:.85rem 1.5rem; color:var(--lb-muted); cursor:pointer; border:none; background:transparent;
+      border-bottom:2px solid transparent; transition:color .2s, border-color .2s; margin-bottom:-1px;
+    }
+    .lb-tab.active { color:var(--lb-blue); border-bottom-color:var(--lb-blue); }
+    .lb-tab:hover:not(.active) { color:var(--lb-text); }
+
+    /* TICKER */
+    .lb-ticker { overflow:hidden; background:#060c18; border-bottom:1px solid var(--lb-border); padding:.55rem 0; position:relative; }
+    .lb-ticker::before,.lb-ticker::after { content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none; }
+    .lb-ticker::before { left:0; background:linear-gradient(90deg,#060c18,transparent); }
+    .lb-ticker::after  { right:0; background:linear-gradient(-90deg,#060c18,transparent); }
+    .lb-ticker-track { display:flex; animation:ticker 40s linear infinite; width:max-content; }
+    .lb-ticker-item { display:flex; align-items:center; gap:.6rem; padding:0 1.75rem; font-family:var(--lb-mono); font-size:.72rem; border-right:1px solid rgba(36,188,227,0.07); white-space:nowrap; }
+    .lb-ticker-name { color:var(--lb-muted); }
+    .lb-ticker-score { color:var(--lb-blue); font-weight:700; }
+    .lb-ticker-chg { font-size:.67rem; font-weight:600; }
+
+    /* MAIN TABLE */
+    .lb-main { max-width:1280px; margin:0 auto; padding:1.5rem 2rem 4rem; }
+    .lb-filters { display:flex; gap:.75rem; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; }
+    .lb-filter-btn { font-family:var(--lb-mono); font-size:.68rem; letter-spacing:.06em; padding:.3rem .8rem; border-radius:4px; cursor:pointer; border:1px solid var(--lb-border); background:transparent; color:var(--lb-muted); transition:all .2s; }
+    .lb-filter-btn:hover, .lb-filter-btn.active { background:var(--lb-blue); color:var(--lb-bg); border-color:var(--lb-blue); }
+    .lb-filter-sep { width:1px; height:18px; background:var(--lb-border); }
+    .lb-search {
+      margin-left:auto; font-family:var(--lb-mono); font-size:.75rem; padding:.4rem .9rem;
+      background:rgba(36,188,227,0.05); border:1px solid var(--lb-border); border-radius:4px;
+      color:var(--lb-text); outline:none; transition:border-color .2s; width:200px;
+    }
+    .lb-search:focus { border-color:rgba(36,188,227,.35); }
+    .lb-search::placeholder { color:var(--lb-muted); }
+
+    /* TABLE */
+    .lb-table-wrap { background:var(--lb-surface); border:1px solid var(--lb-border); border-radius:10px; overflow:hidden; }
+    .lb-table { width:100%; border-collapse:collapse; font-family:var(--lb-mono); font-size:.8rem; }
+    .lb-table thead tr { background:#070d1c; }
+    .lb-table th {
+      padding:.7rem 1rem; text-align:left; font-size:.65rem; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--lb-muted); font-weight:700; border-bottom:1px solid var(--lb-border); cursor:pointer;
+      transition:color .2s; white-space:nowrap; user-select:none;
+    }
+    .lb-table th:hover { color:var(--lb-blue); }
+    .lb-table th.sort-active { color:var(--lb-blue); }
+    .lb-table tbody tr {
+      border-bottom:1px solid rgba(36,188,227,0.04);
+      transition:background .15s;
+      animation:rowSlide .5s cubic-bezier(.16,1,.3,1) both;
+    }
+    .lb-table tbody tr:nth-child(1){animation-delay:.03s}
+    .lb-table tbody tr:nth-child(2){animation-delay:.06s}
+    .lb-table tbody tr:nth-child(3){animation-delay:.09s}
+    .lb-table tbody tr:nth-child(4){animation-delay:.12s}
+    .lb-table tbody tr:nth-child(5){animation-delay:.15s}
+    .lb-table tbody tr:nth-child(6){animation-delay:.18s}
+    .lb-table tbody tr:nth-child(7){animation-delay:.21s}
+    .lb-table tbody tr:nth-child(8){animation-delay:.24s}
+    .lb-table tbody tr:last-child { border-bottom:none; }
+    .lb-table tbody tr:hover { background:rgba(36,188,227,.03); }
+    .lb-table td { padding:.85rem 1rem; vertical-align:middle; color:rgba(200,216,232,0.85); }
+
+    /* RANK */
+    .lb-rank { display:flex; align-items:center; gap:.5rem; }
+    .lb-rank-num { font-weight:800; font-size:.88rem; min-width:20px; }
+    .lb-rank-gold   { color:var(--lb-gold); }
+    .lb-rank-silver { color:var(--lb-silver); }
+    .lb-rank-bronze { color:var(--lb-bronze); }
+    .lb-rank-num.other { color:var(--lb-muted); }
+    .lb-rank-delta { font-size:.62rem; font-weight:700; padding:1px 5px; border-radius:3px; }
+    .delta-up   { background:rgba(57,217,138,.12); color:var(--lb-green); }
+    .delta-down { background:rgba(240,81,104,.12); color:var(--lb-red); }
+    .delta-flat { background:rgba(200,216,232,.05); color:var(--lb-muted); }
+
+    /* MODEL NAME */
+    .lb-model-name { font-weight:700; color:#e8f4ff; font-size:.82rem; }
+    .lb-model-org  { font-size:.68rem; color:var(--lb-muted); margin-top:2px; }
+    .lb-model-tags { display:flex; gap:.3rem; margin-top:.3rem; flex-wrap:wrap; }
+    .lb-tag { font-size:.58rem; font-weight:700; letter-spacing:.06em; padding:1px 6px; border-radius:3px; }
+    .tag-llm    { background:rgba(36,188,227,.1); color:var(--lb-blue); }
+    .tag-vision { background:rgba(240,81,104,.1); color:var(--lb-red); }
+    .tag-audio  { background:rgba(180,130,255,.1); color:#b482ff; }
+    .tag-embed  { background:rgba(57,217,138,.1); color:var(--lb-green); }
+    .tag-ts     { background:rgba(244,196,48,.1); color:var(--lb-gold); }
+
+    /* SCORE CELL */
+    .lb-score-cell { min-width:120px; }
+    .lb-score-val  { font-weight:800; font-size:.92rem; color:#e8f4ff; margin-bottom:.3rem; }
+    .lb-score-bar  { height:3px; background:rgba(36,188,227,.08); border-radius:2px; overflow:hidden; }
+    .lb-score-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--lb-blue),rgba(36,188,227,.5)); width:var(--w); animation:scoreBar 1s cubic-bezier(.16,1,.3,1) both; animation-delay:var(--d,.1s); }
+
+    /* METRIC CELLS */
+    .lb-num  { font-family:var(--lb-mono); font-weight:700; }
+    .g { color:var(--lb-green); }
+    .r { color:var(--lb-red); }
+    .b { color:var(--lb-blue); }
+    .d { color:var(--lb-muted); }
+
+    /* HEAT CELL */
+    .lb-heat { width:32px; height:32px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:.65rem; font-weight:700; }
+    .heat-hot  { background:rgba(57,217,138,.15); color:var(--lb-green); border:1px solid rgba(57,217,138,.25); }
+    .heat-warm { background:rgba(36,188,227,.12); color:var(--lb-blue); border:1px solid rgba(36,188,227,.2); }
+    .heat-cool { background:rgba(200,216,232,.04); color:var(--lb-muted); border:1px solid rgba(200,216,232,.08); }
+
+    /* SIDEBAR */
+    .lb-layout { display:grid; grid-template-columns:1fr 280px; gap:1.5rem; }
+    .lb-sidebar { display:flex; flex-direction:column; gap:1rem; }
+    .lb-sidebar-card { background:var(--lb-surface); border:1px solid var(--lb-border); border-radius:10px; padding:1.25rem; }
+    .lb-sidebar-title { font-family:var(--lb-mono); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--lb-muted); margin-bottom:1rem; }
+    .lb-mini-row { display:flex; align-items:center; justify-content:space-between; padding:.45rem 0; border-bottom:1px solid rgba(36,188,227,.04); }
+    .lb-mini-row:last-child { border-bottom:none; }
+    .lb-mini-name { font-size:.78rem; color:var(--lb-text); }
+    .lb-mini-val  { font-family:var(--lb-mono); font-size:.75rem; font-weight:700; }
+
+    /* PODIUM */
+    .lb-podium { display:flex; align-items:flex-end; justify-content:center; gap:1rem; padding:2rem 0 1.5rem; }
+    .lb-podium-item { text-align:center; display:flex; flex-direction:column; align-items:center; }
+    .lb-podium-bar { width:64px; border-radius:6px 6px 0 0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:.5rem; }
+    .lb-podium-rank-num { font-family:var(--lb-mono); font-size:.9rem; font-weight:800; }
+    .lb-podium-name { font-size:.7rem; color:var(--lb-muted); margin-top:.5rem; max-width:70px; line-height:1.3; }
+    .lb-podium-score { font-family:var(--lb-mono); font-size:.72rem; font-weight:700; color:var(--lb-blue); margin-top:.25rem; }
+
+    /* FOOTER */
+    .lb-footer { background:#040810; border-top:1px solid var(--lb-border); padding:2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+    .lb-footer-copy { font-family:var(--lb-mono); font-size:.68rem; color:var(--lb-muted); }
+
+    @media (max-width:1000px) { .lb-layout { grid-template-columns:1fr; } .lb-sidebar { display:none; } }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important} }
+  </style>
+</head>
+<body class="og-scope og-finance">
+
+  <nav class="lb-nav">
+    <div data-og-logo="wordmark" style="height:26px;"></div>
+    <div class="lb-nav-center">
+      <a href="#" class="lb-nav-link active">Leaderboard</a>
+      <a href="#" class="lb-nav-link">Hub</a>
+      <a href="#" class="lb-nav-link">Benchmarks</a>
+      <a href="#" class="lb-nav-link">Submit</a>
+    </div>
+    <div class="lb-nav-right">
+      <div class="lb-live">LIVE RANKINGS</div>
+      <button class="lb-btn">Submit Model</button>
+    </div>
+  </nav>
+
+  <!-- TICKER -->
+  <div class="lb-ticker" style="margin-top:60px">
+    <div class="lb-ticker-track" id="ticker"></div>
+  </div>
+
+  <!-- HERO -->
+  <div class="lb-hero">
+    <div class="lb-hero-inner">
+      <div class="lb-hero-top">
+        <div>
+          <div class="lb-hero-label">// OpenGradient Model Leaderboard</div>
+          <div class="lb-hero-title">On-chain AI benchmarks.<br>Ranked by the network.</div>
+          <div class="lb-hero-sub">Every score is verified by decentralized compute — no self-reported metrics.</div>
+        </div>
+        <div class="lb-hero-stats">
+          <div class="lb-hero-stat"><div class="val" data-target="312" data-suffix="">0</div><div class="lbl">Models Ranked</div></div>
+          <div class="lb-hero-stat"><div class="val" data-target="4800" data-suffix="">0</div><div class="lbl">Evals Run</div></div>
+          <div class="lb-hero-stat"><div class="val">24h</div><div class="lbl">Update Cycle</div></div>
+        </div>
+      </div>
+
+      <!-- PODIUM -->
+      <div class="lb-podium">
+        <div class="lb-podium-item">
+          <div class="lb-podium-bar" style="height:70px;background:rgba(168,179,192,0.15);border:1px solid rgba(168,179,192,0.2)">
+            <span class="lb-podium-rank-num" style="color:var(--lb-silver)">2</span>
+          </div>
+          <div class="lb-podium-name">gpt-neox<br>-finbert</div>
+          <div class="lb-podium-score">94.2</div>
+        </div>
+        <div class="lb-podium-item">
+          <div class="lb-podium-bar" style="height:100px;background:rgba(244,196,48,0.12);border:1px solid rgba(244,196,48,0.25)">
+            <span class="lb-podium-rank-num" style="color:var(--lb-gold)">1</span>
+          </div>
+          <div class="lb-podium-name">llama-3.1<br>-405b-og</div>
+          <div class="lb-podium-score">97.1</div>
+        </div>
+        <div class="lb-podium-item">
+          <div class="lb-podium-bar" style="height:52px;background:rgba(205,127,50,0.12);border:1px solid rgba(205,127,50,0.2)">
+            <span class="lb-podium-rank-num" style="color:var(--lb-bronze)">3</span>
+          </div>
+          <div class="lb-podium-name">mistral<br>-7b-v0.3</div>
+          <div class="lb-podium-score">91.7</div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="lb-tabs">
+        <button class="lb-tab active">All Models</button>
+        <button class="lb-tab">LLM</button>
+        <button class="lb-tab">Vision</button>
+        <button class="lb-tab">Audio</button>
+        <button class="lb-tab">Embeddings</button>
+        <button class="lb-tab">Time Series</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="lb-main">
+    <div class="lb-layout">
+      <div>
+        <div class="lb-filters">
+          <button class="lb-filter-btn active">All Time</button>
+          <button class="lb-filter-btn">7 Days</button>
+          <button class="lb-filter-btn">24h</button>
+          <div class="lb-filter-sep"></div>
+          <button class="lb-filter-btn">≥ 90 score</button>
+          <button class="lb-filter-btn">Open weights</button>
+          <input type="text" class="lb-search" placeholder="Search models...">
+        </div>
+
+        <div class="lb-table-wrap">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th style="width:60px"># rank</th>
+                <th>Model</th>
+                <th class="sort-active">OG Score ↓</th>
+                <th>Accuracy</th>
+                <th>Latency</th>
+                <th>Params</th>
+                <th>Activity</th>
+                <th>License</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="lb-rank"><span class="lb-rank-num lb-rank-gold">1</span><span class="lb-rank-delta delta-up">▲2</span></div></td>
+                <td><div class="lb-model-name">llama-3.1-405b-og</div><div class="lb-model-org">Meta / OpenGradient</div><div class="lb-model-tags"><span class="lb-tag tag-llm">LLM</span></div></td>
+                <td><div class="lb-score-cell"><div class="lb-score-val">97.1</div><div class="lb-score-bar"><div class="lb-score-fill" style="--w:97.1%;--d:.05s"></div></div></div></td>
+                <td class="lb-num g">93.4%</td>
+                <td class="lb-num b">284ms</td>
+                <td class="lb-num d">405B</td>
+                <td><div class="lb-heat heat-hot">🔥</div></td>
+                <td class="lb-num d" style="font-size:.7rem">Apache 2</td>
+              </tr>
+              <tr>
+                <td><div class="lb-rank"><span class="lb-rank-num lb-rank-silver">2</span><span class="lb-rank-delta delta-flat">—</span></div></td>
+                <td><div class="lb-model-name">gpt-neox-finbert-xl</div><div class="lb-model-org">EleutherAI</div><div class="lb-model-tags"><span class="lb-tag tag-llm">LLM</span><span class="lb-tag tag-ts">Finance</span></div></td>
+                <td><div class="lb-score-cell"><div class="lb-score-val">94.2</div><div class="lb-score-bar"><div class="lb-score-fill" style="--w:94.2%;--d:.1s"></div></div></div></td>
+                <td class="lb-num g">91.8%</td>
+                <td class="lb-num b">142ms</td>
+                <td class="lb-num d">20B</td>
+                <td><div class="lb-heat heat-hot">🔥</div></td>
+                <td class="lb-num d" style="font-size:.7rem">MIT</td>
+              </tr>
+              <tr>
+                <td><div class="lb-rank"><span class="lb-rank-num lb-rank-bronze">3</span><span class="lb-rank-delta delta-down">▼1</span></div></td>
+                <td><div class="lb-model-name">mistral-7b-v0.3-instruct</div><div class="lb-model-org">Mistral AI</div><div class="lb-model-tags"><span class="lb-tag tag-llm">LLM</span></div></td>
+                <td><div class="lb-score-cell"><div class="lb-score-val">91.7</div><div class="lb-score-bar"><div class="lb-score-fill" style="--w:91.7%;--d:.15s"></div></div></div></td>
+                <td class="lb-num g">88.3%</td>
+                <td class="lb-num g">98ms</td>
+                <td class="lb-num d">7B</td>
+                <td><div class="lb-heat heat-warm">★</div></td>
+                <td class="lb-num d" style="font-size:.7rem">Apache 2</td>
+              </tr>
+              <tr>
+                <td><div class="lb-rank"><span class="lb-rank-num other">4</span><span class="lb-rank-delta delta-up">▲1</span></div></td>
+                <td><div class="lb-model-name">whisper-large-v3</div><div class="lb-model-org">OpenAI</div><div class="lb-model-tags"><span class="lb-tag tag-audio">Audio</span></div></td>
+                <td><div class="lb-score-cell"><div class="lb-score-val">89.4</div><div class="lb-score-bar"><div class="lb-score-fill" style="--w:89.4%;--d:.2s"></div></div></div></td>
+                <td class="lb-num g">95.2%</td>
+                <td class="lb-num b">201ms</td>
+                <td class="lb-num d">1.5B</td>
+                <td><div class="lb-heat heat-warm">★</div></td>
+                <td class="lb-num d" style="font-size:.7rem">MIT</td>
+              </tr>
+              <tr>
+                <td><div class="lb-rank"><span class="lb-rank-num other">5</span><span class="lb-rank-delta delta-up">▲3</span></div></td>
+                <td><div class="lb-model-name">clip-vit-large-patch14</div><div class="lb-model-org">OpenAI</div><div class="lb-model-tags"><span class="lb-tag tag-vision">Vision</span><span class="lb-tag tag-embed">Embed</span></div></td>
+                <td><div class="lb-score-cell"><div class="lb-score-val">87.9</div><div class="lb-score-bar"><div class="lb-score-fill" style="--w:87.9%;--d:.25s"></div></div></div></td>
+                <td class="lb-num g">90.1%</td>
+                <td class="lb-num g">74ms</td>
+                <td class="lb-num d">307M</td>
+                <td><div class="lb-heat heat-warm">★</div></td>
+                <td class="lb-num d" style="font-size:.7rem">MIT</td>
+              </tr>
+              <tr>
+                <td><div class="lb-rank"><span class="lb-rank-num other">6</span><span class="lb-rank-delta delta-down">▼2</span></div></td>
+                <td><div class="lb-model-name">stable-diffusion-xl-base</div><div class="lb-model-org">Stability AI</div><div class="lb-model-tags"><span class="lb-tag tag-vision">Vision</span></div></td>
+                <td><div class="lb-score-cell"><div class="lb-score-val">85.3</div><div class="lb-score-bar"><div class="lb-score-fill" style="--w:85.3%;--d:.3s"></div></div></div></td>
+                <td class="lb-num b">82.7%</td>
+                <td class="lb-num r">1.2s</td>
+                <td class="lb-num d">2.6B</td>
+                <td><div class="lb-heat heat-warm">★</div></td>
+                <td class="lb-num d" style="font-size:.7rem">SDXL</td>
+              </tr>
+              <tr>
+                <td><div class="lb-rank"><span class="lb-rank-num other">7</span><span class="lb-rank-delta delta-flat">—</span></div></td>
+                <td><div class="lb-model-name">bitquant-lstm-v4</div><div class="lb-model-org">BitQuant / OG</div><div class="lb-model-tags"><span class="lb-tag tag-ts">Time Series</span></div></td>
+                <td><div class="lb-score-cell"><div class="lb-score-val">84.1</div><div class="lb-score-bar"><div class="lb-score-fill" style="--w:84.1%;--d:.35s"></div></div></div></td>
+                <td class="lb-num g">91.0%</td>
+                <td class="lb-num g">44ms</td>
+                <td class="lb-num d">180M</td>
+                <td><div class="lb-heat heat-hot">🔥</div></td>
+                <td class="lb-num d" style="font-size:.7rem">Apache 2</td>
+              </tr>
+              <tr>
+                <td><div class="lb-rank"><span class="lb-rank-num other">8</span><span class="lb-rank-delta delta-up">▲4</span></div></td>
+                <td><div class="lb-model-name">e5-mistral-7b-instruct</div><div class="lb-model-org">Microsoft</div><div class="lb-model-tags"><span class="lb-tag tag-embed">Embed</span></div></td>
+                <td><div class="lb-score-cell"><div class="lb-score-val">82.6</div><div class="lb-score-bar"><div class="lb-score-fill" style="--w:82.6%;--d:.4s"></div></div></div></td>
+                <td class="lb-num g">87.4%</td>
+                <td class="lb-num b">128ms</td>
+                <td class="lb-num d">7B</td>
+                <td><div class="lb-heat heat-cool">·</div></td>
+                <td class="lb-num d" style="font-size:.7rem">MIT</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="lb-sidebar">
+        <div class="lb-sidebar-card">
+          <div class="lb-sidebar-title">// Biggest Movers (24h)</div>
+          <div class="lb-mini-row"><span class="lb-mini-name">bitquant-lstm-v4</span><span class="lb-mini-val g">+4.2 ▲</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">e5-mistral-7b</span><span class="lb-mini-val g">+3.8 ▲</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">llama-3.1-405b</span><span class="lb-mini-val g">+2.1 ▲</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">stable-diff-xl</span><span class="lb-mini-val r">-2.4 ▼</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">mistral-7b-v0.3</span><span class="lb-mini-val r">-1.1 ▼</span></div>
+        </div>
+        <div class="lb-sidebar-card">
+          <div class="lb-sidebar-title">// Score Breakdown</div>
+          <div class="lb-mini-row"><span class="lb-mini-name">Accuracy</span><span class="lb-mini-val b">30%</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">Latency</span><span class="lb-mini-val b">25%</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">Verification</span><span class="lb-mini-val b">25%</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">Availability</span><span class="lb-mini-val b">20%</span></div>
+        </div>
+        <div class="lb-sidebar-card">
+          <div class="lb-sidebar-title">// Network Stats</div>
+          <div class="lb-mini-row"><span class="lb-mini-name">Evals / hour</span><span class="lb-mini-val">482</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">Nodes scoring</span><span class="lb-mini-val">204</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">Models queued</span><span class="lb-mini-val">17</span></div>
+          <div class="lb-mini-row"><span class="lb-mini-name">Last update</span><span class="lb-mini-val g">2m ago</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="lb-footer">
+    <div data-og-logo="wordmark" style="height:20px;opacity:.35;"></div>
+    <div style="display:flex;gap:1.5rem">
+      <a href="#" style="font-family:var(--lb-mono);font-size:.68rem;color:var(--lb-muted);text-decoration:none">API</a>
+      <a href="#" style="font-family:var(--lb-mono);font-size:.68rem;color:var(--lb-muted);text-decoration:none">Docs</a>
+      <a href="#" style="font-family:var(--lb-mono);font-size:.68rem;color:var(--lb-muted);text-decoration:none">Submit Model</a>
+    </div>
+    <div class="lb-footer-copy">© 2025 OpenGradient · Leaderboard updated every 24h · Scores verified on-chain</div>
+  </footer>
+
+  <script>
+    // TICKER
+    const scores = [
+      ['llama-3.1-405b','97.1',true],['gpt-neox-finbert','94.2',true],['mistral-7b','91.7',false],
+      ['whisper-large-v3','89.4',true],['clip-vit-large','87.9',true],['sdxl-base','85.3',false],
+      ['bitquant-lstm-v4','84.1',true],['e5-mistral-7b','82.6',true],
+    ];
+    const track = document.getElementById('ticker');
+    [...scores,...scores,...scores].forEach(([n,s,up])=>{
+      const el = document.createElement('div'); el.className='lb-ticker-item';
+      el.innerHTML=`<span class="lb-ticker-name">${n}</span><span class="lb-ticker-score">${s}</span><span class="lb-ticker-chg" style="color:${up?'#39d98a':'#f05168'}">${up?'▲':'▼'}</span>`;
+      track.appendChild(el);
+    });
+
+    // TABS
+    document.querySelectorAll('.lb-tab').forEach(t=>{
+      t.addEventListener('click',()=>{ document.querySelectorAll('.lb-tab').forEach(x=>x.classList.remove('active')); t.classList.add('active'); });
+    });
+    document.querySelectorAll('.lb-filter-btn').forEach(b=>{
+      b.addEventListener('click',()=>{ if(b.parentElement.children[0]===b||b.parentElement.children[1]===b||b.parentElement.children[2]===b){ document.querySelectorAll('.lb-filter-btn').forEach((x,i)=>{ if(i<3)x.classList.remove('active'); }); b.classList.add('active'); } else { b.classList.toggle('active'); } });
+    });
+
+    // COUNT UP
+    document.querySelectorAll('[data-target]').forEach(el=>{
+      const io=new IntersectionObserver(([e])=>{ if(!e.isIntersecting)return; const t=+el.dataset.target,s=el.dataset.suffix||''; let v=0; const st=t/60; const ti=setInterval(()=>{ v=Math.min(v+st,t); el.textContent=Math.floor(v).toLocaleString()+s; if(v>=t)clearInterval(ti); },16); io.disconnect(); }); io.observe(el);
+    });
+  </script>
+
+</body>
+</html>

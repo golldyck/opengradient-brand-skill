@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OG Brand v3.1 — New Components</title>
+  <script src="./og-skill.js"></script>
+  <style>
+    /* Local CSS override for dev (uses local file instead of CDN) */
+    @keyframes ogFadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .demo-section {
+      padding: 60px 0;
+      border-bottom: 1px solid rgba(36,188,227,0.06);
+    }
+    .demo-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(36,188,227,0.5);
+      margin-bottom: 24px;
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body class="og-scope">
+
+  <!-- NAV -->
+  <nav class="og-nav">
+    <div class="og-container" style="display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;">
+      <div data-og-logo="wordmark" style="height:28px;"></div>
+      <span class="og-badge og-badge-primary">v3.1 Components</span>
+    </div>
+  </nav>
+
+  <div style="padding-top:80px;">
+
+    <!-- HEADER -->
+    <section style="padding:60px 0 40px;text-align:center;">
+      <div class="og-container">
+        <div class="og-badge og-badge-primary og-mb-16">What's New</div>
+        <h1 class="og-h2 og-mb-16" style="animation:ogFadeUp .7s ease both .1s">New Components — v3.1</h1>
+        <p class="og-body" style="color:var(--og-primary-200);animation:ogFadeUp .7s ease both .25s">Table · Tabs · Timeline · Steps · Avatar · Progress · Alert</p>
+      </div>
+    </section>
+
+    <div class="og-container" style="max-width:900px;padding:0 24px;">
+
+      <!-- TABLE -->
+      <div class="demo-section">
+        <div class="demo-label">og-table</div>
+        <div class="og-table-wrap">
+          <table class="og-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Status</th>
+                <th>Inferences</th>
+                <th>Latency</th>
+                <th>Fee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="og-td-mono">llama-3-70b</td>
+                <td><span class="og-badge og-badge-primary" style="font-size:.7rem;">Live</span></td>
+                <td class="og-td-mono og-td-primary">1,204,880</td>
+                <td class="og-td-mono">8ms</td>
+                <td class="og-td-mono og-td-success">0.0002 OG</td>
+              </tr>
+              <tr>
+                <td class="og-td-mono">whisper-large-v3</td>
+                <td><span class="og-badge" style="font-size:.7rem;background:rgba(65,200,133,.1);color:#41c885;border:1px solid rgba(65,200,133,.25);">Active</span></td>
+                <td class="og-td-mono og-td-primary">428,332</td>
+                <td class="og-td-mono">22ms</td>
+                <td class="og-td-mono og-td-success">0.0004 OG</td>
+              </tr>
+              <tr>
+                <td class="og-td-mono">stable-diffusion-xl</td>
+                <td><span class="og-badge" style="font-size:.7rem;background:rgba(196,149,8,.1);color:#c49508;border:1px solid rgba(196,149,8,.25);">Beta</span></td>
+                <td class="og-td-mono og-td-muted">12,440</td>
+                <td class="og-td-mono">1,400ms</td>
+                <td class="og-td-mono">0.0015 OG</td>
+              </tr>
+              <tr>
+                <td class="og-td-mono">gpt2-verifiable</td>
+                <td><span class="og-badge" style="font-size:.7rem;background:rgba(242,58,58,.1);color:#f23a3a;border:1px solid rgba(242,58,58,.25);">Deprecated</span></td>
+                <td class="og-td-mono og-td-muted">3,102</td>
+                <td class="og-td-mono og-td-error">320ms</td>
+                <td class="og-td-mono og-td-muted">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="demo-section">
+        <div class="demo-label">og-tabs</div>
+
+        <!-- Default line tabs -->
+        <div class="og-tabs" style="margin-bottom:40px;">
+          <div class="og-tabs__nav">
+            <button class="og-tabs__tab">Overview</button>
+            <button class="og-tabs__tab">API Docs</button>
+            <button class="og-tabs__tab">Pricing</button>
+            <button class="og-tabs__tab">Changelog</button>
+          </div>
+          <div class="og-tabs__panel">
+            <p class="og-body" style="color:var(--og-primary-200);">OpenGradient is the open platform for decentralized AI inference — run ML models on-chain with cryptographic verification.</p>
+          </div>
+          <div class="og-tabs__panel">
+            <div class="og-code"><span style="color:var(--og-primary-400);">POST</span> /v1/inference<br/><span style="color:var(--og-neutral-400);">Authorization: Bearer &lt;token&gt;</span><br/><span style="color:var(--og-neutral-400);">Content-Type: application/json</span></div>
+          </div>
+          <div class="og-tabs__panel">
+            <p class="og-body" style="color:var(--og-primary-200);">Pay-per-inference with OG tokens. No subscriptions, no minimums.</p>
+          </div>
+          <div class="og-tabs__panel">
+            <p class="og-body" style="color:var(--og-primary-200);">v3.1.0 — Added table, tabs, timeline, avatar, progress, alert components.</p>
+          </div>
+        </div>
+
+        <!-- Pill tabs -->
+        <div class="og-tabs og-tabs--pills">
+          <div class="og-tabs__nav">
+            <button class="og-tabs__tab">Dark</button>
+            <button class="og-tabs__tab">Light</button>
+            <button class="og-tabs__tab">Finance</button>
+            <button class="og-tabs__tab">Minimal</button>
+          </div>
+          <div class="og-tabs__panel"><p class="og-caption" style="color:var(--og-neutral-400);">Default dark navy theme — `&lt;body class="og-scope"&gt;`</p></div>
+          <div class="og-tabs__panel"><p class="og-caption" style="color:var(--og-neutral-400);">Light theme matching opengradient.ai — add `og-light`</p></div>
+          <div class="og-tabs__panel"><p class="og-caption" style="color:var(--og-neutral-400);">Finance/DeFi dashboard — add `og-finance`</p></div>
+          <div class="og-tabs__panel"><p class="og-caption" style="color:var(--og-neutral-400);">Ultra-clean minimal (MemSync style) — add `og-minimal`</p></div>
+        </div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div class="demo-section">
+        <div class="demo-label">og-timeline</div>
+        <div class="og-timeline" style="max-width:540px;">
+          <div class="og-timeline__item og-timeline__item--done">
+            <div class="og-timeline__track">
+              <div class="og-timeline__dot">✓</div>
+            </div>
+            <div class="og-timeline__body">
+              <div class="og-timeline__title">Model Registry v1</div>
+              <div class="og-timeline__desc">On-chain model registry with IPFS storage and ownership proofs.</div>
+              <span class="og-timeline__meta">Q1 2025 — Completed</span>
+            </div>
+          </div>
+          <div class="og-timeline__item og-timeline__item--done">
+            <div class="og-timeline__track">
+              <div class="og-timeline__dot">✓</div>
+            </div>
+            <div class="og-timeline__body">
+              <div class="og-timeline__title">ZK Inference Engine</div>
+              <div class="og-timeline__desc">Zero-knowledge proof generation for verifiable ML inference on EVM chains.</div>
+              <span class="og-timeline__meta">Q2 2025 — Completed</span>
+            </div>
+          </div>
+          <div class="og-timeline__item og-timeline__item--active">
+            <div class="og-timeline__track">
+              <div class="og-timeline__dot">→</div>
+            </div>
+            <div class="og-timeline__body">
+              <div class="og-timeline__title">Model Monetization</div>
+              <div class="og-timeline__desc">Permissionless model publishing with automatic fee distribution per verified inference.</div>
+              <span class="og-timeline__meta">Q3 2025 — In Progress</span>
+            </div>
+          </div>
+          <div class="og-timeline__item">
+            <div class="og-timeline__track">
+              <div class="og-timeline__dot">4</div>
+            </div>
+            <div class="og-timeline__body">
+              <div class="og-timeline__title">Cross-Chain Expansion</div>
+              <div class="og-timeline__desc">Multi-chain deployment across Arbitrum, Base, and Solana.</div>
+              <span class="og-timeline__meta">Q4 2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEPS -->
+      <div class="demo-section">
+        <div class="demo-label">og-steps (horizontal)</div>
+        <div class="og-steps">
+          <div class="og-steps__item og-steps__item--active">
+            <div class="og-steps__num">1</div>
+            <div class="og-steps__label">Register Model</div>
+            <div class="og-steps__sub">Upload weights to IPFS</div>
+          </div>
+          <div class="og-steps__item">
+            <div class="og-steps__num">2</div>
+            <div class="og-steps__label">Set Parameters</div>
+            <div class="og-steps__sub">Fee, access rules</div>
+          </div>
+          <div class="og-steps__item">
+            <div class="og-steps__num">3</div>
+            <div class="og-steps__label">Go Live</div>
+            <div class="og-steps__sub">Receive inference requests</div>
+          </div>
+          <div class="og-steps__item">
+            <div class="og-steps__num">4</div>
+            <div class="og-steps__label">Earn OG</div>
+            <div class="og-steps__sub">Auto-distributed per proof</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AVATARS -->
+      <div class="demo-section">
+        <div class="demo-label">og-avatar + og-team-card</div>
+
+        <!-- Sizes -->
+        <div class="demo-row" style="align-items:center;margin-bottom:32px;">
+          <div class="og-avatar og-avatar--sm">AK</div>
+          <div class="og-avatar">OG</div>
+          <div class="og-avatar og-avatar--lg">MK</div>
+          <div class="og-avatar og-avatar--xl" style="background:var(--og-grad-dark);">
+            <span style="color:var(--og-primary-400);font-size:1.5rem;">⬡</span>
+          </div>
+          <!-- Stacked group -->
+          <div class="og-avatar-group" style="margin-left:24px;">
+            <div class="og-avatar og-avatar--sm" style="background:linear-gradient(135deg,#24bce3,#0e4b5b);">A</div>
+            <div class="og-avatar og-avatar--sm" style="background:linear-gradient(135deg,#41c885,#167188);">B</div>
+            <div class="og-avatar og-avatar--sm" style="background:linear-gradient(135deg,#f23a3a,#c49508);">C</div>
+            <div class="og-avatar og-avatar--sm og-avatar-count">+8</div>
+          </div>
+        </div>
+
+        <!-- Team cards -->
+        <div class="og-grid og-grid-3">
+          <div class="og-team-card">
+            <div class="og-avatar og-avatar--xl" style="background:linear-gradient(135deg,#24bce3 0%,#0e4b5b 100%);">SK</div>
+            <div class="og-team-card__name">Sarah Kim</div>
+            <div class="og-team-card__role">Core Protocol</div>
+            <div class="og-team-card__bio">ZK proof systems and on-chain ML verification research.</div>
+            <div class="og-team-card__links">
+              <a href="#" class="og-team-card__link">𝕏</a>
+              <a href="#" class="og-team-card__link">GH</a>
+            </div>
+          </div>
+          <div class="og-team-card">
+            <div class="og-avatar og-avatar--xl" style="background:linear-gradient(135deg,#41c885 0%,#167188 100%);">MR</div>
+            <div class="og-team-card__name">Marcus Rivera</div>
+            <div class="og-team-card__role">Infrastructure</div>
+            <div class="og-team-card__bio">Distributed inference networks and validator node architecture.</div>
+            <div class="og-team-card__links">
+              <a href="#" class="og-team-card__link">𝕏</a>
+              <a href="#" class="og-team-card__link">IN</a>
+            </div>
+          </div>
+          <div class="og-team-card">
+            <div class="og-avatar og-avatar--xl" style="background:linear-gradient(135deg,#50c9e9 0%,#24bce3 100%);">AL</div>
+            <div class="og-team-card__name">Aiko Liang</div>
+            <div class="og-team-card__role">Developer Relations</div>
+            <div class="og-team-card__bio">SDK design, documentation, and ecosystem partnership development.</div>
+            <div class="og-team-card__links">
+              <a href="#" class="og-team-card__link">𝕏</a>
+              <a href="#" class="og-team-card__link">GH</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="demo-section">
+        <div class="demo-label">og-progress</div>
+        <div style="display:flex;flex-direction:column;gap:20px;max-width:560px;">
+          <div>
+            <div class="og-progress-label">
+              <span class="og-progress-label__text">Network Utilization</span>
+              <span class="og-progress-label__pct">74%</span>
+            </div>
+            <div class="og-progress"><div class="og-progress__bar" style="width:74%;"></div></div>
+          </div>
+          <div>
+            <div class="og-progress-label">
+              <span class="og-progress-label__text">Model Verification Queue</span>
+              <span class="og-progress-label__pct" style="color:var(--og-success)">92%</span>
+            </div>
+            <div class="og-progress og-progress--success"><div class="og-progress__bar" style="width:92%;"></div></div>
+          </div>
+          <div>
+            <div class="og-progress-label">
+              <span class="og-progress-label__text">Error Rate (last 24h)</span>
+              <span class="og-progress-label__pct" style="color:var(--og-error)">3%</span>
+            </div>
+            <div class="og-progress og-progress--error og-progress--sm"><div class="og-progress__bar" style="width:3%;"></div></div>
+          </div>
+          <div>
+            <div class="og-progress-label">
+              <span class="og-progress-label__text">Epoch Progress</span>
+              <span class="og-progress-label__pct">41%</span>
+            </div>
+            <div class="og-progress og-progress--lg"><div class="og-progress__bar" style="width:41%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALERTS -->
+      <div class="demo-section">
+        <div class="demo-label">og-alert</div>
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:620px;">
+          <div class="og-alert og-alert--info">
+            <span class="og-alert__icon">ℹ</span>
+            <div class="og-alert__body">
+              <div class="og-alert__title">Network Upgrade Scheduled</div>
+              Epoch 1,240 will include mandatory validator software updates. Downtime expected: &lt; 2 minutes.
+            </div>
+          </div>
+          <div class="og-alert og-alert--success">
+            <span class="og-alert__icon">✓</span>
+            <div class="og-alert__body">
+              <div class="og-alert__title">Model Verified On-Chain</div>
+              llama-3-70b proof submitted to Arbitrum. TX: 0x4f2a…b1c9
+            </div>
+          </div>
+          <div class="og-alert og-alert--warning">
+            <span class="og-alert__icon">⚠</span>
+            <div class="og-alert__body">
+              <div class="og-alert__title">High Inference Queue</div>
+              Current queue depth: 1,440 requests. Latency may be elevated. Consider increasing node allocation.
+            </div>
+          </div>
+          <div class="og-alert og-alert--error">
+            <span class="og-alert__icon">✕</span>
+            <div class="og-alert__body">
+              <div class="og-alert__title">Proof Generation Failed</div>
+              ZK circuit constraint violation on model hash 0x9f3c…. Check model weights integrity.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end container -->
+
+  </div><!-- end padding-top -->
+
+  <footer style="padding:3rem 2rem;border-top:1px solid rgba(36,188,227,.06);margin-top:40px;">
+    <div class="og-container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+      <div data-og-logo="mark" style="height:20px;opacity:.3;"></div>
+      <p class="og-caption" style="color:rgba(36,188,227,.25);">og-brand-skill v3.1.0 — New Components Preview</p>
+    </div>
+  </footer>
+
+</body>
+</html>

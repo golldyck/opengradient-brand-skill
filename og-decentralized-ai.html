@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenGradient — Decentralized AI Inference</title>
+  <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
+  <style>
+    .stats-bar {
+      display: flex;
+      gap: 0;
+      justify-content: center;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(36,188,227,0.12);
+      border-bottom: 1px solid rgba(36,188,227,0.12);
+      background: rgba(20,30,50,0.6);
+    }
+    .stat-item {
+      flex: 1;
+      min-width: 160px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border-right: 1px solid rgba(36,188,227,0.1);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2.8rem;
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      background: linear-gradient(90deg, #24bce3, #50c9e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--og-primary-400);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.25rem;
+    }
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(36,188,227,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--og-primary-500);
+      margin-bottom: 1rem;
+      flex-shrink: 0;
+    }
+    .step-connector {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(36,188,227,0.3), transparent);
+      margin: 0 1rem;
+      margin-top: -2.5rem;
+    }
+    .model-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(36,188,227,0.1);
+      color: var(--og-primary-400);
+      border: 1px solid rgba(36,188,227,0.2);
+      margin-right: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+    .chain-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      border: 1px solid rgba(36,188,227,0.2);
+      color: var(--og-primary-300);
+      margin: 0.25rem;
+    }
+    .chain-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #24bce3;
+      box-shadow: 0 0 6px #24bce3;
+    }
+    section { padding: 5rem 2rem; }
+    section:nth-child(even) { background: rgba(20,30,50,0.3); }
+  </style>
+</head>
+<body class="og-scope">
+
+  <!-- NAV -->
+  <nav class="og-nav">
+    <div class="og-container" style="display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;">
+      <div data-og-logo="wordmark" style="height:30px;"></div>
+      <div style="display:flex;align-items:center;gap:2rem;">
+        <a href="#" class="og-body" style="color:var(--og-primary-200);text-decoration:none;font-size:0.9rem;">Docs</a>
+        <a href="#" class="og-body" style="color:var(--og-primary-200);text-decoration:none;font-size:0.9rem;">Models</a>
+        <a href="#" class="og-body" style="color:var(--og-primary-200);text-decoration:none;font-size:0.9rem;">Network</a>
+        <a href="#" class="og-body" style="color:var(--og-primary-200);text-decoration:none;font-size:0.9rem;">GitHub</a>
+        <a href="#" class="og-btn og-btn-primary og-btn-sm">Launch App</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="og-hero" style="padding-top:130px;padding-bottom:0;">
+    <div class="og-container" style="text-align:center;padding:4rem 2rem 3rem;">
+      <span class="og-badge og-badge-primary og-reveal" style="margin-bottom:1.5rem;display:inline-block;">
+        ⬡ Decentralized AI · Public Beta
+      </span>
+      <h1 class="og-h1 og-text-gradient og-reveal" style="font-size:clamp(2.4rem,6vw,4.2rem);max-width:820px;margin:0 auto;">
+        Run AI at the Speed<br>of the Chain
+      </h1>
+      <p class="og-body og-reveal" style="max-width:580px;margin:1.75rem auto 2.5rem;font-size:1.15rem;color:var(--og-primary-200);line-height:1.7;">
+        OpenGradient brings trustless AI inference on-chain. Deploy any model, pay per call, verify every result — no middlemen, no lock-in.
+      </p>
+      <div class="og-reveal" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;">
+        <a href="#" class="og-btn og-btn-primary og-btn-lg">Start Building Free</a>
+        <a href="#" class="og-btn og-btn-secondary og-btn-lg">Browse Models →</a>
+      </div>
+      <!-- Chain support pills -->
+      <div class="og-reveal" style="display:flex;flex-wrap:wrap;justify-content:center;gap:0.25rem;opacity:0.8;">
+        <span class="og-caption" style="color:var(--og-primary-400);padding:0.3rem 0.8rem;">Live on:</span>
+        <span class="chain-pill"><span class="chain-dot"></span>Ethereum</span>
+        <span class="chain-pill"><span class="chain-dot"></span>Arbitrum</span>
+        <span class="chain-pill"><span class="chain-dot"></span>Base</span>
+        <span class="chain-pill"><span class="chain-dot"></span>Solana</span>
+        <span class="chain-pill"><span class="chain-dot" style="background:#50c9e9;box-shadow:0 0 6px #50c9e9;"></span>+12 more</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar og-reveal">
+    <div class="stat-item">
+      <span class="stat-num">&lt;80ms</span>
+      <span class="stat-label">Median Latency</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">2,400+</span>
+      <span class="stat-label">Models Available</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">340</span>
+      <span class="stat-label">Active Validators</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">$0.0004</span>
+      <span class="stat-label">Per Inference Call</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">99.97%</span>
+      <span class="stat-label">Network Uptime</span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section>
+    <div class="og-container">
+      <div style="text-align:center;margin-bottom:3rem;">
+        <span class="og-badge og-badge-primary og-reveal" style="display:inline-block;margin-bottom:1rem;">Core Infrastructure</span>
+        <h2 class="og-h2 og-reveal">Built different. Built on-chain.</h2>
+        <p class="og-body og-reveal" style="color:var(--og-primary-200);max-width:520px;margin:1rem auto 0;">
+          Every inference request is cryptographically verified, economically settled, and permanently auditable.
+        </p>
+      </div>
+      <div class="og-grid og-grid-3">
+
+        <div class="og-card og-card-glow og-reveal">
+          <div style="font-size:2rem;margin-bottom:1rem;">⬡</div>
+          <h3 class="og-h3" style="margin-bottom:0.75rem;">On-Chain Execution</h3>
+          <p class="og-body" style="color:var(--og-primary-200);line-height:1.7;">
+            Smart contract-native inference. Your dApp calls the model directly — results are posted on-chain, verifiable by any node, slashable if wrong.
+          </p>
+          <div style="margin-top:1.5rem;">
+            <span class="model-tag">ERC-4337</span>
+            <span class="model-tag">zkProofs</span>
+            <span class="model-tag">Optimistic Rollup</span>
+          </div>
+        </div>
+
+        <div class="og-card og-card-glow og-reveal og-card-featured">
+          <div style="font-size:2rem;margin-bottom:1rem;">⚡</div>
+          <h3 class="og-h3" style="margin-bottom:0.75rem;">Sub-100ms Inference</h3>
+          <p class="og-body" style="color:var(--og-primary-200);line-height:1.7;">
+            A global network of GPU validators competes on speed. The fastest verifiable response wins the reward. You get blazing inference, they get the fee.
+          </p>
+          <div style="margin-top:1.5rem;">
+            <span class="model-tag">GPU Cluster</span>
+            <span class="model-tag">P2P Routing</span>
+            <span class="model-tag">Edge Nodes</span>
+          </div>
+        </div>
+
+        <div class="og-card og-card-glow og-reveal">
+          <div style="font-size:2rem;margin-bottom:1rem;">🛒</div>
+          <h3 class="og-h3" style="margin-bottom:0.75rem;">Open Model Marketplace</h3>
+          <p class="og-body" style="color:var(--og-primary-200);line-height:1.7;">
+            Anyone can list a model. Anyone can run it. Set your own pricing in any token. Royalties flow automatically on every inference call via smart contract.
+          </p>
+          <div style="margin-top:1.5rem;">
+            <span class="model-tag">LLMs</span>
+            <span class="model-tag">Vision</span>
+            <span class="model-tag">Audio</span>
+            <span class="model-tag">Custom</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="og-container">
+      <div style="text-align:center;margin-bottom:3.5rem;">
+        <span class="og-badge og-badge-primary og-reveal" style="display:inline-block;margin-bottom:1rem;">How It Works</span>
+        <h2 class="og-h2 og-reveal">From call to verified result in milliseconds</h2>
+      </div>
+
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;max-width:900px;margin:0 auto;">
+
+        <div class="og-reveal" style="flex:1;min-width:220px;max-width:260px;">
+          <div class="step-num">01</div>
+          <h3 class="og-h3" style="margin-bottom:0.75rem;font-size:1.1rem;">Your App Calls the Contract</h3>
+          <p class="og-body" style="color:var(--og-primary-200);font-size:0.9rem;line-height:1.7;">
+            Send an inference request via smart contract. Specify model ID, input, max fee, and SLA. Funds are escrowed atomically.
+          </p>
+          <div class="og-code" style="margin-top:1rem;font-size:0.75rem;padding:0.75rem;">
+            og.infer(modelId, input, &#123; maxFee: "0.001 ETH" &#125;)
+          </div>
+        </div>
+
+        <div class="og-reveal" style="display:flex;align-items:flex-start;padding-top:1.2rem;">
+          <div style="width:60px;height:1px;background:linear-gradient(90deg,rgba(36,188,227,0.5),rgba(36,188,227,0.1));margin-top:20px;"></div>
+        </div>
+
+        <div class="og-reveal" style="flex:1;min-width:220px;max-width:260px;">
+          <div class="step-num">02</div>
+          <h3 class="og-h3" style="margin-bottom:0.75rem;font-size:1.1rem;">Validators Race to Respond</h3>
+          <p class="og-body" style="color:var(--og-primary-200);font-size:0.9rem;line-height:1.7;">
+            GPU validators pick up the job. They execute the model, generate a cryptographic attestation, and submit the signed result on-chain.
+          </p>
+          <div class="og-code" style="margin-top:1rem;font-size:0.75rem;padding:0.75rem;">
+            result + zkAttestation → L2
+          </div>
+        </div>
+
+        <div class="og-reveal" style="display:flex;align-items:flex-start;padding-top:1.2rem;">
+          <div style="width:60px;height:1px;background:linear-gradient(90deg,rgba(36,188,227,0.5),rgba(36,188,227,0.1));margin-top:20px;"></div>
+        </div>
+
+        <div class="og-reveal" style="flex:1;min-width:220px;max-width:260px;">
+          <div class="step-num">03</div>
+          <h3 class="og-h3" style="margin-bottom:0.75rem;font-size:1.1rem;">Result Settled On-Chain</h3>
+          <p class="og-body" style="color:var(--og-primary-200);font-size:0.9rem;line-height:1.7;">
+            Consensus is reached. Escrow releases to the winning validator. Your contract receives the verified output. Dispute period: 15 minutes.
+          </p>
+          <div class="og-code" style="margin-top:1rem;font-size:0.75rem;padding:0.75rem;">
+            ✓ Verified · Finalized · Auditable
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MODEL MARKETPLACE PREVIEW -->
+  <section>
+    <div class="og-container">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem;">
+        <div>
+          <span class="og-badge og-badge-primary og-reveal" style="display:inline-block;margin-bottom:0.75rem;">Model Marketplace</span>
+          <h2 class="og-h2 og-reveal">2,400+ models. One API.</h2>
+        </div>
+        <a href="#" class="og-btn og-btn-secondary og-reveal">View All Models →</a>
+      </div>
+
+      <div class="og-grid og-grid-4">
+
+        <div class="og-card og-reveal" style="padding:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+            <span style="font-size:1.5rem;">🧠</span>
+            <span class="og-badge og-badge-primary" style="font-size:0.65rem;padding:0.2rem 0.5rem;">LLM</span>
+          </div>
+          <h4 style="color:#fff;font-weight:400;margin-bottom:0.4rem;font-size:0.95rem;">Llama 3.1 70B</h4>
+          <p style="color:var(--og-primary-400);font-size:0.78rem;margin-bottom:1rem;">Meta · Instruction-tuned</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:var(--og-primary-500);font-size:0.8rem;font-weight:500;">$0.0003/1k tok</span>
+            <span style="color:var(--og-primary-400);font-size:0.75rem;">74ms avg</span>
+          </div>
+        </div>
+
+        <div class="og-card og-reveal" style="padding:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+            <span style="font-size:1.5rem;">👁️</span>
+            <span class="og-badge og-badge-primary" style="font-size:0.65rem;padding:0.2rem 0.5rem;">Vision</span>
+          </div>
+          <h4 style="color:#fff;font-weight:400;margin-bottom:0.4rem;font-size:0.95rem;">CLIP ViT-L/14</h4>
+          <p style="color:var(--og-primary-400);font-size:0.78rem;margin-bottom:1rem;">OpenAI · Zero-shot</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:var(--og-primary-500);font-size:0.8rem;font-weight:500;">$0.0001/img</span>
+            <span style="color:var(--og-primary-400);font-size:0.75rem;">41ms avg</span>
+          </div>
+        </div>
+
+        <div class="og-card og-reveal" style="padding:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+            <span style="font-size:1.5rem;">📊</span>
+            <span class="og-badge og-badge-primary" style="font-size:0.65rem;padding:0.2rem 0.5rem;">Finance</span>
+          </div>
+          <h4 style="color:#fff;font-weight:400;margin-bottom:0.4rem;font-size:0.95rem;">DeFi Signal v3</h4>
+          <p style="color:var(--og-primary-400);font-size:0.78rem;margin-bottom:1rem;">OG Labs · On-chain data</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:var(--og-primary-500);font-size:0.8rem;font-weight:500;">$0.002/call</span>
+            <span style="color:var(--og-primary-400);font-size:0.75rem;">88ms avg</span>
+          </div>
+        </div>
+
+        <div class="og-card og-reveal" style="padding:1.25rem;border-style:dashed;opacity:0.6;display:flex;align-items:center;justify-content:center;text-align:center;min-height:140px;">
+          <div>
+            <div style="font-size:1.5rem;margin-bottom:0.5rem;">＋</div>
+            <p style="color:var(--og-primary-400);font-size:0.85rem;">List your model<br>and earn on every call</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section style="padding:4rem 2rem;">
+    <div class="og-cta-banner og-reveal og-container" style="max-width:860px;">
+      <h2 class="og-h2" style="margin-bottom:1rem;">Start running AI on-chain today</h2>
+      <p class="og-body" style="color:var(--og-primary-200);margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">
+        Free tier includes 10,000 inference calls/month. No credit card. No KYC. Just connect a wallet.
+      </p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="#" class="og-btn og-btn-primary og-btn-lg">Connect Wallet →</a>
+        <a href="#" class="og-btn og-btn-dark og-btn-lg">Read the Docs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="padding:3rem 2rem;border-top:1px solid rgba(36,188,227,0.08);">
+    <div class="og-container">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:2rem;margin-bottom:2.5rem;">
+        <div>
+          <div data-og-logo="wordmark" style="height:28px;margin-bottom:1rem;"></div>
+          <p class="og-caption" style="color:var(--og-primary-400);max-width:240px;line-height:1.6;">
+            Decentralized infrastructure for verifiable AI inference.
+          </p>
+        </div>
+        <div style="display:flex;gap:4rem;flex-wrap:wrap;">
+          <div>
+            <p class="og-label" style="color:var(--og-primary-500);margin-bottom:1rem;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;">Product</p>
+            <div style="display:flex;flex-direction:column;gap:0.6rem;">
+              <a href="#" class="og-caption" style="color:var(--og-primary-300);text-decoration:none;">Model Marketplace</a>
+              <a href="#" class="og-caption" style="color:var(--og-primary-300);text-decoration:none;">Validator Network</a>
+              <a href="#" class="og-caption" style="color:var(--og-primary-300);text-decoration:none;">SDK & API</a>
+              <a href="#" class="og-caption" style="color:var(--og-primary-300);text-decoration:none;">Pricing</a>
+            </div>
+          </div>
+          <div>
+            <p class="og-label" style="color:var(--og-primary-500);margin-bottom:1rem;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;">Community</p>
+            <div style="display:flex;flex-direction:column;gap:0.6rem;">
+              <a href="#" class="og-caption" style="color:var(--og-primary-300);text-decoration:none;">Discord</a>
+              <a href="#" class="og-caption" style="color:var(--og-primary-300);text-decoration:none;">Twitter / X</a>
+              <a href="#" class="og-caption" style="color:var(--og-primary-300);text-decoration:none;">GitHub</a>
+              <a href="#" class="og-caption" style="color:var(--og-primary-300);text-decoration:none;">Blog</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(36,188,227,0.08);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+        <div data-og-logo="mark" style="height:22px;opacity:0.4;"></div>
+        <p class="og-caption" style="color:rgba(36,188,227,0.3);">© 2025 OpenGradient. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

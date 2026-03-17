@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenGradient Nodes — Run the Network</title>
+  <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
+  <style>
+    /* Design direction: Deep-space infra — og-scope dark navy, hex grid, node map, ultra-technical aesthetic */
+
+    :root {
+      --nd-bg: #070d1a;
+      --nd-bg-mid: #0a1226;
+      --nd-bg-surface: #0d1830;
+      --nd-blue: #24bce3;
+      --nd-blue-dim: rgba(36,188,227,0.12);
+      --nd-blue-border: rgba(36,188,227,0.18);
+      --nd-blue-bright: rgba(36,188,227,0.5);
+      --nd-green: #39d98a;
+      --nd-mono: 'Geist Mono', 'Fira Code', monospace;
+      --nd-text: #c8d8e8;
+      --nd-text-muted: rgba(200,216,232,0.45);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--nd-bg); color: var(--nd-text); font-family: system-ui,-apple-system,sans-serif; overflow-x: hidden; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes heroIn { from{opacity:0;transform:translateY(32px) scale(.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+    @keyframes glowPulse {
+      0%,100% { box-shadow: 0 0 10px rgba(36,188,227,.25); }
+      50%      { box-shadow: 0 0 28px rgba(36,188,227,.6), 0 0 50px rgba(36,188,227,.15); }
+    }
+    @keyframes rotateSlow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes nodeFlicker {
+      0%,90%,100% { opacity:1; }
+      92%,98% { opacity:.2; }
+    }
+    @keyframes barGrow { from{width:0} to{width:var(--w)} }
+    @keyframes drawLine {
+      from { stroke-dashoffset: 300; }
+      to   { stroke-dashoffset: 0; }
+    }
+    @keyframes spinHex { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    .stagger > * { opacity:0; transform:translateY(24px); animation:fadeUp .65s cubic-bezier(.16,1,.3,1) both; }
+    .stagger > *:nth-child(1){animation-delay:.05s}
+    .stagger > *:nth-child(2){animation-delay:.15s}
+    .stagger > *:nth-child(3){animation-delay:.25s}
+    .stagger > *:nth-child(4){animation-delay:.35s}
+
+    /* HEX GRID BACKGROUND */
+    .nd-hex-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: .4;
+    }
+    .nd-hex-bg svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* NAV */
+    .nd-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 64px;
+      background: rgba(7,13,26,0.88); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--nd-blue-border);
+    }
+    .nd-nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nd-nav-link { font-family: var(--nd-mono); font-size: .78rem; letter-spacing: .04em; color: var(--nd-text-muted); text-decoration: none; transition: color .2s; }
+    .nd-nav-link:hover { color: var(--nd-blue); }
+    .nd-nav-status {
+      display: flex; align-items: center; gap: .5rem;
+      font-family: var(--nd-mono); font-size: .72rem; color: var(--nd-green); letter-spacing: .06em;
+    }
+    .nd-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--nd-green); animation: pulse 2s ease-in-out infinite; }
+    .nd-btn-nav {
+      font-family: var(--nd-mono); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: .45rem 1.2rem; border: 1px solid var(--nd-blue); color: var(--nd-blue); background: transparent;
+      border-radius: 4px; cursor: pointer; transition: background .2s, color .2s;
+    }
+    .nd-btn-nav:hover { background: var(--nd-blue); color: var(--nd-bg); }
+
+    /* HERO */
+    .nd-hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 120px 3rem 80px; position: relative; overflow: hidden;
+    }
+    .nd-hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; width: 100%; position: relative; z-index: 1; }
+    .nd-hero-label {
+      font-family: var(--nd-mono); font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--nd-blue); margin-bottom: 1.5rem;
+      animation: fadeUp .5s ease both .1s;
+    }
+    .nd-h1 {
+      font-size: clamp(2.8rem, 4.5vw, 4.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05;
+      color: #e8f4ff; animation: heroIn .8s cubic-bezier(.16,1,.3,1) both .2s; margin-bottom: 1.25rem;
+    }
+    .nd-h1 span { color: var(--nd-blue); }
+    .nd-sub { font-size: 1.05rem; color: var(--nd-text-muted); line-height: 1.7; max-width: 460px; animation: fadeUp .7s ease both .4s; margin-bottom: 2rem; }
+    .nd-hero-stats { display: flex; gap: 2.5rem; animation: fadeUp .7s ease both .5s; margin-bottom: 2rem; }
+    .nd-hero-stat .val { font-family: var(--nd-mono); font-size: 1.3rem; font-weight: 700; color: var(--nd-blue); }
+    .nd-hero-stat .lbl { font-family: var(--nd-mono); font-size: .67rem; letter-spacing: .1em; text-transform: uppercase; color: var(--nd-text-muted); margin-top: .15rem; }
+    .nd-hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp .7s ease both .6s; }
+    .nd-btn {
+      font-family: var(--nd-mono); font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      padding: .7rem 1.6rem; border-radius: 4px; cursor: pointer; border: none; text-decoration: none; display: inline-block;
+      transition: filter .2s, box-shadow .2s, transform .15s;
+    }
+    .nd-btn:hover { transform: translateY(-2px); }
+    .nd-btn-primary { background: var(--nd-blue); color: var(--nd-bg); }
+    .nd-btn-primary:hover { filter: brightness(1.1); box-shadow: 0 0 24px rgba(36,188,227,.45); }
+    .nd-btn-ghost { background: transparent; color: var(--nd-text); border: 1px solid var(--nd-blue-border); }
+    .nd-btn-ghost:hover { border-color: var(--nd-blue); color: var(--nd-blue); }
+
+    /* NODE MAP WIDGET */
+    .nd-node-map {
+      background: #080f1e; border: 1px solid var(--nd-blue-border); border-radius: 12px;
+      padding: 1.5rem; position: relative; overflow: hidden;
+      animation: fadeUp .8s ease both .3s;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 30px rgba(36,188,227,0.06);
+    }
+    .nd-map-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .nd-map-title { font-family: var(--nd-mono); font-size: .78rem; color: var(--nd-text-muted); }
+    .nd-map-live { display: flex; align-items: center; gap: .4rem; font-family: var(--nd-mono); font-size: .7rem; color: var(--nd-green); }
+    .nd-map-live::before { content:''; display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--nd-green); animation: pulse 1.5s ease-in-out infinite; }
+    .nd-node-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: .5rem; margin-bottom: 1.25rem; }
+    .nd-node {
+      aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+      position: relative; cursor: default;
+    }
+    .nd-node-active {
+      background: rgba(36,188,227,0.12); border: 1px solid rgba(36,188,227,0.3);
+      animation: nodeFlicker calc(var(--d,0s) + 8s) ease-in-out infinite var(--d,0s);
+    }
+    .nd-node-active::after { content:''; position:absolute; inset:4px; border-radius:4px; background: rgba(36,188,227,0.08); }
+    .nd-node-idle { background: rgba(200,216,232,0.04); border: 1px solid rgba(200,216,232,0.06); }
+    .nd-node-computing { background: rgba(57,217,138,0.1); border: 1px solid rgba(57,217,138,0.25); animation: glowPulse 2s ease-in-out infinite; }
+    .nd-node-dot { width: 6px; height: 6px; border-radius: 50%; z-index: 1; }
+    .nd-dot-blue { background: var(--nd-blue); }
+    .nd-dot-green { background: var(--nd-green); }
+    .nd-dot-dim { background: rgba(200,216,232,0.2); }
+    .nd-map-legend { display: flex; gap: 1.25rem; font-family: var(--nd-mono); font-size: .67rem; color: var(--nd-text-muted); }
+    .nd-legend-item { display: flex; align-items: center; gap: .35rem; }
+    .nd-legend-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .nd-map-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: .5rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--nd-blue-border); }
+    .nd-map-stat { text-align: center; }
+    .nd-map-stat-val { font-family: var(--nd-mono); font-size: 1.1rem; font-weight: 700; color: var(--nd-blue); }
+    .nd-map-stat-lbl { font-family: var(--nd-mono); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--nd-text-muted); margin-top: 2px; }
+
+    /* TICKER */
+    .nd-ticker { overflow: hidden; background: #060c18; border-top: 1px solid var(--nd-blue-border); border-bottom: 1px solid var(--nd-blue-border); padding: .6rem 0; position: relative; }
+    .nd-ticker::before, .nd-ticker::after { content:''; position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none; }
+    .nd-ticker::before { left:0; background:linear-gradient(90deg,#060c18,transparent); }
+    .nd-ticker::after  { right:0; background:linear-gradient(-90deg,#060c18,transparent); }
+    .nd-ticker-track { display:flex; animation:ticker 30s linear infinite; width:max-content; }
+    .nd-ticker-item { display:flex; align-items:center; gap:.75rem; padding:0 2rem; font-family:var(--nd-mono); font-size:.75rem; border-right:1px solid rgba(36,188,227,0.07); white-space:nowrap; }
+    .nd-ticker-key { color: rgba(200,216,232,0.5); }
+    .nd-ticker-val { color: var(--nd-blue); font-weight: 600; }
+
+    /* FEATURES */
+    .nd-features { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; position: relative; z-index: 1; }
+    .nd-section-label { font-family: var(--nd-mono); font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--nd-blue); margin-bottom: 1rem; }
+    .nd-h2 { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -.025em; color: #e8f4ff; line-height: 1.1; margin-bottom: .75rem; }
+    .nd-lead { font-size: 1rem; color: var(--nd-text-muted); line-height: 1.7; max-width: 500px; margin-bottom: 3rem; }
+    .nd-feature-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+    .nd-feature-card {
+      background: #0a1220; border: 1px solid var(--nd-blue-border); border-radius: 10px; padding: 1.75rem;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .nd-feature-card:hover { border-color: rgba(36,188,227,.4); box-shadow: 0 0 24px rgba(36,188,227,.06); }
+    .nd-feature-num { font-family: var(--nd-mono); font-size: .65rem; letter-spacing: .1em; color: var(--nd-text-muted); margin-bottom: 1rem; }
+    .nd-feature-title { font-size: 1rem; font-weight: 700; color: #e8f4ff; margin-bottom: .5rem; }
+    .nd-feature-desc { font-size: .85rem; color: var(--nd-text-muted); line-height: 1.65; }
+
+    /* REQUIREMENTS */
+    .nd-req { background: #070f1f; border-top: 1px solid var(--nd-blue-border); border-bottom: 1px solid var(--nd-blue-border); padding: 5rem 3rem; position: relative; z-index: 1; }
+    .nd-req-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .nd-req-list { list-style: none; margin-top: 1.5rem; }
+    .nd-req-item {
+      display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0;
+      border-bottom: 1px solid rgba(36,188,227,0.06);
+    }
+    .nd-req-icon { font-size: .9rem; margin-top: 1px; flex-shrink: 0; }
+    .nd-req-label { font-weight: 600; font-size: .88rem; color: #e8f4ff; margin-bottom: .25rem; }
+    .nd-req-desc { font-size: .8rem; color: var(--nd-text-muted); line-height: 1.5; }
+    .nd-req-chart { background: #060d1a; border: 1px solid var(--nd-blue-border); border-radius: 10px; padding: 1.5rem; }
+    .nd-req-chart-title { font-family: var(--nd-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--nd-text-muted); margin-bottom: 1.25rem; }
+    .nd-bar-row { margin-bottom: 1rem; }
+    .nd-bar-label { font-family: var(--nd-mono); font-size: .72rem; color: var(--nd-text-muted); display: flex; justify-content: space-between; margin-bottom: .35rem; }
+    .nd-bar { height: 6px; background: rgba(36,188,227,0.08); border-radius: 3px; overflow: hidden; }
+    .nd-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--nd-blue), rgba(36,188,227,0.5)); width: var(--w); animation: barGrow 1.2s cubic-bezier(.16,1,.3,1) both; animation-delay: var(--d,0s); }
+
+    /* EARNINGS */
+    .nd-earnings { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; position: relative; z-index: 1; }
+    .nd-earnings-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-top: 2.5rem; }
+    .nd-earn-card { background: #0a1220; border: 1px solid var(--nd-blue-border); border-radius: 10px; padding: 2rem; text-align: center; }
+    .nd-earn-tier { font-family: var(--nd-mono); font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--nd-text-muted); margin-bottom: .5rem; }
+    .nd-earn-val { font-family: var(--nd-mono); font-size: 2rem; font-weight: 800; color: var(--nd-blue); margin-bottom: .25rem; }
+    .nd-earn-period { font-family: var(--nd-mono); font-size: .72rem; color: var(--nd-text-muted); margin-bottom: 1rem; }
+    .nd-earn-reqs { list-style: none; text-align: left; }
+    .nd-earn-reqs li { font-size: .8rem; color: var(--nd-text-muted); padding: .3rem 0; display: flex; align-items: center; gap: .5rem; }
+    .nd-earn-reqs li::before { content:'·'; color: var(--nd-blue); }
+
+    /* CTA */
+    .nd-cta { padding: 7rem 3rem; text-align: center; position: relative; z-index: 1; }
+    .nd-cta-glow { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 800px; height: 400px; background: radial-gradient(ellipse, rgba(36,188,227,0.06) 0%, transparent 70%); pointer-events: none; }
+    .nd-cta-h { font-size: clamp(2rem, 3.5vw, 3.25rem); font-weight: 800; letter-spacing: -.03em; color: #e8f4ff; margin-bottom: 1rem; }
+    .nd-cta-sub { font-size: 1rem; color: var(--nd-text-muted); max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.65; }
+
+    /* FOOTER */
+    .nd-footer { background: #050b15; border-top: 1px solid var(--nd-blue-border); padding: 2.5rem 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; position: relative; z-index: 1; }
+    .nd-footer-copy { font-family: var(--nd-mono); font-size: .7rem; color: var(--nd-text-muted); }
+    .nd-footer-links { display: flex; gap: 2rem; }
+    .nd-footer-link { font-family: var(--nd-mono); font-size: .7rem; color: var(--nd-text-muted); text-decoration: none; transition: color .2s; }
+    .nd-footer-link:hover { color: var(--nd-blue); }
+
+    @media (max-width: 900px) {
+      .nd-hero-inner { grid-template-columns: 1fr; }
+      .nd-feature-grid { grid-template-columns: 1fr; }
+      .nd-req-inner { grid-template-columns: 1fr; }
+      .nd-earnings-grid { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important} }
+  </style>
+</head>
+<body class="og-scope">
+
+  <!-- HEX GRID BG -->
+  <div class="nd-hex-bg">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <defs>
+        <pattern id="hex" width="56" height="48" patternUnits="userSpaceOnUse">
+          <polygon points="28,2 52,14 52,38 28,50 4,38 4,14" fill="none" stroke="rgba(36,188,227,0.06)" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hex)"/>
+    </svg>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nd-nav">
+    <div data-og-logo="wordmark" style="height:28px;"></div>
+    <div class="nd-nav-links">
+      <a href="#" class="nd-nav-link">Network</a>
+      <a href="#" class="nd-nav-link">Nodes</a>
+      <a href="#" class="nd-nav-link">Docs</a>
+      <div class="nd-nav-status"><div class="nd-status-dot"></div>NETWORK LIVE</div>
+      <button class="nd-btn-nav">Run a Node</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="nd-hero">
+    <div class="nd-hero-inner">
+      <div>
+        <div class="nd-hero-label">// OpenGradient Node Network</div>
+        <h1 class="nd-h1">Power the <span>decentralized</span><br>AI compute layer.</h1>
+        <p class="nd-sub">Run a node. Serve AI inference to the network. Earn OG tokens for every verified computation your hardware completes.</p>
+        <div class="nd-hero-stats">
+          <div class="nd-hero-stat"><div class="val" data-target="2847" data-suffix="">0</div><div class="lbl">Active Nodes</div></div>
+          <div class="nd-hero-stat"><div class="val" data-target="98" data-suffix=".7%">0</div><div class="lbl">Network Uptime</div></div>
+          <div class="nd-hero-stat"><div class="val">32ms</div><div class="lbl">Avg Latency</div></div>
+        </div>
+        <div class="nd-hero-btns">
+          <a href="#" class="nd-btn nd-btn-primary" style="animation:glowPulse 2.5s ease-in-out infinite">Run a Node →</a>
+          <a href="#" class="nd-btn nd-btn-ghost">View Network →</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="nd-node-map">
+          <div class="nd-map-header">
+            <div class="nd-map-title">// node-network-status</div>
+            <div class="nd-map-live">LIVE</div>
+          </div>
+          <div class="nd-node-grid" id="node-grid"></div>
+          <div class="nd-map-legend">
+            <div class="nd-legend-item"><div class="nd-legend-dot" style="background:var(--nd-blue)"></div>Active</div>
+            <div class="nd-legend-item"><div class="nd-legend-dot" style="background:var(--nd-green)"></div>Computing</div>
+            <div class="nd-legend-item"><div class="nd-legend-dot" style="background:rgba(200,216,232,0.2)"></div>Idle</div>
+          </div>
+          <div class="nd-map-stats">
+            <div class="nd-map-stat"><div class="nd-map-stat-val">2,847</div><div class="nd-map-stat-lbl">Total Nodes</div></div>
+            <div class="nd-map-stat"><div class="nd-map-stat-val">1,204</div><div class="nd-map-stat-lbl">Inferencing</div></div>
+            <div class="nd-map-stat"><div class="nd-map-stat-val">42 TB/s</div><div class="nd-map-stat-lbl">Throughput</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="nd-ticker">
+    <div class="nd-ticker-track" id="ticker-track"></div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="nd-features">
+    <div class="nd-section-label">How It Works</div>
+    <h2 class="nd-h2">Trustless compute<br>for AI inference.</h2>
+    <p class="nd-lead">Every model call on OpenGradient routes through verified node operators — you provide the hardware, we handle the protocol.</p>
+    <div class="nd-feature-grid stagger">
+      <div class="nd-feature-card">
+        <div class="nd-feature-num">01 //</div>
+        <div class="nd-feature-title">Serve Inference Requests</div>
+        <div class="nd-feature-desc">Your node loads AI models from the hub and processes incoming inference requests. Supports all OpenGradient-registered models including LLMs, vision, and time-series.</div>
+      </div>
+      <div class="nd-feature-card">
+        <div class="nd-feature-num">02 //</div>
+        <div class="nd-feature-title">Proof-of-Compute Verification</div>
+        <div class="nd-feature-desc">Each inference is verified by a rotating committee of peer nodes using a lightweight ZK proof. Fraudulent results are slashed automatically by the protocol.</div>
+      </div>
+      <div class="nd-feature-card">
+        <div class="nd-feature-num">03 //</div>
+        <div class="nd-feature-title">Earn OG Tokens</div>
+        <div class="nd-feature-desc">Rewards are distributed per verified computation epoch. The more reliable and fast your node, the higher your position in the request routing queue.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REQUIREMENTS -->
+  <div class="nd-req">
+    <div class="nd-req-inner">
+      <div style="position:relative;z-index:1">
+        <div class="nd-section-label">Requirements</div>
+        <h2 class="nd-h2" style="margin-bottom:.75rem">What you need<br>to run a node.</h2>
+        <p class="nd-lead" style="margin-bottom:0">No exotic hardware needed. A modern GPU and a stable connection are enough to start earning.</p>
+        <ul class="nd-req-list">
+          <li class="nd-req-item">
+            <span class="nd-req-icon">💻</span>
+            <div><div class="nd-req-label">GPU: 8GB VRAM minimum</div><div class="nd-req-desc">RTX 3080, A100, or equivalent. CUDA 11.8+ required. Multiple GPUs scale rewards linearly.</div></div>
+          </li>
+          <li class="nd-req-item">
+            <span class="nd-req-icon">🌐</span>
+            <div><div class="nd-req-label">500 Mbps bandwidth</div><div class="nd-req-desc">Symmetric connection preferred. Model weights download once and are cached locally.</div></div>
+          </li>
+          <li class="nd-req-item">
+            <span class="nd-req-icon">💾</span>
+            <div><div class="nd-req-label">500 GB NVMe storage</div><div class="nd-req-desc">For local model cache. Higher capacity means you can serve more model families simultaneously.</div></div>
+          </li>
+          <li class="nd-req-item">
+            <span class="nd-req-icon">🔐</span>
+            <div><div class="nd-req-label">1000 OG stake</div><div class="nd-req-desc">Collateral ensures honest behaviour. Returned in full when you exit — slashed only for provable fraud.</div></div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <div class="nd-req-chart">
+          <div class="nd-req-chart-title">// current network composition</div>
+          <div class="nd-bar-row">
+            <div class="nd-bar-label"><span>NVIDIA RTX 40-series</span><span>41%</span></div>
+            <div class="nd-bar"><div class="nd-bar-fill" style="--w:41%;--d:0.1s"></div></div>
+          </div>
+          <div class="nd-bar-row">
+            <div class="nd-bar-label"><span>NVIDIA A100 / H100</span><span>28%</span></div>
+            <div class="nd-bar"><div class="nd-bar-fill" style="--w:28%;--d:0.2s"></div></div>
+          </div>
+          <div class="nd-bar-row">
+            <div class="nd-bar-label"><span>NVIDIA RTX 30-series</span><span>22%</span></div>
+            <div class="nd-bar"><div class="nd-bar-fill" style="--w:22%;--d:0.3s"></div></div>
+          </div>
+          <div class="nd-bar-row">
+            <div class="nd-bar-label"><span>AMD Instinct MI300</span><span>9%</span></div>
+            <div class="nd-bar"><div class="nd-bar-fill" style="--w:9%;--d:0.4s"></div></div>
+          </div>
+          <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--nd-blue-border)">
+            <div style="font-family:var(--nd-mono);font-size:.67rem;letter-spacing:.08em;text-transform:uppercase;color:var(--nd-text-muted);margin-bottom:.75rem">Avg rewards last 30d</div>
+            <div style="font-family:var(--nd-mono);font-size:1.75rem;font-weight:800;color:var(--nd-green)">+847 OG<span style="font-size:.9rem;color:var(--nd-text-muted);margin-left:.5rem">/ node / month</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EARNING TIERS -->
+  <div class="nd-earnings">
+    <div class="nd-section-label">Reward Tiers</div>
+    <h2 class="nd-h2" style="margin-bottom:.5rem">Earn more<br>with better hardware.</h2>
+    <p class="nd-lead">Rewards scale with your contribution to the network's inference capacity.</p>
+    <div class="nd-earnings-grid stagger">
+      <div class="nd-earn-card">
+        <div class="nd-earn-tier">Tier 1 · Standard</div>
+        <div class="nd-earn-val" data-target="400" data-suffix="">0</div>
+        <div class="nd-earn-period">OG / month (est.)</div>
+        <ul class="nd-earn-reqs">
+          <li>8–16 GB VRAM GPU</li>
+          <li>500 Mbps bandwidth</li>
+          <li>1,000 OG stake</li>
+          <li>Single model family</li>
+        </ul>
+      </div>
+      <div class="nd-earn-card" style="border-color:rgba(36,188,227,0.3);box-shadow:0 0 20px rgba(36,188,227,0.08)">
+        <div class="nd-earn-tier">Tier 2 · Power</div>
+        <div class="nd-earn-val" data-target="900" data-suffix="">0</div>
+        <div class="nd-earn-period">OG / month (est.)</div>
+        <ul class="nd-earn-reqs">
+          <li>24–40 GB VRAM GPU</li>
+          <li>1 Gbps bandwidth</li>
+          <li>5,000 OG stake</li>
+          <li>All model families</li>
+        </ul>
+      </div>
+      <div class="nd-earn-card">
+        <div class="nd-earn-tier">Tier 3 · Validator</div>
+        <div class="nd-earn-val" data-target="2200" data-suffix="">0</div>
+        <div class="nd-earn-period">OG / month (est.)</div>
+        <ul class="nd-earn-reqs">
+          <li>Multi-GPU cluster</li>
+          <li>10 Gbps colocation</li>
+          <li>25,000 OG stake</li>
+          <li>Proof verification role</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="nd-cta">
+    <div class="nd-cta-glow"></div>
+    <div style="position:relative;z-index:1">
+      <div class="nd-section-label" style="margin-bottom:1rem">Ready to start</div>
+      <h2 class="nd-cta-h">Join 2,800+ node operators<br>securing the AI network.</h2>
+      <p class="nd-cta-sub">Setup takes under 15 minutes. Docker-based installer handles everything from stake to first inference request.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="#" class="nd-btn nd-btn-primary" style="animation:glowPulse 2.5s ease-in-out infinite">Run a Node</a>
+        <a href="#" class="nd-btn nd-btn-ghost">Read the Docs</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="nd-footer">
+    <div data-og-logo="wordmark" style="height:22px;opacity:.4;"></div>
+    <div class="nd-footer-links">
+      <a href="#" class="nd-footer-link">Docs</a>
+      <a href="#" class="nd-footer-link">GitHub</a>
+      <a href="#" class="nd-footer-link">Discord</a>
+      <a href="#" class="nd-footer-link">Status</a>
+    </div>
+    <div class="nd-footer-copy">© 2025 OpenGradient · Node Network · MIT License</div>
+  </footer>
+
+  <script>
+    // NODE GRID — render 25 nodes with random states
+    const grid = document.getElementById('node-grid');
+    const nodeStates = ['active','active','active','active','computing','computing','idle','idle'];
+    for (let i = 0; i < 25; i++) {
+      const s = nodeStates[Math.floor(Math.random() * nodeStates.length)];
+      const div = document.createElement('div');
+      div.className = `nd-node nd-node-${s}`;
+      div.style.setProperty('--d', (Math.random() * 5).toFixed(1) + 's');
+      const dot = document.createElement('div');
+      dot.className = 'nd-node-dot ' + (s==='active'?'nd-dot-blue':s==='computing'?'nd-dot-green':'nd-dot-dim');
+      div.appendChild(dot);
+      grid.appendChild(div);
+    }
+
+    // TICKER
+    const stats = [
+      ['NODES', '2,847'],['UPTIME', '98.7%'],['LATENCY', '32ms'],['THROUGHPUT', '42 TB/s'],
+      ['EPOCH', '#14,820'],['REWARDS_24H', '18,400 OG'],['MODELS_SERVED', '312'],['VALIDATORS', '204'],
+    ];
+    const track = document.getElementById('ticker-track');
+    [...stats,...stats,...stats].forEach(([k,v]) => {
+      const el = document.createElement('div');
+      el.className = 'nd-ticker-item';
+      el.innerHTML = `<span class="nd-ticker-key">${k}</span><span class="nd-ticker-val">${v}</span>`;
+      track.appendChild(el);
+    });
+
+    // COUNT UP
+    document.querySelectorAll('[data-target]').forEach(el => {
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        const target = +el.dataset.target, suffix = el.dataset.suffix||'';
+        let v=0; const step=target/60;
+        const t=setInterval(()=>{ v=Math.min(v+step,target); el.textContent=Math.floor(v).toLocaleString()+suffix; if(v>=target)clearInterval(t); },16);
+        io.disconnect();
+      });
+      io.observe(el);
+    });
+  </script>
+
+</body>
+</html>

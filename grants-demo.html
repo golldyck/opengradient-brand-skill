@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenGradient Grants — Fund What's Next</title>
+  <script src="https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-skill.js"></script>
+  <style>
+    /* Design direction: Real OG website style — og-light theme, teal/white palette, font-mono uppercase buttons */
+
+    :root {
+      --og-teal-dark: #0e4b5b;
+      --og-teal: #0d7591;
+      --og-teal-mid: #24bce3;
+      --og-teal-light: #e0f7fc;
+      --og-cream: #f7f8f5;
+      --og-white: #ffffff;
+      --og-ink: #0e2028;
+      --og-ink-soft: #3d5c66;
+      --og-ink-muted: #7d9ca5;
+      --og-border: rgba(14,75,91,0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--og-white); color: var(--og-ink); font-family: system-ui,-apple-system,sans-serif; overflow-x: hidden; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes heroIn { from{opacity:0;transform:translateY(28px) scale(.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes countUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+    .stagger > * { opacity:0; transform:translateY(20px); animation:fadeUp .6s cubic-bezier(.16,1,.3,1) both; }
+    .stagger > *:nth-child(1){animation-delay:.05s}
+    .stagger > *:nth-child(2){animation-delay:.15s}
+    .stagger > *:nth-child(3){animation-delay:.25s}
+    .stagger > *:nth-child(4){animation-delay:.35s}
+
+    /* NAV */
+    .og-nav-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 68px;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--og-border);
+    }
+    .og-nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    .og-nav-link { font-size: .875rem; color: var(--og-ink-soft); text-decoration: none; transition: color .2s; }
+    .og-nav-link:hover { color: var(--og-teal); }
+    .og-nav-cta {
+      font-family: 'Geist Mono', monospace; font-size: .75rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .5rem 1.25rem;
+      background: var(--og-ink); color: white;
+      border: none; border-radius: 99px;
+      cursor: pointer; transition: background .2s;
+    }
+    .og-nav-cta:hover { background: var(--og-teal); }
+
+    /* HERO */
+    .og-hero {
+      background: linear-gradient(180deg, var(--og-teal-light) 0%, white 100%);
+      padding: 140px 3rem 100px;
+    }
+    .og-hero-inner { max-width: 1100px; margin: 0 auto; }
+    .og-hero-label {
+      font-family: 'Geist Mono', monospace; font-size: .72rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--og-teal); margin-bottom: 1.5rem;
+      animation: fadeUp .5s ease both .1s;
+    }
+    .og-h1 {
+      font-size: clamp(3rem, 5vw, 5rem); font-weight: 800;
+      letter-spacing: -.04em; line-height: 1.0;
+      color: var(--og-ink); margin-bottom: 1.5rem;
+      animation: heroIn .8s cubic-bezier(.16,1,.3,1) both .2s;
+      max-width: 720px;
+    }
+    .og-hero-sub {
+      font-size: 1.1rem; color: var(--og-ink-soft); line-height: 1.7;
+      max-width: 560px; margin-bottom: 2.5rem;
+      animation: fadeUp .7s ease both .4s;
+    }
+    .og-hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp .7s ease both .55s; }
+    .og-btn-dark {
+      font-family: 'Geist Mono', monospace; font-size: .78rem; font-weight: 700;
+      letter-spacing: .09em; text-transform: uppercase;
+      padding: .75rem 1.75rem; background: var(--og-ink); color: white;
+      border: none; border-radius: 99px; cursor: pointer;
+      transition: background .2s, transform .15s;
+      text-decoration: none; display: inline-block;
+    }
+    .og-btn-dark:hover { background: var(--og-teal); transform: translateY(-2px); }
+    .og-btn-outline {
+      font-family: 'Geist Mono', monospace; font-size: .78rem; font-weight: 700;
+      letter-spacing: .09em; text-transform: uppercase;
+      padding: .75rem 1.75rem; background: transparent;
+      color: var(--og-ink); border: 1.5px solid var(--og-ink);
+      border-radius: 99px; cursor: pointer; transition: border-color .2s, color .2s;
+      text-decoration: none; display: inline-block;
+    }
+    .og-btn-outline:hover { border-color: var(--og-teal); color: var(--og-teal); }
+
+    /* NUMBERS STRIP */
+    .og-numbers-strip {
+      background: var(--og-teal-dark); padding: 3rem;
+    }
+    .og-numbers-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; text-align: center; }
+    .og-num-val { font-size: 2.5rem; font-weight: 800; letter-spacing: -.04em; color: #22d3ee; margin-bottom: .3rem; }
+    .og-num-lbl { font-family: 'Geist Mono', monospace; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+
+    /* TRACKS */
+    .og-tracks { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+    .og-section-label { font-family: 'Geist Mono', monospace; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--og-teal); margin-bottom: 1rem; }
+    .og-h2 { font-size: clamp(2rem, 3vw, 2.75rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin-bottom: .75rem; }
+    .og-lead { font-size: 1rem; color: var(--og-ink-soft); line-height: 1.7; max-width: 500px; margin-bottom: 3rem; }
+    .og-track-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+    .og-track-card {
+      border: 1.5px solid var(--og-border); border-radius: 14px; padding: 2rem;
+      transition: border-color .3s, box-shadow .3s, transform .2s;
+    }
+    .og-track-card:hover { border-color: var(--og-teal-mid); transform: translateY(-4px); box-shadow: 0 20px 48px rgba(13,117,145,0.08); }
+    .og-track-size {
+      font-family: 'Geist Mono', monospace; font-size: 1.5rem; font-weight: 800;
+      color: var(--og-teal-dark); margin-bottom: .5rem;
+    }
+    .og-track-name { font-size: 1rem; font-weight: 700; margin-bottom: .35rem; }
+    .og-track-desc { font-size: .875rem; color: var(--og-ink-soft); line-height: 1.6; margin-bottom: 1.25rem; }
+    .og-track-criteria { list-style: none; margin-bottom: 1.5rem; }
+    .og-track-criteria li {
+      font-size: .82rem; color: var(--og-ink-soft); padding: .35rem 0;
+      border-bottom: 1px solid var(--og-border);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .og-track-criteria li::before { content: '→'; color: var(--og-teal); font-size: .8rem; }
+    .og-track-badge {
+      display: inline-block; font-family: 'Geist Mono', monospace; font-size: .65rem;
+      font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: .25rem .7rem; border-radius: 99px;
+    }
+    .badge-open { background: rgba(34,211,238,0.1); color: var(--og-teal); }
+    .badge-rolling { background: rgba(14,75,91,0.08); color: var(--og-teal-dark); }
+    .badge-invite { background: #f1f5f9; color: #64748b; }
+
+    /* HOW IT WORKS */
+    .og-how { background: var(--og-cream); padding: 6rem 3rem; }
+    .og-how-inner { max-width: 1100px; margin: 0 auto; }
+    .og-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; margin-top: 3rem; }
+    .og-step { text-align: center; }
+    .og-step-num {
+      font-family: 'Geist Mono', monospace; font-size: 2.5rem; font-weight: 800;
+      color: rgba(14,75,91,0.12); margin-bottom: .75rem; line-height: 1;
+    }
+    .og-step-title { font-size: .95rem; font-weight: 700; margin-bottom: .4rem; }
+    .og-step-desc { font-size: .82rem; color: var(--og-ink-soft); line-height: 1.6; }
+
+    /* RECENT GRANTS */
+    .og-recent { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+    .og-grant-list { display: flex; flex-direction: column; gap: 1px; background: var(--og-border); border-radius: 12px; overflow: hidden; margin-top: 2.5rem; }
+    .og-grant-row {
+      background: white; padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; gap: 1.5rem;
+      transition: background .2s;
+    }
+    .og-grant-row:hover { background: var(--og-teal-light); }
+    .og-grant-avatar {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--og-teal-dark), var(--og-teal-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .og-grant-name { font-weight: 700; font-size: .9rem; }
+    .og-grant-desc { font-size: .8rem; color: var(--og-ink-soft); }
+    .og-grant-amount { margin-left: auto; font-family: 'Geist Mono', monospace; font-size: .85rem; font-weight: 700; color: var(--og-teal-dark); white-space: nowrap; }
+    .og-grant-category { font-family: 'Geist Mono', monospace; font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .2rem .7rem; border-radius: 99px; background: var(--og-teal-light); color: var(--og-teal); white-space: nowrap; }
+
+    /* CTA */
+    .og-cta { background: var(--og-teal-dark); padding: 6rem 3rem; text-align: center; }
+    .og-cta-h { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -.03em; color: white; margin-bottom: 1rem; }
+    .og-cta-sub { font-size: 1rem; color: rgba(255,255,255,0.55); max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.65; }
+
+    /* FOOTER */
+    .og-footer { background: white; border-top: 1px solid var(--og-border); padding: 2.5rem 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .og-footer-copy { font-size: .78rem; color: var(--og-ink-muted); }
+
+    @media (max-width: 900px) {
+      .og-track-grid { grid-template-columns: 1fr; }
+      .og-numbers-inner { grid-template-columns: repeat(2,1fr); }
+      .og-steps { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important} }
+  </style>
+</head>
+<body class="og-scope og-light">
+
+  <nav class="og-nav-bar">
+    <div data-og-logo="wordmark" style="height:28px;"></div>
+    <div class="og-nav-links">
+      <a href="#" class="og-nav-link">Grants</a>
+      <a href="#" class="og-nav-link">Portfolio</a>
+      <a href="#" class="og-nav-link">Ecosystem</a>
+      <a href="#" class="og-nav-link">Docs</a>
+      <button class="og-nav-cta">Apply Now</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="og-hero">
+    <div class="og-hero-inner">
+      <div class="og-hero-label">OpenGradient Grants Program</div>
+      <h1 class="og-h1">Fund what's<br>next in AI.</h1>
+      <p class="og-hero-sub">OpenGradient Grants backs builders deploying AI on decentralized infrastructure — from solo developers to research teams. $50K to $500K. No equity.</p>
+      <div class="og-hero-btns">
+        <a href="#" class="og-btn-dark">Apply for a grant</a>
+        <a href="#" class="og-btn-outline">Browse portfolio</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- NUMBERS -->
+  <div class="og-numbers-strip">
+    <div class="og-numbers-inner stagger">
+      <div>
+        <div class="og-num-val" data-target="4200000" data-suffix="">0</div>
+        <div class="og-num-lbl">Deployed (USD)</div>
+      </div>
+      <div>
+        <div class="og-num-val" data-target="87" data-suffix="">0</div>
+        <div class="og-num-lbl">Projects funded</div>
+      </div>
+      <div>
+        <div class="og-num-val" data-target="24" data-suffix="">0</div>
+        <div class="og-num-lbl">Countries represented</div>
+      </div>
+      <div>
+        <div class="og-num-val" data-target="14" data-suffix="d">0</div>
+        <div class="og-num-lbl">Avg decision time</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACKS -->
+  <div class="og-tracks">
+    <div class="og-section-label">Funding Tracks</div>
+    <h2 class="og-h2">Three tracks.<br>One mission.</h2>
+    <p class="og-lead">Whether you're deploying a proof of concept or scaling a production protocol, there's a track for you.</p>
+    <div class="og-track-grid stagger">
+      <div class="og-track-card">
+        <div class="og-track-size">$50K</div>
+        <div class="og-track-name">Explorer Grant</div>
+        <div class="og-track-desc">For individual developers and early-stage teams exploring decentralized AI applications.</div>
+        <ul class="og-track-criteria">
+          <li>Open source deliverable</li>
+          <li>Individual or team ≤ 3</li>
+          <li>3-month milestone timeline</li>
+          <li>On-chain inference required</li>
+        </ul>
+        <span class="og-track-badge badge-open">Open Applications</span>
+      </div>
+      <div class="og-track-card">
+        <div class="og-track-size">$200K</div>
+        <div class="og-track-name">Builder Grant</div>
+        <div class="og-track-desc">For teams building production infrastructure, tooling, or applications on OpenGradient.</div>
+        <ul class="og-track-criteria">
+          <li>Working prototype required</li>
+          <li>Defined go-to-market plan</li>
+          <li>6-month delivery scope</li>
+          <li>Technical advisor pairing</li>
+        </ul>
+        <span class="og-track-badge badge-rolling">Rolling Review</span>
+      </div>
+      <div class="og-track-card">
+        <div class="og-track-size">$500K</div>
+        <div class="og-track-name">Research Grant</div>
+        <div class="og-track-desc">For academic groups and research labs advancing verifiable inference and decentralized ML theory.</div>
+        <ul class="og-track-criteria">
+          <li>Published research background</li>
+          <li>12-month research scope</li>
+          <li>Publication deliverable</li>
+          <li>Invite or referral only</li>
+        </ul>
+        <span class="og-track-badge badge-invite">By Invitation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="og-how">
+    <div class="og-how-inner">
+      <div class="og-section-label">Process</div>
+      <h2 class="og-h2">From idea to funded<br>in four steps.</h2>
+      <div class="og-steps stagger">
+        <div class="og-step">
+          <div class="og-step-num">01</div>
+          <div class="og-step-title">Apply Online</div>
+          <div class="og-step-desc">Submit your project concept, team background, and proposed use of OpenGradient infrastructure.</div>
+        </div>
+        <div class="og-step">
+          <div class="og-step-num">02</div>
+          <div class="og-step-title">Technical Review</div>
+          <div class="og-step-desc">Our engineering team evaluates feasibility, originality, and network fit within 7 business days.</div>
+        </div>
+        <div class="og-step">
+          <div class="og-step-num">03</div>
+          <div class="og-step-title">Committee Vote</div>
+          <div class="og-step-desc">Approved applications go to our grants committee — a live call with founders and domain experts.</div>
+        </div>
+        <div class="og-step">
+          <div class="og-step-num">04</div>
+          <div class="og-step-title">Funds Deployed</div>
+          <div class="og-step-desc">Grant disbursed on-chain against milestone completions. Ongoing support from our ecosystem team.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT GRANTS -->
+  <div class="og-recent">
+    <div class="og-section-label">Recent Recipients</div>
+    <h2 class="og-h2" style="margin-bottom:.5rem">Who we've funded.</h2>
+    <p style="font-size:.95rem;color:var(--og-ink-soft);margin-bottom:0">A sample of projects from the last grant cycle.</p>
+    <div class="og-grant-list">
+      <div class="og-grant-row">
+        <div class="og-grant-avatar">🤖</div>
+        <div><div class="og-grant-name">AutoGrade Protocol</div><div class="og-grant-desc">Decentralized model evaluation and automated benchmarking on OpenGradient nodes.</div></div>
+        <span class="og-grant-category">Infra</span>
+        <div class="og-grant-amount">$200,000</div>
+      </div>
+      <div class="og-grant-row">
+        <div class="og-grant-avatar">🔬</div>
+        <div><div class="og-grant-name">DeepProof Research Lab</div><div class="og-grant-desc">ZK-proof system for verifiable LSTM inference — MIT & ETH Zurich collaboration.</div></div>
+        <span class="og-grant-category">Research</span>
+        <div class="og-grant-amount">$500,000</div>
+      </div>
+      <div class="og-grant-row">
+        <div class="og-grant-avatar">📊</div>
+        <div><div class="og-grant-name">ChainLens Analytics</div><div class="og-grant-desc">On-chain data pipeline feeding real-time signals to OpenGradient inference models.</div></div>
+        <span class="og-grant-category">Data</span>
+        <div class="og-grant-amount">$50,000</div>
+      </div>
+      <div class="og-grant-row">
+        <div class="og-grant-avatar">🌐</div>
+        <div><div class="og-grant-name">Nexus Translate</div><div class="og-grant-desc">Multilingual AI translation layer for Web3 documentation, running on OG compute.</div></div>
+        <span class="og-grant-category">App</span>
+        <div class="og-grant-amount">$50,000</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="og-cta">
+    <h2 class="og-cta-h">Ready to build<br>with us?</h2>
+    <p class="og-cta-sub">Applications reviewed on a rolling basis. No pitch deck required — just your idea and a GitHub link.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="#" class="og-btn-dark" style="background:white;color:var(--og-teal-dark)">Start Application</a>
+      <a href="#" class="og-btn-outline" style="border-color:rgba(255,255,255,0.3);color:white">Read the FAQ</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="og-footer">
+    <div data-og-logo="wordmark" style="height:22px;opacity:.4;"></div>
+    <div style="display:flex;gap:2rem">
+      <a href="#" style="font-size:.78rem;color:#7d9ca5;text-decoration:none">Privacy</a>
+      <a href="#" style="font-size:.78rem;color:#7d9ca5;text-decoration:none">Terms</a>
+      <a href="#" style="font-size:.78rem;color:#7d9ca5;text-decoration:none">Contact</a>
+    </div>
+    <div class="og-footer-copy">© 2025 OpenGradient Foundation · Grants Program</div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('[data-target]').forEach(el => {
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        const target = +el.dataset.target, suffix = el.dataset.suffix||'';
+        let v=0; const step=target/60;
+        const t=setInterval(()=>{ v=Math.min(v+step,target); el.textContent=Math.floor(v).toLocaleString()+suffix; if(v>=target)clearInterval(t); },16);
+        io.disconnect();
+      });
+      io.observe(el);
+    });
+  </script>
+
+</body>
+</html>
