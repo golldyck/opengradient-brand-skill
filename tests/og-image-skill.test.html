@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>og-image-skill.js — Automated Tests</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #0a0f19; color: #fff; padding: 32px; }
+    h1 { font-size: 1.4rem; margin-bottom: 24px; color: #24bce3; }
+    .test { padding: 10px 16px; margin: 4px 0; border-radius: 8px; font-size: 0.85rem; }
+    .pass { background: rgba(0, 222, 15, 0.12); border-left: 3px solid #00de0f; }
+    .fail { background: rgba(255, 60, 60, 0.12); border-left: 3px solid #ff3c3c; }
+    .summary { margin-top: 24px; padding: 16px; border-radius: 10px; font-weight: 500; }
+    .summary.all-pass { background: rgba(0, 222, 15, 0.15); color: #00de0f; }
+    .summary.has-fail { background: rgba(255, 60, 60, 0.15); color: #ff3c3c; }
+  </style>
+</head>
+<body>
+  <!-- Widget test target -->
+  <div data-og-image-widget data-api-key="test-key-123" id="test-widget"></div>
+
+  <script src="../og-image-skill.js"></script>
+
+  <script>
+    /* ==========================================================
+       Minimal test runner
+    ========================================================== */
+    var results = [];
+
+    function assert(name, condition, detail) {
+      results.push({ name: name, pass: !!condition, detail: detail || '' });
+    }
+
+    async function assertThrows(name, fn, expectedCode) {
+      try {
+        await fn();
+        results.push({ name: name, pass: false, detail: 'Expected error but none thrown' });
+      } catch (e) {
+        var pass = expectedCode ? e.code === expectedCode : true;
+        results.push({
+          name: name,
+          pass: pass,
+          detail: pass ? '' : 'Expected code ' + expectedCode + ' but got ' + e.code + ': ' + e.message
+        });
+      }
+    }
+
+    async function runTests() {
+      /* ==== OGImage global ==== */
+      assert('OGImage global exists', typeof OGImage !== 'undefined');
+      assert('OGImage.VERSION is a string', typeof OGImage.VERSION === 'string');
+      assert('OGImage.VERSION matches semver', /^\d+\.\d+\.\d+$/.test(OGImage.VERSION));
+
+      /* ==== Brand constants ==== */
+      assert('BRAND guidelines defined', OGImage.BRAND && OGImage.BRAND.length > 50);
+      assert('BRAND contains #24bce3', OGImage.BRAND.indexOf('#24bce3') > -1);
+      assert('BRAND contains #0a0f19', OGImage.BRAND.indexOf('#0a0f19') > -1);
+
+      assert('NEGATIVE prompt defined', OGImage.NEGATIVE && OGImage.NEGATIVE.length > 20);
+      assert('NEGATIVE excludes watercolor', OGImage.NEGATIVE.indexOf('watercolor') > -1);
+      assert('NEGATIVE excludes neon cyberpunk', OGImage.NEGATIVE.indexOf('neon cyberpunk') > -1);
+
+      /* ==== RATIOS ==== */
+      assert('RATIOS has 5 presets', Object.keys(OGImage.RATIOS).length === 5);
+      assert('RATIOS["1:1"] is 1024x1024', OGImage.RATIOS['1:1'].width === 1024 && OGImage.RATIOS['1:1'].height === 1024);
+      assert('RATIOS["16:9"] is 1280x720', OGImage.RATIOS['16:9'].width === 1280 && OGImage.RATIOS['16:9'].height === 720);
+      assert('RATIOS["9:16"] is 720x1280', OGImage.RATIOS['9:16'].width === 720 && OGImage.RATIOS['9:16'].height === 1280);
+      assert('Each ratio has a label', Object.keys(OGImage.RATIOS).every(function(k) { return typeof OGImage.RATIOS[k].label === 'string'; }));
+
+      /* ==== CONTENT TYPES ==== */
+      var expectedTypes = ['photo', 'meme', 'ui', 'hero', 'avatar', 'slide', 'logo', 'diagram'];
+      expectedTypes.forEach(function (t) {
+        assert('TYPES["' + t + '"] exists', typeof OGImage.TYPES[t] === 'string');
+      });
+      assert('TYPES has ' + expectedTypes.length + ' entries', Object.keys(OGImage.TYPES).length === expectedTypes.length);
+
+      /* ==== ERROR TYPES (new in v1.1.0) ==== */
+      assert('ERRORS object exists', typeof OGImage.ERRORS === 'object');
+      var errorCodes = ['NETWORK', 'TIMEOUT', 'RATE_LIMIT', 'API', 'NO_IMAGE', 'INVALID_KEY'];
+      errorCodes.forEach(function (code) {
+        assert('ERRORS.' + code + ' defined', typeof OGImage.ERRORS[code] === 'string');
+      });
+
+      /* ==== buildPrompt ==== */
+      assert('buildPrompt is a function', typeof OGImage.buildPrompt === 'function');
+
+      var p1 = OGImage.buildPrompt('A capybara coding');
+      assert('buildPrompt includes user request', p1.indexOf('A capybara coding') > -1);
+      assert('buildPrompt includes brand guidelines', p1.indexOf('brand') > -1 || p1.indexOf('#24bce3') > -1);
+      assert('buildPrompt includes photo type by default', p1.indexOf('photographic') > -1);
+
+      var p2 = OGImage.buildPrompt('A rocket', { type: 'meme' });
+      assert('buildPrompt with type=meme includes meme format', p2.indexOf('meme') > -1);
+
+      var p3 = OGImage.buildPrompt('Test', { type: 'ui', context: 'dashboard layout' });
+      assert('buildPrompt includes UI format', p3.indexOf('UI/UX') > -1);
+      assert('buildPrompt includes context', p3.indexOf('dashboard layout') > -1);
+
+      var p4 = OGImage.buildPrompt('Test', { type: 'nonexistent' });
+      assert('buildPrompt with unknown type still works', p4.indexOf('Test') > -1);
+
+      /* ==== generate — missing API key ==== */
+      await assertThrows(
+        'generate() throws without API key',
+        function () { return OGImage.generate('test'); }
+      );
+
+      /* ==== generate — with fake key (network error expected) ==== */
+      // We mock fetch to test error handling
+      var originalFetch = window.fetch;
+
+      // Test: 401 → INVALID_KEY error
+      window.fetch = function () {
+        return Promise.resolve({
+          ok: false,
+          status: 401,
+          json: function () { return Promise.resolve({ error: { message: 'Unauthorized' } }); }
+        });
+      };
+      await assertThrows(
+        'generate() with 401 throws INVALID_KEY_ERROR',
+        function () { return OGImage.generate('test', { apiKey: 'bad-key', maxRetries: 0 }); },
+        'INVALID_KEY_ERROR'
+      );
+
+      // Test: 429 → RATE_LIMIT error (retryable, but maxRetries=0)
+      window.fetch = function () {
+        return Promise.resolve({
+          ok: false,
+          status: 429,
+          json: function () { return Promise.resolve({ error: { message: 'Rate limited' } }); }
+        });
+      };
+      await assertThrows(
+        'generate() with 429 throws RATE_LIMIT_ERROR',
+        function () { return OGImage.generate('test', { apiKey: 'key', maxRetries: 0 }); },
+        'RATE_LIMIT_ERROR'
+      );
+
+      // Test: 500 → API error
+      window.fetch = function () {
+        return Promise.resolve({
+          ok: false,
+          status: 500,
+          json: function () { return Promise.resolve({ error: { message: 'Internal error' } }); }
+        });
+      };
+      await assertThrows(
+        'generate() with 500 throws API_ERROR',
+        function () { return OGImage.generate('test', { apiKey: 'key', maxRetries: 0 }); },
+        'API_ERROR'
+      );
+
+      // Test: Network failure → NETWORK error
+      window.fetch = function () {
+        return Promise.reject(new TypeError('Failed to fetch'));
+      };
+      await assertThrows(
+        'generate() with network failure throws NETWORK_ERROR',
+        function () { return OGImage.generate('test', { apiKey: 'key', maxRetries: 0 }); },
+        'NETWORK_ERROR'
+      );
+
+      // Test: Successful response but no image → NO_IMAGE error
+      window.fetch = function () {
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: function () {
+            return Promise.resolve({
+              candidates: [{ content: { parts: [{ text: 'Sorry, I cannot generate that.' }] } }]
+            });
+          }
+        });
+      };
+      await assertThrows(
+        'generate() with no image data throws NO_IMAGE_ERROR',
+        function () { return OGImage.generate('test', { apiKey: 'key', maxRetries: 0 }); },
+        'NO_IMAGE_ERROR'
+      );
+
+      // Test: Successful response with image
+      window.fetch = function () {
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: function () {
+            return Promise.resolve({
+              candidates: [{
+                content: {
+                  parts: [
+                    { inlineData: { mimeType: 'image/png', data: 'iVBORw0KGgo=' } },
+                    { text: 'Here is your image.' }
+                  ]
+                }
+              }]
+            });
+          }
+        });
+      };
+
+      try {
+        var result = await OGImage.generate('A capybara', { apiKey: 'test-key', ratio: '16:9', type: 'hero' });
+        assert('Successful generate returns imageUrl', result.imageUrl.indexOf('data:image/png;base64,') === 0);
+        assert('Successful generate returns text', result.text === 'Here is your image.');
+        assert('Successful generate returns prompt', result.prompt.indexOf('A capybara') > -1);
+        assert('Successful generate returns ratio', result.ratio === '16:9');
+        assert('Successful generate returns userRequest', result.userRequest === 'A capybara');
+      } catch (e) {
+        assert('Successful generate should not throw', false, e.message);
+      }
+
+      // Restore original fetch
+      window.fetch = originalFetch;
+
+      /* ==== Widget rendering ==== */
+      var widget = document.getElementById('test-widget');
+      assert('Widget was auto-initialized', widget.getAttribute('data-og-widget-init') === 'true');
+      assert('Widget contains generate button', widget.querySelector('[data-og-generate]') !== null);
+      assert('Widget contains prompt textarea', widget.querySelector('[data-og-prompt]') !== null);
+      assert('Widget contains ratio select', widget.querySelector('[data-og-ratio]') !== null);
+      assert('Widget contains type select', widget.querySelector('[data-og-type]') !== null);
+      assert('Widget has status area', widget.querySelector('[data-og-status]') !== null);
+      assert('Widget has output area', widget.querySelector('[data-og-output]') !== null);
+      // API key was provided via data attribute, so no input should appear
+      assert('Widget hides API key input when provided', widget.querySelector('[data-og-apikey]') === null);
+
+      // Check ratio select has all 5 options
+      var ratioSelect = widget.querySelector('[data-og-ratio]');
+      assert('Ratio select has 5 options', ratioSelect.options.length === 5);
+
+      // Check type select has all content types
+      var typeSelect = widget.querySelector('[data-og-type]');
+      assert('Type select has ' + expectedTypes.length + ' options', typeSelect.options.length === expectedTypes.length);
+
+      /* ==== Render results ==== */
+      renderResults();
+    }
+
+    function renderResults() {
+      var container = document.createElement('div');
+      container.id = 'test-results';
+      var passed = 0;
+      var failed = 0;
+
+      var h1 = document.createElement('h1');
+      h1.textContent = 'og-image-skill.js Test Results';
+      container.appendChild(h1);
+
+      results.forEach(function (r) {
+        var div = document.createElement('div');
+        div.className = 'test ' + (r.pass ? 'pass' : 'fail');
+        div.textContent = (r.pass ? '\u2713 ' : '\u2717 ') + r.name;
+        if (!r.pass && r.detail) div.textContent += ' \u2014 ' + r.detail;
+        container.appendChild(div);
+        if (r.pass) passed++; else failed++;
+      });
+
+      var summary = document.createElement('div');
+      summary.className = 'summary ' + (failed === 0 ? 'all-pass' : 'has-fail');
+      summary.textContent = passed + ' passed, ' + failed + ' failed out of ' + results.length + ' tests';
+      container.appendChild(summary);
+
+      document.body.innerHTML = '';
+      document.body.appendChild(container);
+      document.title = failed === 0 ? 'ALL PASS' : failed + ' FAILURES';
+    }
+
+    // Run after widget init
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () { setTimeout(runTests, 200); });
+    } else {
+      setTimeout(runTests, 200);
+    }
+  </script>
+</body>
+</html>

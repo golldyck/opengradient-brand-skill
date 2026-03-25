@@ -94,12 +94,101 @@
   }
 
   /* ============================================================
+     ERROR TYPES — structured errors for programmatic handling
+  ============================================================ */
+  var OGImageError = {
+    NETWORK:    'NETWORK_ERROR',
+    TIMEOUT:    'TIMEOUT_ERROR',
+    RATE_LIMIT: 'RATE_LIMIT_ERROR',
+    API:        'API_ERROR',
+    NO_IMAGE:   'NO_IMAGE_ERROR',
+    INVALID_KEY:'INVALID_KEY_ERROR',
+  };
+
+  function createError(message, code, details) {
+    var err = new Error(message);
+    err.code = code;
+    err.details = details || null;
+    return err;
+  }
+
+  /* ============================================================
+     FETCH WITH TIMEOUT — aborts request after specified ms
+  ============================================================ */
+  function fetchWithTimeout(url, fetchOptions, timeoutMs) {
+    timeoutMs = timeoutMs || 30000;
+
+    if (typeof AbortController !== 'undefined') {
+      var controller = new AbortController();
+      fetchOptions.signal = controller.signal;
+      var timer = setTimeout(function () { controller.abort(); }, timeoutMs);
+      return fetch(url, fetchOptions).then(function (res) {
+        clearTimeout(timer);
+        return res;
+      }).catch(function (err) {
+        clearTimeout(timer);
+        if (err.name === 'AbortError') {
+          throw createError(
+            'Request timed out after ' + (timeoutMs / 1000) + 's',
+            OGImageError.TIMEOUT
+          );
+        }
+        throw err;
+      });
+    }
+
+    // Fallback: no AbortController, just fetch without timeout
+    return fetch(url, fetchOptions);
+  }
+
+  /* ============================================================
+     RETRY WITH EXPONENTIAL BACKOFF
+  ============================================================ */
+  function sleep(ms) {
+    return new Promise(function (resolve) { setTimeout(resolve, ms); });
+  }
+
+  async function retryWithBackoff(fn, options) {
+    options = options || {};
+    var maxRetries  = options.maxRetries  || 2;
+    var baseDelay   = options.baseDelay   || 1000;
+    var lastError;
+
+    for (var attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        return await fn();
+      } catch (err) {
+        lastError = err;
+
+        // Don't retry on non-retryable errors
+        if (
+          err.code === OGImageError.INVALID_KEY ||
+          err.code === OGImageError.NO_IMAGE ||
+          (err.code === OGImageError.API && err.details && err.details.status < 500 && err.details.status !== 429)
+        ) {
+          throw err;
+        }
+
+        if (attempt < maxRetries) {
+          var delay = baseDelay * Math.pow(2, attempt);
+          console.warn('[OGImage] Attempt ' + (attempt + 1) + ' failed, retrying in ' + delay + 'ms...', err.message);
+          await sleep(delay);
+        }
+      }
+    }
+
+    throw lastError;
+  }
+
+  /* ============================================================
      GEMINI FLASH IMAGE API CALL
   ============================================================ */
   async function callGeminiImage(prompt, apiKey, options) {
     options = options || {};
-    var ratio    = options.ratio || '1:1';
-    var dims     = RATIOS[ratio] || RATIOS['1:1'];
+    var ratio      = options.ratio   || '1:1';
+    var dims       = RATIOS[ratio]   || RATIOS['1:1'];
+    var timeoutMs  = options.timeout || 30000;
+    var maxRetries = options.maxRetries != null ? options.maxRetries : 2;
 
     var endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=' + apiKey;
 
@@ -118,40 +207,75 @@
       }
     };
 
-    var response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
+    return retryWithBackoff(async function () {
+      var response;
 
-    if (!response.ok) {
-      var err = await response.json();
-      throw new Error('Gemini API error: ' + (err.error && err.error.message || response.status));
-    }
-
-    var data = await response.json();
-
-    // Extract image from response
-    var imageData = null;
-    var textData  = null;
-    var parts = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts || [];
-
-    parts.forEach(function (part) {
-      if (part.inlineData && part.inlineData.mimeType && part.inlineData.mimeType.startsWith('image/')) {
-        imageData = part.inlineData;
+      try {
+        response = await fetchWithTimeout(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        }, timeoutMs);
+      } catch (err) {
+        // Re-throw structured errors (timeout)
+        if (err.code) throw err;
+        // Wrap network errors (offline, DNS, CORS, etc.)
+        throw createError(
+          'Network error: ' + (err.message || 'Failed to reach Gemini API. Check your connection.'),
+          OGImageError.NETWORK,
+          { originalError: err.message }
+        );
       }
-      if (part.text) textData = part.text;
-    });
 
-    if (!imageData) throw new Error('No image returned from Gemini');
+      if (!response.ok) {
+        var errBody;
+        try { errBody = await response.json(); } catch (_) { errBody = {}; }
+        var msg = (errBody.error && errBody.error.message) || 'HTTP ' + response.status;
 
-    return {
-      imageUrl:  'data:' + imageData.mimeType + ';base64,' + imageData.data,
-      imageData: imageData,
-      text:      textData,
-      prompt:    prompt,
-      ratio:     ratio,
-    };
+        if (response.status === 401 || response.status === 403) {
+          throw createError('Invalid or expired API key', OGImageError.INVALID_KEY, { status: response.status });
+        }
+        if (response.status === 429) {
+          throw createError('Rate limited by Gemini API. Please wait and try again.', OGImageError.RATE_LIMIT, { status: 429 });
+        }
+        throw createError('Gemini API error: ' + msg, OGImageError.API, { status: response.status, body: errBody });
+      }
+
+      var data;
+      try {
+        data = await response.json();
+      } catch (_) {
+        throw createError('Invalid JSON in Gemini API response', OGImageError.API);
+      }
+
+      // Extract image from response
+      var imageData = null;
+      var textData  = null;
+      var parts = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts || [];
+
+      parts.forEach(function (part) {
+        if (part.inlineData && part.inlineData.mimeType && part.inlineData.mimeType.startsWith('image/')) {
+          imageData = part.inlineData;
+        }
+        if (part.text) textData = part.text;
+      });
+
+      if (!imageData) {
+        throw createError(
+          'No image returned from Gemini. The model may have refused the prompt or returned text only.',
+          OGImageError.NO_IMAGE,
+          { text: textData, candidates: data.candidates }
+        );
+      }
+
+      return {
+        imageUrl:  'data:' + imageData.mimeType + ';base64,' + imageData.data,
+        imageData: imageData,
+        text:      textData,
+        prompt:    prompt,
+        ratio:     ratio,
+      };
+    }, { maxRetries: maxRetries });
   }
 
   /* ============================================================
@@ -251,7 +375,12 @@
         output.appendChild(dl);
         status.textContent = 'Done!';
       } catch (e) {
-        status.textContent = 'Error: ' + e.message;
+        var hint = '';
+        if (e.code === OGImageError.INVALID_KEY)  hint = ' Check your Gemini API key.';
+        if (e.code === OGImageError.RATE_LIMIT)   hint = ' Wait a moment and try again.';
+        if (e.code === OGImageError.NETWORK)      hint = ' Check your internet connection.';
+        if (e.code === OGImageError.TIMEOUT)       hint = ' The request took too long — try again.';
+        status.textContent = 'Error: ' + e.message + hint;
       } finally {
         btn.disabled = false;
         btn.textContent = 'Generate Image';
@@ -272,13 +401,14 @@
      PUBLIC API
   ============================================================ */
   var OGImage = {
-    VERSION:      '1.0.0',
+    VERSION:      '1.1.0',
     generate:     generate,
     buildPrompt:  buildPrompt,
     BRAND:        BRAND_GUIDELINES,
     NEGATIVE:     NEGATIVE_PROMPT,
     RATIOS:       RATIOS,
     TYPES:        CONTENT_TYPES,
+    ERRORS:       OGImageError,
     initWidgets:  initWidgets,
   };
 

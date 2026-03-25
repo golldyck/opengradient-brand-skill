@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>og-skill.js — Automated Tests</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #0a0f19; color: #fff; padding: 32px; }
+    h1 { font-size: 1.4rem; margin-bottom: 24px; color: #24bce3; }
+    .test { padding: 10px 16px; margin: 4px 0; border-radius: 8px; font-size: 0.85rem; }
+    .pass { background: rgba(0, 222, 15, 0.12); border-left: 3px solid #00de0f; }
+    .fail { background: rgba(255, 60, 60, 0.12); border-left: 3px solid #ff3c3c; }
+    .summary { margin-top: 24px; padding: 16px; border-radius: 10px; font-weight: 500; }
+    .summary.all-pass { background: rgba(0, 222, 15, 0.15); color: #00de0f; }
+    .summary.has-fail { background: rgba(255, 60, 60, 0.15); color: #ff3c3c; }
+  </style>
+</head>
+<body>
+  <!-- Test targets -->
+  <div id="test-logo-wordmark" data-og-logo="wordmark"></div>
+  <div id="test-logo-mark" data-og-logo="mark"></div>
+  <div id="test-logo-dark" data-og-logo="wordmark-dark"></div>
+
+  <div id="test-reveal" class="og-reveal"></div>
+
+  <div class="og-tabs" id="test-tabs">
+    <div class="og-tabs__tab">Tab 1</div>
+    <div class="og-tabs__tab">Tab 2</div>
+    <div class="og-tabs__panel">Panel 1</div>
+    <div class="og-tabs__panel">Panel 2</div>
+  </div>
+
+  <nav class="og-nav" id="test-nav">
+    <div class="og-nav__inner">
+      <div data-og-logo="wordmark"></div>
+      <button class="og-nav__burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <ul class="og-nav__links og-nav__links--test"></ul>
+    </div>
+  </nav>
+
+  <!-- Load the skill AFTER test targets exist -->
+  <script src="../og-skill.js"></script>
+
+  <script>
+    /* ==========================================================
+       Minimal test runner
+    ========================================================== */
+    var results = [];
+
+    function assert(name, condition, detail) {
+      results.push({ name: name, pass: !!condition, detail: detail || '' });
+    }
+
+    function runTests() {
+      /* ---- OGBrand global exists ---- */
+      assert('OGBrand global exists', typeof OGBrand !== 'undefined');
+      assert('OGBrand.VERSION is a string', typeof OGBrand.VERSION === 'string');
+      assert('OGBrand.VERSION matches semver', /^\d+\.\d+\.\d+$/.test(OGBrand.VERSION));
+
+      /* ---- LOGO SVG ---- */
+      assert('LOGO_SVG is defined', OGBrand.LOGO_SVG && OGBrand.LOGO_SVG.length > 100);
+      assert('LOGO_SVG contains <svg>', OGBrand.LOGO_SVG.indexOf('<svg') === 0);
+      assert('LOGO_SVG uses currentColor', OGBrand.LOGO_SVG.indexOf('currentColor') > -1);
+
+      assert('LOGO_MARK is defined', OGBrand.LOGO_MARK && OGBrand.LOGO_MARK.length > 100);
+      assert('LOGO_MARK viewBox is 121x121', OGBrand.LOGO_MARK.indexOf('viewBox="0 0 121 121"') > -1);
+
+      /* ---- COLORS ---- */
+      assert('COLORS.primary is #24bce3', OGBrand.COLORS.primary === '#24bce3');
+      assert('COLORS.navy is #0a0f19', OGBrand.COLORS.navy === '#0a0f19');
+      assert('COLORS.dark is #0e4b5b', OGBrand.COLORS.dark === '#0e4b5b');
+      assert('COLORS.hub exists', typeof OGBrand.COLORS.hub === 'object');
+      assert('COLORS.hub.blue is #11558e', OGBrand.COLORS.hub.blue === '#11558e');
+
+      /* ---- PUBLIC METHODS exist ---- */
+      var methods = ['loadCSS', 'loadFonts', 'injectLogos', 'initScrollReveal',
+                     'initNavScrollBlur', 'initMobileNav', 'initTabs', 'buildPage', 'buildSections'];
+      methods.forEach(function (m) {
+        assert('OGBrand.' + m + ' is a function', typeof OGBrand[m] === 'function');
+      });
+
+      /* ---- CSS was auto-loaded ---- */
+      var cssLink = document.querySelector('link[data-og-brand]');
+      assert('CSS link was injected', !!cssLink);
+      assert('CSS link href contains og-brand.css', cssLink && cssLink.href.indexOf('og-brand.css') > -1);
+
+      /* ---- Font was auto-loaded ---- */
+      var fontLink = document.querySelector('link[data-og-font]');
+      assert('Font link was injected', !!fontLink);
+      assert('Font link loads Geist', fontLink && fontLink.href.indexOf('Geist') > -1);
+
+      /* ---- No duplicate CSS injection ---- */
+      OGBrand.loadCSS('https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main/og-brand.css');
+      var cssLinks = document.querySelectorAll('link[data-og-brand]');
+      assert('loadCSS does not create duplicates', cssLinks.length === 1);
+
+      /* ---- Logo injection ---- */
+      var wordmarkEl = document.getElementById('test-logo-wordmark');
+      assert('Wordmark was injected', wordmarkEl.querySelector('svg') !== null);
+      assert('Wordmark has data-og-injected', wordmarkEl.getAttribute('data-og-injected') === 'true');
+
+      var markEl = document.getElementById('test-logo-mark');
+      assert('Mark logo was injected', markEl.querySelector('svg') !== null);
+
+      var darkEl = document.getElementById('test-logo-dark');
+      assert('Dark wordmark was injected', darkEl.querySelector('svg') !== null);
+      var darkContainer = darkEl.querySelector('.og-logo--dark');
+      assert('Dark variant has og-logo--dark class', !!darkContainer);
+
+      /* ---- Tabs init ---- */
+      var tabContainer = document.getElementById('test-tabs');
+      assert('Tabs were initialized', tabContainer.getAttribute('data-og-tabs-init') === 'true');
+      var firstTab = tabContainer.querySelector('.og-tabs__tab');
+      assert('First tab is active', firstTab.classList.contains('og-tabs__tab--active'));
+      assert('First tab has aria-selected=true', firstTab.getAttribute('aria-selected') === 'true');
+
+      var secondTab = tabContainer.querySelectorAll('.og-tabs__tab')[1];
+      assert('Second tab is not active', !secondTab.classList.contains('og-tabs__tab--active'));
+
+      // Click second tab
+      secondTab.click();
+      assert('After click, second tab is active', secondTab.classList.contains('og-tabs__tab--active'));
+      assert('After click, first tab is deactivated', !firstTab.classList.contains('og-tabs__tab--active'));
+
+      var panels = tabContainer.querySelectorAll('.og-tabs__panel');
+      assert('Second panel is active after click', panels[1].classList.contains('og-tabs__panel--active'));
+      assert('First panel is hidden after click', !panels[0].classList.contains('og-tabs__panel--active'));
+
+      /* ---- Mobile nav burger ---- */
+      var burger = document.querySelector('#test-nav .og-nav__burger');
+      var navLinks = document.querySelector('#test-nav .og-nav__links');
+      burger.click();
+      assert('Burger toggles og-nav__links--open', navLinks.classList.contains('og-nav__links--open'));
+      assert('Burger aria-expanded is true after click', burger.getAttribute('aria-expanded') === 'true');
+      burger.click();
+      assert('Second click removes og-nav__links--open', !navLinks.classList.contains('og-nav__links--open'));
+
+      /* ---- Nav scroll blur ---- */
+      var nav = document.querySelector('#test-nav');
+      assert('Nav element exists for scroll blur', !!nav);
+
+      /* ---- Render results ---- */
+      renderResults();
+    }
+
+    function renderResults() {
+      var container = document.createElement('div');
+      container.id = 'test-results';
+      var passed = 0;
+      var failed = 0;
+
+      var h1 = document.createElement('h1');
+      h1.textContent = 'og-skill.js Test Results';
+      container.appendChild(h1);
+
+      results.forEach(function (r) {
+        var div = document.createElement('div');
+        div.className = 'test ' + (r.pass ? 'pass' : 'fail');
+        div.textContent = (r.pass ? '\u2713 ' : '\u2717 ') + r.name;
+        if (!r.pass && r.detail) div.textContent += ' — ' + r.detail;
+        container.appendChild(div);
+        if (r.pass) passed++; else failed++;
+      });
+
+      var summary = document.createElement('div');
+      summary.className = 'summary ' + (failed === 0 ? 'all-pass' : 'has-fail');
+      summary.textContent = passed + ' passed, ' + failed + ' failed out of ' + results.length + ' tests';
+      container.appendChild(summary);
+
+      // Clear body and show results only
+      document.body.innerHTML = '';
+      document.body.appendChild(container);
+
+      // Set title for programmatic access
+      document.title = failed === 0 ? 'ALL PASS' : failed + ' FAILURES';
+    }
+
+    // Run after DOM + og-skill.js have both completed
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () { setTimeout(runTests, 100); });
+    } else {
+      setTimeout(runTests, 100);
+    }
+  </script>
+</body>
+</html>
