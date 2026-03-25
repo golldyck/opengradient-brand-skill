@@ -19,11 +19,39 @@
   'use strict';
 
   /* ============================================================
-     CONFIG
+     CONFIG — customisable via window.OGBrandConfig or auto-detected
+     from the <script src="..."> that loaded this file.
+
+     Priority: OGBrandConfig.base  >  auto-detect from script src  >  CDN default
+     Example local override:
+       <script>window.OGBrandConfig = { base: './assets' };</script>
+       <script src="./assets/og-skill.js"></script>
   ============================================================ */
-  var REPO_BASE = 'https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main';
-  var CSS_URL   = REPO_BASE + '/og-brand.css';
-  var FONT_URL  = 'https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap';
+  var CDN_DEFAULT = 'https://cdn.jsdelivr.net/gh/golldyck/opengradient-brand-skill@main';
+
+  function detectBase() {
+    // 1. Explicit config wins
+    if (global.OGBrandConfig && global.OGBrandConfig.base) {
+      return global.OGBrandConfig.base.replace(/\/+$/, '');
+    }
+    // 2. Auto-detect from the <script> tag that loaded this file
+    if (typeof document !== 'undefined') {
+      var scripts = document.querySelectorAll('script[src]');
+      for (var i = 0; i < scripts.length; i++) {
+        var src = scripts[i].getAttribute('src') || '';
+        if (src.indexOf('og-skill') > -1) {
+          var lastSlash = src.lastIndexOf('/');
+          if (lastSlash > -1) return src.substring(0, lastSlash);
+        }
+      }
+    }
+    // 3. CDN fallback
+    return CDN_DEFAULT;
+  }
+
+  var REPO_BASE = detectBase();
+  var CSS_URL   = (global.OGBrandConfig && global.OGBrandConfig.cssUrl) || REPO_BASE + '/og-brand.css';
+  var FONT_URL  = (global.OGBrandConfig && global.OGBrandConfig.fontUrl) || 'https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap';
 
   /* ============================================================
      LOGO SVG — FULL WORDMARK (official from opengradient.ai)
